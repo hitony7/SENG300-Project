@@ -8,7 +8,7 @@
 - node.js(required) 
 - Database:unknown for now
 
-#### Maven is required for test/deployemnt.
+#### Maven is required for testing/deployment.
 
 intellaj: https://www.youtube.com/watch?v=pt3uB0sd5kY \
 eclipse: https://www.youtube.com/watch?v=Dq5mm0tkSsw, \
