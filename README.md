@@ -3,10 +3,9 @@
 
 ## STACK
 
-
-We are going to use Java with Vaadin a web framework.
-Backend node.js 
-Database:unknown for known
+- We are going to use Java (make sure java 8 jdk is installed) with Vaadin a web framework.
+- node.js(required) 
+- Database:unknown for now
 
 #### Maven is required for test/deployemnt.
 
@@ -28,5 +27,5 @@ or
 
 ### Editing
 
-We will be doing most of our work in the src file in this project
+We will be doing most of our work in the src file in this project.
 
