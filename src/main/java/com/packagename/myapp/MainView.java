@@ -21,8 +21,8 @@ public class MainView extends VerticalLayout {
 
     public MainView() {
         // Use TextField for standard text input
-        TextField textField = new TextField("Your name");
-
+        TextField textField = new TextField("Username");
+        TextField textField2 = new TextField("Password");
         // Button click listeners can be defined as lambda expressions
         GreetService greetService = new GreetService();
         Button button = new Button("Say hello my dudes",
@@ -39,6 +39,6 @@ public class MainView extends VerticalLayout {
         // Use custom CSS classes to apply styling. This is defined in shared-styles.css.
         addClassName("centered-content");
 
-        add(textField, button);
+        add(textField,textField2, button);
     }
 }
