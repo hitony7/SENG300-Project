@@ -25,7 +25,7 @@ public class MainView extends VerticalLayout {
         TextField textField2 = new TextField("Password");
         // Button click listeners can be defined as lambda expressions
         GreetService greetService = new GreetService();
-        Button button = new Button("Say hello my dudes",
+        Button button = new Button("Hellow World!",
                 e -> Notification.show(greetService.greet(textField.getValue())));
 
         // Theme variants give you predefined extra styles for components.
