@@ -32,6 +32,8 @@ public class LoginView extends VerticalLayout  {
         Button newpage = new Button("Click this to go to main page (This is after login)",
                 e -> UI.getCurrent().navigate("dashboard"));
 
+        Button adminPage = new Button("Administrator",
+        		e -> UI.getCurrent().navigate("admin"));
 
 
         // Theme variants give you predefined extra styles for components.
@@ -45,7 +47,7 @@ public class LoginView extends VerticalLayout  {
         // Use custom CSS classes to apply styling. This is defined in shared-styles.css.
         addClassName("centered-content");
 
-        add(textField,textField2, button, newpage);
+        add(textField,textField2, button, newpage, adminPage);
     }
 
 
