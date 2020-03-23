@@ -31,10 +31,15 @@ public class MainLayout extends AppLayout {
         header.addClassName("header");   //HTML
         header.setWidth("100%");   //SCALE TO WINDOW SIZE
         header.setDefaultVerticalComponentAlignment(FlexComponent.Alignment.CENTER);
+        
+        Button submitPage = new Button("Create Submission",
+        		e -> UI.getCurrent().navigate("submit"));
+        
         //Button needs to be repositioned
         Button logoutB = new Button("Logout",
                 e -> UI.getCurrent().navigate(""));
 
+        addToNavbar(submitPage);
         addToNavbar(logoutB);
         addToNavbar(header);
     }
