@@ -34,14 +34,17 @@ public class MainLayout extends AppLayout {
         
         Button submitPage = new Button("Create Submission",
         		e -> UI.getCurrent().navigate("submit"));
-        
+        submitPage.setWidth("200px");
+
         //Button needs to be repositioned
         Button logoutB = new Button("Logout",
                 e -> UI.getCurrent().navigate(""));
+        logoutB.setWidth("120px");
 
         addToNavbar(submitPage);
-        addToNavbar(logoutB);
         addToNavbar(header);
+
+        addToNavbar(logoutB);
     }
     //This is the Left Side Bar
     private void createDrawer() {
