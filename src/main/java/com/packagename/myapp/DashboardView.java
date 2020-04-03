@@ -1,6 +1,9 @@
 package com.packagename.myapp;
 
 
+import com.vaadin.flow.component.UI;
+import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.html.H1;
 import com.vaadin.flow.component.html.Label;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
@@ -28,7 +31,18 @@ public class DashboardView extends VerticalLayout {
 
 
         H1 logo = new H1("This is a Blank Page on the rightside of the MainPage");
-        add(logo);
+        
+        //Button to go to the reviewer page
+        Button reviewer = new Button("To reviewer page",
+        		e -> UI.getCurrent().navigate("reviewer"));
+        
+        reviewer.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
+        
+        add(logo,reviewer);
+        
+        
+      
+        
     }
 
 }
