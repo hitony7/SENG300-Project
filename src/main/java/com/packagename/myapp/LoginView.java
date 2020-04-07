@@ -11,6 +11,7 @@ import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.server.PWA;
 
+
 /**
  * The main view contains a button and a click listener.
  */
@@ -19,15 +20,17 @@ import com.vaadin.flow.server.PWA;
 @CssImport("./styles/shared-styles.css")
 @CssImport(value = "./styles/vaadin-text-field-styles.css", themeFor = "vaadin-text-field")
 public class LoginView extends VerticalLayout  {
+    JsonReader jsonReader = new JsonReader();
 
     public LoginView() {
         // Use TextField for standard text input
         TextField textField = new TextField("Username");
         TextField textField2 = new TextField("Password");
         // Button click listeners can be defined as lambda expressions
+
         GreetService greetService = new GreetService();
         Button button = new Button("Say hello my dudes",
-                e -> Notification.show(greetService.greet(textField.getValue())));
+                e -> jsonReader.newUser(textField.getValue(),textField2.getValue(),"admin"));
 
         Button newpage = new Button("Click this to go to main page (This is after login)",
                 e -> UI.getCurrent().navigate("dashboard"));
