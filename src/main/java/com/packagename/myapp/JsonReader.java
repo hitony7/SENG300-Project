@@ -23,9 +23,32 @@ public class JsonReader {
         //nested
         JSONObject user = new JSONObject();
         user.put("user",employeeDetails );
+        //get orignal list
+        userList= readOLD("users.json");
 
         userList.add(user);
         write("users.json", userList);
+    }
+    public JSONArray readOLD(String filename){
+        //JSON parser object to parse read file
+        JSONParser jsonParser = new JSONParser();
+
+        try (FileReader reader = new FileReader(filename))
+        {
+            //Read JSON file
+            Object obj = jsonParser.parse(reader);
+
+            JSONArray employeeList = (JSONArray) obj;
+            System.out.println(employeeList);
+            return employeeList;
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return userList;
     }
 
     public void getUsername(String filename){
@@ -64,7 +87,7 @@ public class JsonReader {
 
 
         private void write(String filename, JSONArray userList){
-        try (FileWriter file = new FileWriter(filename)) {
+        try (FileWriter file = new FileWriter(filename,false)) {
 
             file.write(userList.toJSONString());
             file.flush();
