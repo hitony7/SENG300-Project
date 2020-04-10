@@ -26,20 +26,16 @@ public class AdminPage extends VerticalLayout {
 		//Button to allow the administrator to edit users
 		Button manageUser = new Button("User Management", 
 				e -> UI.getCurrent().navigate("manageUser"));
-		
-		//Administrator settings (The page looked so bland.)
-		Button settings = new Button("Administrator Settings");
 				
 		//Go back to dashboard
 		Button back = new Button("Back",
 				e -> UI.getCurrent().navigate(""));
 		
 		manageUser.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
-		settings.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
 		back.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
 		
 	
-		add(welcomeText,manageUser,settings,back);
+		add(welcomeText,manageUser,back);
 		
 		
 	}
