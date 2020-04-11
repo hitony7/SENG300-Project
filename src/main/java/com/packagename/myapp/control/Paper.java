@@ -2,11 +2,18 @@ package com.packagename.myapp.control;
 
 import org.json.simple.JSONObject;
 
+/**
+ * Model object representing the tuples of the Paper relation in RM and paper.json
+ * 
+ * @author SeanP1225
+ *
+ */
 public class Paper {
-	private final int paperID;
+	
+	private int paperID;
 	private String title;
-	private final int researcherID;
-	private final String journal;
+	private int researcherID;
+	private String journal;
 	// Following instance variabels are wrapped in Integer to allow null values.
 	private Integer editorID;
 	private Integer collectionYear;
@@ -18,13 +25,16 @@ public class Paper {
 	 * @param obj
 	 */
 	public Paper(JSONObject obj) {
-		this((int) obj.get("PaperID"), 
+		this(((Long) obj.get("PaperID")).intValue(), 
 				(String) obj.get("Title"), 
-				(int) obj.get("ResearcherID"), 
+				((Long) obj.get("ResearcherID")).intValue(), 
 				(String) obj.get("Journal"), 
-				new Integer((int) obj.get("EditorID")), 
-				new Integer((int) obj.get("CollectionYear")), 
-				new Integer((int) obj.get("CollectionHalfYear")));
+				obj.get("EditorID") == null ? null
+						: new Integer(((Long) obj.get("EditorID")).intValue()),
+				obj.get("CollectionYear") == null ? null
+						: new Integer(((Long) obj.get("CollectionYear")).intValue()),
+				obj.get("CollectionHalfYear") == null ? null
+						: new Integer(((Long) obj.get("CollectionHalfYear")).intValue()));
 	}
 	
 	public Paper(int paperID, String title, int researcherID, String journal) {
@@ -53,6 +63,30 @@ public class Paper {
 		this.collectionHalfYear = copy.collectionHalfYear;
 	}
 
+	public int getPaperID() {
+		return paperID;
+	}
+	
+	protected void setPaperID(int paperID) {
+		this.paperID = paperID;
+	}
+
+	public int getResearcherID() {
+		return researcherID;
+	}
+	
+	protected void setResearcherID(int researcherID) {
+		this.researcherID = researcherID;
+	}
+
+	public String getJournal() {
+		return journal;
+	}
+	
+	protected void setJournal(String journal) {
+		this.journal = journal;
+	}
+
 	public String getTitle() {
 		return title;
 	}
@@ -61,8 +95,8 @@ public class Paper {
 		this.title = title;
 	}
 
-	public int getEditorID() {
-		return editorID.intValue();
+	public Integer getEditorID() {
+		return editorID;
 	}
 	
 	public void setEditorID(Integer editorID) {
@@ -73,32 +107,20 @@ public class Paper {
 		setEditorID(new Integer(editorID));
 	}
 
-	public int getCollectionYear() {
-		return collectionYear.intValue();
+	public Integer getCollectionYear() {
+		return collectionYear;
 	}
 
 	public void setCollectionYear(int collectionYear) {
 		this.collectionYear = new Integer(collectionYear);
 	}
 
-	public int getCollectionHalfYear() {
-		return collectionHalfYear.intValue();
+	public Integer getCollectionHalfYear() {
+		return collectionHalfYear;
 	}
 
 	public void setCollectionHalfYear(int collectionHalfYear) {
 		this.collectionHalfYear = new Integer(collectionHalfYear);
-	}
-
-	public int getPaperID() {
-		return paperID;
-	}
-
-	public int getResearcherID() {
-		return researcherID;
-	}
-
-	public String getJournal() {
-		return journal;
 	}
 	
 	/**

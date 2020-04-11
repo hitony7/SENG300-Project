@@ -1,9 +1,11 @@
 package com.packagename.myapp;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
 import org.json.simple.JSONArray;
@@ -12,9 +14,12 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
+import com.packagename.myapp.control.NewPaperSubmission;
 import com.packagename.myapp.control.Paper;
 import com.packagename.myapp.control.Submission;
+import com.vaadin.flow.component.notification.Notification;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 
@@ -93,7 +98,7 @@ public class JsonReader {
         //return string
     }
     
-    private static JSONObject readData(String filename) {
+    private static JSONObject readData(String filename) throws IOException {
         //JSON parser object to parse read file
         JSONParser jsonParser = new JSONParser();
     	
@@ -101,19 +106,17 @@ public class JsonReader {
             //Read JSON file
             return (JSONObject) jsonParser.parse(reader);
             
-    	} catch (Exception e) {
+    	} catch (ParseException e) {
     		e.printStackTrace();
     		return null;
     	}
     }
     
-    private static void writeData(String filename, JSONObject obj) {
-    	try (FileWriter writer = new FileWriter(filename, false)) {
-    		obj.writeJSONString(writer);
-    		
-    	} catch (IOException e) {
-    		e.printStackTrace();
-    	}
+    private static void writeData(String filename, JSONObject obj) throws IOException {
+    	FileWriter writer = new FileWriter(filename, false);
+		obj.writeJSONString(writer);
+		writer.flush();
+		writer.close();
     }
 
     private void write(String filename, JSONArray userList){
@@ -127,38 +130,96 @@ public class JsonReader {
         }
     }
     
-    public static HashMap<Integer,Paper> getPaperData() {
+    public static HashMap<Integer,Paper> getPaperData() throws IOException {
     	HashMap<String,JSONObject> jsonData = readData("data\\paper.json");
     	HashMap<Integer,Paper> paperData = new HashMap<>();
     	
-		for(Map.Entry<String, JSONObject> pair : jsonData.entrySet()) {
-    		paperData.put(new Integer(pair.getKey()), new Paper(pair.getValue()));
+		for (Map.Entry<String, JSONObject> entry : jsonData.entrySet()) {
+			JSONObject jsonPaper = entry.getValue();
+
+			System.out.println(((Long) jsonPaper.get("PaperID")).intValue());
+    		paperData.put(new Integer(entry.getKey()), new Paper(jsonPaper));
     	}
     	
     	return paperData;
     }
     
-    public static HashMap<Pair<Integer,String>,Paper> getSubmissionData() {
-    	HashMap<String,JSONObject> jsonData = readData("data\\submission.json");
-    	HashMap<Pair<Integer,String>,Paper> submissionData = new HashMap<>();
+    private static void setPaperData(HashMap<Integer,Paper> paperData) throws IOException {
+    	JSONObject jsonData = new JSONObject();
     	
-    	for(Map.Entry<String, JSONObject> pair : jsonData.entrySet()) {
-    		String[] splitKey = pair.getKey().split("_");
+    	for (Map.Entry<Integer, Paper> entry : paperData.entrySet()) {
+    		Paper paper = entry.getValue();
+    		
+    		jsonData.put(entry.getKey(), paper.getJSONObject());
+    	}
+    	
+    	writeData("data\\paper.json", jsonData);
+    }
+    
+    public static HashMap<Pair<Integer,String>,Submission> getSubmissionData() throws IOException {
+    	HashMap<String,JSONObject> jsonData = readData("data\\submission.json");
+    	HashMap<Pair<Integer,String>,Submission> submissionData = new HashMap<>();
+    	
+    	for (Map.Entry<String, JSONObject> entry : jsonData.entrySet()) {
+    		String[] splitKey = entry.getKey().split("_");
     		Integer paperID = new Integer(splitKey[0]);
     		String version = splitKey[1];
-    		submissionData.put(new ImmutablePair<Integer, String>(paperID, version), new Paper(pair.getValue()));
+    		JSONObject jsonSubmission = entry.getValue();
+    		
+    		submissionData.put(new ImmutablePair<Integer, String>(paperID, version), new Submission(jsonSubmission));
     	}
     	
     	return submissionData;
     }
     
-    public static void newPaperSubmission(HashMap<String,Paper> paperData, 
-    		HashMap<Pair<Integer,String>,Paper> submissionData, int ResearcherID, String journal, 
-    		String editorEmail, String title, String message, String reviewerNominations) {
+    private static void setSubmissionData(HashMap<Pair<Integer,String>,Submission> submissionData) throws IOException {
+    	JSONObject jsonData = new JSONObject();
     	
+    	for (Map.Entry<Pair<Integer,String>,Submission> entry : submissionData.entrySet()) {
+    		Pair<Integer,String> pair = entry.getKey();
+    		String primaryKey = pair.getLeft() + "_" + pair.getRight();
+    		Submission submission = entry.getValue();
+    		
+    		jsonData.put(primaryKey, submission.getJSONObject());
+    	}
+    	
+    	writeData("data\\submission.json", jsonData);
     }
     
-    public static int getNumberOfPapers(HashMap<String,Paper> paperData) {
+    public static void newResearcherSubmission(HashMap<Integer,Paper> paperData, 
+    		HashMap<Pair<Integer,String>,Submission> submissionData,
+    		NewPaperSubmission formData) throws IOException {
+
+	    // create new file in data directory sorted by journal name
+    	String journalPath = "data\\journals\\" + formData.getJournal() + "\\";
+    	File journalDir = new File(journalPath);
+    	
+    	if (!journalDir.exists()) {
+    		journalDir.mkdir();
+    	}
+    	
+    	String filePath = journalPath + formData.getFilename();
+    	formData.setFilePath(filePath);
+    	
+	    File f = new File(journalPath + formData.getFilename());
+	    f.createNewFile();
+
+	    // copy uploaded content to f
+	    FileUtils.copyInputStreamToFile(formData.getInputStream(), f);
+	    Notification.show("File upload successful: " + f.getName());
+	    
+	    // add to data maps and write to data files
+	    Paper paper = formData.getPaper();
+	    Submission submission = formData.getSubmission();
+	    
+	    paperData.put(paper.getPaperID(), paper);
+	    submissionData.put(Pair.of(new Integer(submission.getPaperID()), submission.getVersion()), submission);
+	    
+	    setPaperData(paperData);
+	    setSubmissionData(submissionData);
+    }
+    
+    public static int getNumberOfPapers(HashMap<Integer,Paper> paperData) {
     	return paperData.size();
     }
 }
