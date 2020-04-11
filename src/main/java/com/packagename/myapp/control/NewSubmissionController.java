@@ -33,8 +33,8 @@ public class NewSubmissionController {
 	
 	// temporary, to be replaced by actual User objects (corresponding to User table in RM)
 	private String editorEmail;
-	// private User researcher
-	// private User editor
+	private User researcher;
+	private User editor;
 	
 
 	public NewSubmissionController() {
