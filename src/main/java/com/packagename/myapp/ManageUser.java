@@ -6,6 +6,8 @@ import java.io.IOException;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 
+import com.packagename.myapp.model.JsonModel;
+import com.vaadin.flow.component.ClickEvent;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
@@ -26,6 +28,7 @@ import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.component.orderedlayout.FlexComponent.Alignment;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
+
 
 import java.io.FileReader;
 import java.util.Iterator;
@@ -132,9 +135,11 @@ public class ManageUser extends VerticalLayout {
 				e -> UI.getCurrent().navigate("admin"));
 
 		//Button to add a user.
-		Button add = new Button("Add User",
-				e -> grab(userName.getValue(), password.getValue()));
-		System.out.println(userType.getValue());
+		Button add = new Button("Add User", e -> {
+			System.out.println(userType.getValue());
+		});
+
+
 
 		//Button to remove a user.
 		Button remove = new Button("Remove Selected User(s)",
@@ -178,7 +183,7 @@ public class ManageUser extends VerticalLayout {
 			invalid.add(new Label("Please fill out all of the fields"));
 			invalid.open();
 		}else{
-			JsonReader a = new JsonReader();
+			JsonModel a = new JsonModel();
 			a.newUser(newUser,  newPass,  "");
 
 			Dialog done = new Dialog();
@@ -193,7 +198,7 @@ public class ManageUser extends VerticalLayout {
 
 		JSONArray old = new JSONArray();
 
-		JsonReader b = new JsonReader();
+		JsonModel b = new JsonModel();
 		old = b.readOLD("users.json");
 
 		old.forEach(e2  ->  graball((JSONObject) e2));
