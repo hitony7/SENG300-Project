@@ -1,4 +1,4 @@
-package com.packagename.myapp.control;
+package com.packagename.myapp.model;
 
 import java.text.DateFormat;
 import java.text.ParsePosition;
@@ -69,6 +69,10 @@ public class Submission {
 				SubStatus.valueOf((String) obj.get("Status")));
 	}
 	
+	public Submission(int paperID) {
+		this(paperID, null, null, null, null, null);
+	}
+	
 	public Submission(int paperID, String version, Date submissionDate, String filePath, 
 			String researcherMessage, SubStatus status) {
 		this(paperID, version, submissionDate, null, null, null, filePath, researcherMessage, null, status);
@@ -89,12 +93,23 @@ public class Submission {
 		setStatus(status);
 	}
 
+	public Submission(Submission copy) {
+		this.paperID = copy.paperID;
+		this.version = new String(copy.version);
+		this.submissionDate = (Date) copy.submissionDate.clone();
+		this.decisionDate = (Date) copy.decisionDate.clone();
+		this.resubmissionDeadline = (Date) copy.decisionDate.clone();
+		this.filePath = new String(copy.filePath);
+		this.researcherMessage = new String(copy.researcherMessage);
+		this.editorComment = new String(copy.editorComment);
+		this.status = copy.status;
+	}
 	
 	public int getPaperID() {
 		return paperID;
 	}
 	
-	protected void setPaperID(int paperID) {
+	public void setPaperID(int paperID) {
 		this.paperID = paperID;
 	}
 	
@@ -102,7 +117,7 @@ public class Submission {
 		return version;
 	}
 	
-	protected void setVersion(String version) {
+	public void setVersion(String version) {
 		this.version = version;
 	}
 	
@@ -110,7 +125,7 @@ public class Submission {
 		return submissionDate;
 	}
 	
-	protected void setSubmissionDate(Date submissionDate) {
+	public void setSubmissionDate(Date submissionDate) {
 		this.submissionDate = submissionDate;
 	}
 
@@ -150,7 +165,7 @@ public class Submission {
 		return researcherMessage;
 	}
 	
-	protected void setResearcherMessage(String researcherMessage) {
+	public void setResearcherMessage(String researcherMessage) {
 		this.researcherMessage = researcherMessage;
 	}
 	

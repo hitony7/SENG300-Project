@@ -1,4 +1,4 @@
-package com.packagename.myapp.control;
+package com.packagename.myapp.model;
 
 import org.json.simple.JSONObject;
 
@@ -37,6 +37,10 @@ public class Paper {
 						: new Integer(((Long) obj.get("CollectionHalfYear")).intValue()));
 	}
 	
+	public Paper(int paperID, int researcherID) {
+		this(paperID, null, researcherID, null);
+	}
+	
 	public Paper(int paperID, String title, int researcherID, String journal) {
 		this(paperID, title, researcherID, journal, null, null, null);
 	}
@@ -55,19 +59,19 @@ public class Paper {
 
 	public Paper(Paper copy) {
 		this.paperID = copy.paperID;
-		this.title = copy.title;
+		this.title = new String(copy.title);
 		this.researcherID = copy.researcherID;
-		this.journal = copy.journal;
-		this.editorID = copy.editorID;
-		this.collectionYear = copy.collectionYear;
-		this.collectionHalfYear = copy.collectionHalfYear;
+		this.journal = new String(copy.journal);
+		this.editorID = new Integer(copy.editorID);
+		this.collectionYear = new Integer(copy.collectionYear);
+		this.collectionHalfYear = new Integer(copy.collectionHalfYear);
 	}
 
 	public int getPaperID() {
 		return paperID;
 	}
 	
-	protected void setPaperID(int paperID) {
+	public void setPaperID(int paperID) {
 		this.paperID = paperID;
 	}
 
@@ -75,7 +79,7 @@ public class Paper {
 		return researcherID;
 	}
 	
-	protected void setResearcherID(int researcherID) {
+	public void setResearcherID(int researcherID) {
 		this.researcherID = researcherID;
 	}
 
@@ -83,7 +87,7 @@ public class Paper {
 		return journal;
 	}
 	
-	protected void setJournal(String journal) {
+	public void setJournal(String journal) {
 		this.journal = journal;
 	}
 

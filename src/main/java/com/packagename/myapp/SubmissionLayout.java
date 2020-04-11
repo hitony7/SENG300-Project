@@ -7,9 +7,10 @@ import java.util.List;
 
 import org.apache.commons.lang3.tuple.Pair;
 
-import com.packagename.myapp.control.NewPaperSubmission;
-import com.packagename.myapp.control.Paper;
-import com.packagename.myapp.control.Submission;
+import com.packagename.myapp.control.NewSubmissionController;
+import com.packagename.myapp.model.JsonModel;
+import com.packagename.myapp.model.Paper;
+import com.packagename.myapp.model.Submission;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.formlayout.FormLayout;
@@ -31,6 +32,7 @@ public class SubmissionLayout extends VerticalLayout{
 	
 	private HashMap<Integer, Paper> paperData;
 	private HashMap<Pair<Integer, String>, Submission> submissionData;
+	NewSubmissionController paperSubmission;
 	
 	private TextField titleField = new TextField();
 	private TextField versionField = new TextField();
@@ -59,25 +61,30 @@ public class SubmissionLayout extends VerticalLayout{
 		FormLayout form = new FormLayout();
 		setMaxWidth("50em");
 		
-		Binder<NewPaperSubmission> binder = new Binder(NewPaperSubmission.class);
+		Binder<NewSubmissionController> binder = new Binder(NewSubmissionController.class);
+		//Binder<Paper> paperBinder = new Binder(Paper.class);
+		//Binder<Submission> submissionBinder = new Binder(Submission.class);
 		try {
-			paperData = JsonReader.getPaperData();
-			submissionData = JsonReader.getSubmissionData();
+			paperData = JsonModel.getPaperData();
+			submissionData = JsonModel.getSubmissionData();
 		} catch (IOException e1) {
 			e1.printStackTrace();
 			paperData = new HashMap<>();
 			submissionData = new HashMap<>();
 		}
 		
-		int paperID = JsonReader.getNumberOfPapers(paperData);
+		int paperID = NewSubmissionController.getNumberOfPapers(paperData);
 		// placeholder value
 		int researcherID = 15;
-		NewPaperSubmission paperSubmission = new NewPaperSubmission(paperID, researcherID);
+		paperSubmission = new NewSubmissionController(paperID, researcherID);
 		
-		// title field		
+		//Paper paper = new Paper(paperID, researcherID);
+		//Submission submission = new Submission(paperID);
+		
+		// title field
 		binder.forField(titleField)
 				.asRequired("Title required.")
-				.bind(NewPaperSubmission::getTitle, NewPaperSubmission::setTitle);
+				.bind(NewSubmissionController::getTitle, NewSubmissionController::setTitle);
 		
 		
 		// version field
@@ -98,7 +105,7 @@ public class SubmissionLayout extends VerticalLayout{
 		binder.forField(journalSelect)
 				.asRequired("Journal must be selected.")
 				.withConverter(TempJournal::getName, null)
-				.bind(NewPaperSubmission::getJournal,NewPaperSubmission::setJournal);
+				.bind(NewSubmissionController::getJournal, NewSubmissionController::setJournal);
 
 		// optional field for editor email
 		editorEmailField.setClearButtonVisible(true);
@@ -111,7 +118,7 @@ public class SubmissionLayout extends VerticalLayout{
 						            + "\\." + "[a-zA-Z0-9-]{2,}" // tld
 						            + "$)?",
 			            true))
-				.bind(NewPaperSubmission::getEditorEmail, NewPaperSubmission::setEditorEmail);
+				.bind(NewSubmissionController::getEditorEmail, NewSubmissionController::setEditorEmail);
 		
 		
 		// optional comment/message to editor
@@ -120,8 +127,8 @@ public class SubmissionLayout extends VerticalLayout{
 		messageField.setHeight("7em");
 		
 		binder.forField(messageField)
-				.withValidator(new StringLengthValidator("Maximum 400 characters.", 0, 400))
-				.bind(NewPaperSubmission::getResearcherMessage, NewPaperSubmission::setResearcherMessage);
+				.withValidator(new StringLengthValidator("Maximum 1000 characters.", 0, 1000))
+				.bind(NewSubmissionController::getResearcherMessage, NewSubmissionController::setResearcherMessage);
 		
 		
 		// optional field for reviewer email
@@ -142,7 +149,7 @@ public class SubmissionLayout extends VerticalLayout{
 						System.out.println("Editor email: " + paperSubmission.getEditorEmail());
 						
 					    // save to data
-						JsonReader.newResearcherSubmission(paperData, submissionData, paperSubmission);
+						paperSubmission.newResearcherSubmission(paperData, submissionData);
 					    
 						Notification.show("Submission made.");
 						

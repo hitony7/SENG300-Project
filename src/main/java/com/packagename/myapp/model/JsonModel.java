@@ -1,11 +1,10 @@
-package com.packagename.myapp;
+package com.packagename.myapp.model;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
 import org.json.simple.JSONArray;
@@ -14,17 +13,11 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
-import com.packagename.myapp.control.NewPaperSubmission;
-import com.packagename.myapp.control.Paper;
-import com.packagename.myapp.control.Submission;
-import com.vaadin.flow.component.notification.Notification;
-
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 
 
-public class JsonReader {
+public class JsonModel {
     JSONArray userList = new JSONArray();
 
     public void newUser(String username, String password, String usertype) {
@@ -98,20 +91,6 @@ public class JsonReader {
         //return string
     }
     
-    private static JSONObject readData(String filename) throws IOException {
-        //JSON parser object to parse read file
-        JSONParser jsonParser = new JSONParser();
-    	
-    	try (FileReader reader = new FileReader(filename)) {
-            //Read JSON file
-            return (JSONObject) jsonParser.parse(reader);
-            
-    	} catch (ParseException e) {
-    		e.printStackTrace();
-    		return null;
-    	}
-    }
-    
     private static void writeData(String filename, JSONObject obj) throws IOException {
     	FileWriter writer = new FileWriter(filename, false);
 		obj.writeJSONString(writer);
@@ -130,6 +109,20 @@ public class JsonReader {
         }
     }
     
+    private static JSONObject readData(String filename) throws IOException {
+        //JSON parser object to parse read file
+        JSONParser jsonParser = new JSONParser();
+    	
+    	try (FileReader reader = new FileReader(filename)) {
+            //Read JSON file
+            return (JSONObject) jsonParser.parse(reader);
+            
+    	} catch (ParseException e) {
+    		e.printStackTrace();
+    		return null;
+    	}
+    }
+    
     public static HashMap<Integer,Paper> getPaperData() throws IOException {
     	HashMap<String,JSONObject> jsonData = readData("data\\paper.json");
     	HashMap<Integer,Paper> paperData = new HashMap<>();
@@ -144,7 +137,7 @@ public class JsonReader {
     	return paperData;
     }
     
-    private static void setPaperData(HashMap<Integer,Paper> paperData) throws IOException {
+    public static void setPaperData(HashMap<Integer,Paper> paperData) throws IOException {
     	JSONObject jsonData = new JSONObject();
     	
     	for (Map.Entry<Integer, Paper> entry : paperData.entrySet()) {
@@ -172,7 +165,7 @@ public class JsonReader {
     	return submissionData;
     }
     
-    private static void setSubmissionData(HashMap<Pair<Integer,String>,Submission> submissionData) throws IOException {
+    public static void setSubmissionData(HashMap<Pair<Integer,String>,Submission> submissionData) throws IOException {
     	JSONObject jsonData = new JSONObject();
     	
     	for (Map.Entry<Pair<Integer,String>,Submission> entry : submissionData.entrySet()) {
@@ -184,42 +177,5 @@ public class JsonReader {
     	}
     	
     	writeData("data\\submission.json", jsonData);
-    }
-    
-    public static void newResearcherSubmission(HashMap<Integer,Paper> paperData, 
-    		HashMap<Pair<Integer,String>,Submission> submissionData,
-    		NewPaperSubmission formData) throws IOException {
-
-	    // create new file in data directory sorted by journal name
-    	String journalPath = "data\\journals\\" + formData.getJournal() + "\\";
-    	File journalDir = new File(journalPath);
-    	
-    	if (!journalDir.exists()) {
-    		journalDir.mkdir();
-    	}
-    	
-    	String filePath = journalPath + formData.getFilename();
-    	formData.setFilePath(filePath);
-    	
-	    File f = new File(journalPath + formData.getFilename());
-	    f.createNewFile();
-
-	    // copy uploaded content to f
-	    FileUtils.copyInputStreamToFile(formData.getInputStream(), f);
-	    Notification.show("File upload successful: " + f.getName());
-	    
-	    // add to data maps and write to data files
-	    Paper paper = formData.getPaper();
-	    Submission submission = formData.getSubmission();
-	    
-	    paperData.put(paper.getPaperID(), paper);
-	    submissionData.put(Pair.of(new Integer(submission.getPaperID()), submission.getVersion()), submission);
-	    
-	    setPaperData(paperData);
-	    setSubmissionData(submissionData);
-    }
-    
-    public static int getNumberOfPapers(HashMap<Integer,Paper> paperData) {
-    	return paperData.size();
     }
 }
