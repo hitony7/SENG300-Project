@@ -19,23 +19,6 @@ public class Paper {
 	private Integer collectionYear;
 	private Integer collectionHalfYear;
 	
-	/**
-	 * Constructs from given JSONObject.
-	 * 
-	 * @param obj
-	 */
-	public Paper(JSONObject obj) {
-		this(((Long) obj.get("PaperID")).intValue(), 
-				(String) obj.get("Title"), 
-				((Long) obj.get("ResearcherID")).intValue(), 
-				(String) obj.get("Journal"), 
-				obj.get("EditorID") == null ? null
-						: new Integer(((Long) obj.get("EditorID")).intValue()),
-				obj.get("CollectionYear") == null ? null
-						: new Integer(((Long) obj.get("CollectionYear")).intValue()),
-				obj.get("CollectionHalfYear") == null ? null
-						: new Integer(((Long) obj.get("CollectionHalfYear")).intValue()));
-	}
 	
 	public Paper(int paperID, int researcherID) {
 		this(paperID, null, researcherID, null);
@@ -50,21 +33,31 @@ public class Paper {
 		this.paperID = paperID;
 		setTitle(title);
 		this.researcherID = researcherID;
-		this.journal = journal;
-		this.editorID = editorID;
-	  	this.collectionYear = collectionYear;
-		this.collectionHalfYear = collectionHalfYear;
+		setJournal(journal);
+		setEditorID(editorID);
+		setCollectionYear(collectionYear);
+		setCollectionHalfYear(collectionHalfYear);
 		
 	}
 
 	public Paper(Paper copy) {
-		this.paperID = copy.paperID;
-		this.title = new String(copy.title);
-		this.researcherID = copy.researcherID;
-		this.journal = new String(copy.journal);
-		this.editorID = new Integer(copy.editorID);
-		this.collectionYear = new Integer(copy.collectionYear);
-		this.collectionHalfYear = new Integer(copy.collectionHalfYear);
+		this(copy.paperID, copy.title, copy.researcherID, copy.journal, copy.editorID,
+				copy.collectionYear, copy.collectionHalfYear);
+	}
+	
+	/**
+	 * Constructs from given JSONObject.
+	 * 
+	 * @param obj
+	 */
+	public Paper(JSONObject obj) {
+		this(((Long) obj.get("PaperID")).intValue(), 
+				(String) obj.get("Title"), 
+				((Long) obj.get("ResearcherID")).intValue(), 
+				(String) obj.get("Journal"), 
+				((Long) obj.get("EditorID")).intValue(),
+				((Long) obj.get("CollectionYear")).intValue(),
+				((Long) obj.get("CollectionHalfYear")).intValue());
 	}
 
 	public int getPaperID() {
@@ -73,6 +66,14 @@ public class Paper {
 	
 	public void setPaperID(int paperID) {
 		this.paperID = paperID;
+	}
+
+	public String getTitle() {
+		return title == null ? null : new String(title);
+	}
+
+	public void setTitle(String title) {
+		this.title = title == null ? null : new String(title);
 	}
 
 	public int getResearcherID() {
@@ -84,35 +85,31 @@ public class Paper {
 	}
 
 	public String getJournal() {
-		return journal;
+		return journal == null ? null : new String(journal);
 	}
 	
 	public void setJournal(String journal) {
-		this.journal = journal;
-	}
-
-	public String getTitle() {
-		return title;
-	}
-
-	public void setTitle(String title) {
-		this.title = title;
+		this.journal = journal == null ? null : new String(journal);
 	}
 
 	public Integer getEditorID() {
-		return editorID;
+		return editorID == null ? null : new Integer(editorID);
 	}
 	
 	public void setEditorID(Integer editorID) {
-		this.editorID = editorID;
+		this.editorID = editorID == null ? null : new Integer(editorID);
 	}
 
 	public void setEditorID(int editorID) {
-		setEditorID(new Integer(editorID));
+		this.editorID = new Integer(editorID);
 	}
 
 	public Integer getCollectionYear() {
-		return collectionYear;
+		return collectionYear == null ? null : new Integer(collectionYear);
+	}
+
+	public void setCollectionYear(Integer collectionYear) {
+		this.collectionYear = collectionYear == null ? null : new Integer(collectionYear);
 	}
 
 	public void setCollectionYear(int collectionYear) {
@@ -120,7 +117,11 @@ public class Paper {
 	}
 
 	public Integer getCollectionHalfYear() {
-		return collectionHalfYear;
+		return collectionYear == null ? null : new Integer(collectionHalfYear);
+	}
+
+	public void setCollectionHalfYear(Integer collectionHalfYear) {
+		this.collectionHalfYear = collectionHalfYear == null ? null : new Integer(collectionHalfYear);
 	}
 
 	public void setCollectionHalfYear(int collectionHalfYear) {
@@ -132,7 +133,7 @@ public class Paper {
 	 * 
 	 * @return JSONObject representation
 	 */
-	public JSONObject getJSONObject() {
+	public JSONObject jsonObject() {
 		JSONObject o = new JSONObject();
 		
 		o.put("PaperID", getPaperID());
