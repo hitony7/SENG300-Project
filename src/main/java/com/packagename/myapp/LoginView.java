@@ -7,6 +7,7 @@ import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.dependency.CssImport;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
+import com.vaadin.flow.component.textfield.PasswordField;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.router.Route;
 
@@ -24,7 +25,10 @@ public class LoginView extends VerticalLayout  {
     public LoginView() {
         // Use TextField for standard text input
         TextField textField = new TextField("Username");
-        TextField textField2 = new TextField("Password");
+        PasswordField passwordField = new PasswordField("Password");
+        passwordField.setLabel("Password");
+        passwordField.setPlaceholder("Enter password");
+        passwordField.setValue("secret1");
         // Button click listeners can be defined as lambda expressions
 
         GreetService greetService = new GreetService();
@@ -49,7 +53,7 @@ public class LoginView extends VerticalLayout  {
         // Use custom CSS classes to apply styling. This is defined in shared-styles.css.
         addClassName("centered-content");
 
-        add(textField,textField2, button, newpage, adminPage);
+        add(textField, passwordField, button, newpage, adminPage);
     }
 
 
