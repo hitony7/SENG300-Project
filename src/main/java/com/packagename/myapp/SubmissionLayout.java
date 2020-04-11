@@ -84,6 +84,7 @@ public class SubmissionLayout extends VerticalLayout{
 		// title field
 		binder.forField(titleField)
 				.asRequired("Title required.")
+				.withValidator(new StringLengthValidator("Maximum 50 character.", 0, 50))
 				.bind(NewSubmissionController::getTitle, NewSubmissionController::setTitle);
 		
 		

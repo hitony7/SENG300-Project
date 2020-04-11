@@ -13,6 +13,7 @@ import com.packagename.myapp.model.JsonModel;
 import com.packagename.myapp.model.Paper;
 import com.packagename.myapp.model.Submission;
 import com.packagename.myapp.model.Submission.SubStatus;
+import com.packagename.myapp.model.User;
 import com.vaadin.flow.component.notification.Notification;
 
 /**
@@ -32,9 +33,9 @@ public class NewSubmissionController {
 	private String filename;
 	
 	// temporary, to be replaced by actual User objects (corresponding to User table in RM)
-	private String editorEmail;
-	// private User researcher
-	// private User editor
+	//private String editorEmail;
+	private User researcher;
+	private User editor;
 	
 
 	public NewSubmissionController() {
@@ -56,11 +57,11 @@ public class NewSubmissionController {
 	}
 	
 	public String getEditorEmail() {
-		return editorEmail;
+		return editor == null ? null : editor.getEmail();
 	}
 	
 	public void setEditorEmail(String editorEmail) {
-		this.editorEmail = editorEmail;
+		//this.editorEmail = editorEmail;
 		//this.paper.setEditorID(editorID);
 	}
 
