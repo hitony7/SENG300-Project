@@ -1,5 +1,7 @@
 package com.packagename.myapp;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,6 +20,14 @@ import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 
+import java.io.FileReader;
+import java.util.Iterator;
+import java.util.Map;
+
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 
 @PageTitle("Reviewer | Vaadin CRM")
 //Child of MainLayout Right side of Main Page
@@ -35,9 +45,25 @@ public class ReviewerPage extends VerticalLayout {
 		
 		sendEditor.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
 		
-		
+		JSONParser jsonParser = new JSONParser();
+
 		//Temporary list for reviewer submissions
 		ArrayList<ReviewerSubmissions> submissionList = new ArrayList<>();
+
+		//TODO make sure the file name matches
+		try(FileReader reader = new FileReader("paper.json")){
+			Object obj = jsonParser.parse(reader);
+			JSONArray paperArray = (JSONArray) obj;
+
+			paperArray.forEach(emp -> parsePaperObject((JSONObject) emp));
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e){
+			e.printStackTrace();
+		} catch (ParseException e){
+			e.printStackTrace();
+		}
+
 		ReviewerSubmissions submission1 = new ReviewerSubmissions("submission1","xx-xx-xxxx");
 		ReviewerSubmissions submission2 = new ReviewerSubmissions("submission2","xx-xx-xxxx");
 		ReviewerSubmissions submission3 = new ReviewerSubmissions("submission3","xx-xx-xxxx");
@@ -92,5 +118,10 @@ public class ReviewerPage extends VerticalLayout {
 		
 		add(sendEditor,layout,back);
 	}
-	
+
+	private static void parsePaperObject(JSONObject papers){
+		//TODO make sure it grabs the right name
+		JSONObject paperObject = (JSONObject) papers.get("paperid");
+
+	}
 }

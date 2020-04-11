@@ -80,6 +80,7 @@ public class ManageUser extends VerticalLayout {
 			Users temp = new Users(data.get(i), data.get(i+1), data.get(i+2));
 			userList.add(temp);
 		}
+		data.clear();
 
 		//Create new grid
 		Grid<Users> userGrid = new Grid<>();
