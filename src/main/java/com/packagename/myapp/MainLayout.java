@@ -32,17 +32,25 @@ public class MainLayout extends AppLayout {
         header.setWidth("100%");   //SCALE TO WINDOW SIZE
         header.setDefaultVerticalComponentAlignment(FlexComponent.Alignment.CENTER);
         
+        //Button to go to the submit page
         Button submitPage = new Button("Create Submission",
         		e -> UI.getCurrent().navigate("submit"));
-        submitPage.setWidth("200px");
-
+        submitPage.setWidth("250px");
+        
+        //Button to go to the resubmit page
+        Button resubmitPage = new Button("Resubmit a Journal",
+        		e -> UI.getCurrent().navigate("resubmit"));
+        resubmitPage.setWidth("280px");
+        
+        
         //Button needs to be repositioned
         Button logoutB = new Button("Logout",
                 e -> UI.getCurrent().navigate(""));
         logoutB.setWidth("120px");
 
-        addToNavbar(submitPage);
         addToNavbar(header);
+        addToNavbar(submitPage);
+        addToNavbar(resubmitPage);
 
         addToNavbar(logoutB);
     }
