@@ -1,16 +1,16 @@
 package com.packagename.myapp;
 
-import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
-import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.tuple.Pair;
 
-import com.packagename.myapp.control.Paper;
+import com.packagename.myapp.control.NewSubmissionController;
+import com.packagename.myapp.model.JsonModel;
+import com.packagename.myapp.model.Paper;
+import com.packagename.myapp.model.Submission;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.formlayout.FormLayout;
@@ -24,10 +24,24 @@ import com.vaadin.flow.component.upload.Upload;
 import com.vaadin.flow.component.upload.receivers.MemoryBuffer;
 import com.vaadin.flow.data.binder.Binder;
 import com.vaadin.flow.data.binder.ValidationException;
+import com.vaadin.flow.data.binder.ValidationResult;
 import com.vaadin.flow.data.validator.RegexpValidator;
 import com.vaadin.flow.data.validator.StringLengthValidator;
 
 public class SubmissionLayout extends VerticalLayout{
+	
+	private HashMap<Integer, Paper> paperData;
+	private HashMap<Pair<Integer, String>, Submission> submissionData;
+	NewSubmissionController paperSubmission;
+	
+	private TextField titleField = new TextField();
+	private TextField versionField = new TextField();
+	private Select<TempJournal> journalSelect = new Select<>();
+	private TextField editorEmailField = new TextField();
+	private TextArea messageField = new TextArea("Message to Editor");
+	private EmailField reviewerEmailsField = new EmailField("Reviewer Email Nominations");
+	private MemoryBuffer memBuffer = new MemoryBuffer();
+	private Upload upload = new Upload(memBuffer);
 
 	private class TempJournal {
 		private String name;
@@ -47,10 +61,36 @@ public class SubmissionLayout extends VerticalLayout{
 		FormLayout form = new FormLayout();
 		setMaxWidth("50em");
 		
-		Binder<NewPaperSubmission> binder = new Binder(NewPaperSubmission.class);	
-		HashMap<Integer,Paper> paperData = JsonReader.getPaperData();
-		HashMap<Pair<Integer, String>, Paper> submissionData = JsonReader.getSubmissionData();
-		NewPaperSubmission paperSubmission = new NewPaperSubmission();
+		Binder<NewSubmissionController> binder = new Binder(NewSubmissionController.class);
+		//Binder<Paper> paperBinder = new Binder(Paper.class);
+		//Binder<Submission> submissionBinder = new Binder(Submission.class);
+		try {
+			paperData = JsonModel.getPaperData();
+			submissionData = JsonModel.getSubmissionData();
+		} catch (IOException e1) {
+			e1.printStackTrace();
+			paperData = new HashMap<>();
+			submissionData = new HashMap<>();
+		}
+		
+		int paperID = NewSubmissionController.getNumberOfPapers(paperData);
+		// placeholder value
+		int researcherID = 15;
+		paperSubmission = new NewSubmissionController(paperID, researcherID);
+		
+		//Paper paper = new Paper(paperID, researcherID);
+		//Submission submission = new Submission(paperID);
+		
+		// title field
+		binder.forField(titleField)
+				.asRequired("Title required.")
+				.bind(NewSubmissionController::getTitle, NewSubmissionController::setTitle);
+		
+		
+		// version field
+		
+		versionField.setEnabled(false);
+		versionField.setValue("0.0.0");
 		
 		// example journal list
 		List<TempJournal> journalList = Arrays.asList(
@@ -58,19 +98,16 @@ public class SubmissionLayout extends VerticalLayout{
 				new TempJournal("ExJournal2"),
 				new TempJournal("ExJournal3"));
 		
-		Select<TempJournal> journalSelect = new Select<>();
-		
 		// let names of journals be shown in selection
 		journalSelect.setItemLabelGenerator(TempJournal::getName);
 		journalSelect.setItems(journalList);
 
 		binder.forField(journalSelect)
-				.asRequired()
+				.asRequired("Journal must be selected.")
 				.withConverter(TempJournal::getName, null)
-				.bind(NewPaperSubmission::getJournal,NewPaperSubmission::setJournal);
+				.bind(NewSubmissionController::getJournal, NewSubmissionController::setJournal);
 
 		// optional field for editor email
-		TextField editorEmailField = new TextField();
 		editorEmailField.setClearButtonVisible(true);
 		editorEmailField.setPlaceholder("Optional");
 		
@@ -81,68 +118,45 @@ public class SubmissionLayout extends VerticalLayout{
 						            + "\\." + "[a-zA-Z0-9-]{2,}" // tld
 						            + "$)?",
 			            true))
-				.bind(NewPaperSubmission::getEditorEmail, NewPaperSubmission::setEditorEmail);
+				.bind(NewSubmissionController::getEditorEmail, NewSubmissionController::setEditorEmail);
+		
 		
 		// optional comment/message to editor
-		TextArea messageField = new TextArea("Message to Editor");
 		messageField.setMaxLength(500);
 		messageField.setMaxWidth("100%");
 		messageField.setHeight("7em");
 		
 		binder.forField(messageField)
-				.withValidator(new StringLengthValidator("Maximum 400 characters.", 0, 400))
-				.bind(NewPaperSubmission::getResearcherMessage, NewPaperSubmission::setResearcherMessage);
+				.withValidator(new StringLengthValidator("Maximum 1000 characters.", 0, 1000))
+				.bind(NewSubmissionController::getResearcherMessage, NewSubmissionController::setResearcherMessage);
 		
 		
 		// optional field for reviewer email
-		EmailField reviewerEmailsField = new EmailField("Reviewer Email Nominations");
 		reviewerEmailsField.setClearButtonVisible(true);
 		reviewerEmailsField.setErrorMessage("Please enter a valid email addresses separated by commas");
 		reviewerEmailsField.setRequiredIndicatorVisible(false);
 		
-		
-		// submission file upload
-		MemoryBuffer memBuffer = new MemoryBuffer();
-		Upload upload = new Upload(memBuffer);
-		/*upload.addFinishedListener(e -> {
-			
-		    // read the contents of the buffered file from inputStream
-		    try (InputStream inputStream = memBuffer.getInputStream()){
-			    // create new file in 'uploaded' directory
-			    File f = new File("data\\journals\\" +  memBuffer.getFileName());
-			    f.createNewFile();
-
-			    // copy uploaded content to f
-			    FileUtils.copyInputStreamToFile(inputStream, f);
-			    Notification.show("file created: " + f.getAbsolutePath());
-			    
-		    } catch(IOException ex) {
-		    	Notification.show("bad io: " + ex.getMessage());
-		    }
-		    
-		});*/
-		
+		binder.withValidator(value -> memBuffer.getFileName() != "", "File required.");
 		
 		Button submit = new Button("Submit",
 				event -> {
 					try {
 						// attempt to fill paperSubmission with form values
-						binder.writeBean(paperSubmission);
+						binder.writeBean(paperSubmission);						
+						paperSubmission.setInputStream(memBuffer.getInputStream());
+						paperSubmission.setFilename(memBuffer.getFileName());
 						
-						// read the contents of the buffered file from inputStream
-						InputStream inputStream = memBuffer.getInputStream();
-					    // create new file in 'uploaded' directory
-					    File f = new File("data\\journals\\" + paperSubmission.getJournal() + memBuffer.getFileName());
-					    f.createNewFile();
-
-					    // copy uploaded content to f
-					    FileUtils.copyInputStreamToFile(inputStream, f);
-					    Notification.show("file created: " + f.getAbsolutePath());
-					    
+						System.out.println("Editor email: " + paperSubmission.getEditorEmail());
+						
 					    // save to data
+						paperSubmission.newResearcherSubmission(paperData, submissionData);
 					    
+						Notification.show("Submission made.");
+						
 					} catch (ValidationException ex){
-						Notification.show("invalid fields");
+						for (ValidationResult c : ex.getValidationErrors()) {
+							Notification.show(c.getErrorMessage());
+						}
 						
 					} catch (IOException ex) {
 				    	Notification.show("bad io: " + ex.getMessage());						
@@ -153,6 +167,8 @@ public class SubmissionLayout extends VerticalLayout{
 				e -> UI.getCurrent().navigate("dashboard"));
 		
 		
+		form.addFormItem(titleField, "Paper Title");
+		form.addFormItem(versionField, "Version");
 		form.addFormItem(journalSelect, "Journal");
 		form.addFormItem(editorEmailField, "Editor Email");
 		form.setColspan(messageField, 2);

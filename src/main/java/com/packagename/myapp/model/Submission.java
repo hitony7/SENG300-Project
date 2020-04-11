@@ -1,4 +1,4 @@
-package com.packagename.myapp.control;
+package com.packagename.myapp.model;
 
 import java.text.DateFormat;
 import java.text.ParsePosition;
@@ -7,15 +7,22 @@ import java.util.Date;
 
 import org.json.simple.JSONObject;
 
+/**
+ * Model object representing the tuples of the Submission relation in RM and in submission.json
+ * 
+ * @author SeanP1225
+ *
+ */
 public class Submission {
 	
-	public static DateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd");
+	public static DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 	
 	public static enum SubStatus {
 		ACC("Accepted"),
 		REJ("Rejected"),
 		MJ_RV("Requires Major Revision"),
 		MN_RV("Requires Minor Revision"),
+		PN_CL("Pending Collection"),
 		PN_ED("Pending Editor Assignment"),
 		PN_AC("Pending Editor Action"),
 		RVWS("Requires Review");
@@ -31,14 +38,14 @@ public class Submission {
 		}
 	}
 	
-	private final int paperID;
-	private final String version;
-	private final Date submissionDate;
+	private int paperID;
+	private String version;
+	private Date submissionDate;
 	private Date decisionDate;
 	private Date resubmissionDeadline;
 	private Date reviewDeadline;
 	private String filePath;
-	private final String researcherMessage;
+	private String researcherMessage;
 	private String editorComment;
 	private SubStatus status;
 
@@ -47,16 +54,24 @@ public class Submission {
 	 * 
 	 * @param obj
 	 */
-	public Submission(JSONObject obj) {		
-		this((int) obj.get("PaperID"), (String) obj.get("Version"), 
-				dateFormat.parse((String) obj.get("SubmissionDate"), new ParsePosition(0)),
-				dateFormat.parse((String) obj.get("DecisionDate"), new ParsePosition(0)),
-				dateFormat.parse((String) obj.get("ResubmissionDeadline"), new ParsePosition(0)),
-				dateFormat.parse((String) obj.get("ReviewDeadline"), new ParsePosition(0)),
+	public Submission(JSONObject obj) {
+		this(((Long) obj.get("PaperID")).intValue(), (String) obj.get("Version"),
+				obj.get("SubmissionDate") == null ? null :
+					dateFormat.parse((String) obj.get("SubmissionDate"), new ParsePosition(0)),
+				obj.get("DecisionDate") == null ? null :
+					dateFormat.parse((String) obj.get("DecisionDate"), new ParsePosition(0)),
+				obj.get("ResubmissionDeadline") == null ? null :
+					dateFormat.parse((String) obj.get("ResubmissionDeadline"), new ParsePosition(0)),
+				obj.get("ReviewDeadline") == null ? null :
+					dateFormat.parse((String) obj.get("ReviewDeadline"), new ParsePosition(0)),
 				(String) obj.get("FilePath"), (String) obj.get("ResearcherMessage"),
 				(String) obj.get("EditorComment"),
 				SubStatus.valueOf((String) obj.get("Status")));
-	}	
+	}
+	
+	public Submission(int paperID) {
+		this(paperID, null, null, null, null, null);
+	}
 	
 	public Submission(int paperID, String version, Date submissionDate, String filePath, 
 			String researcherMessage, SubStatus status) {
@@ -77,7 +92,42 @@ public class Submission {
 		setEditorComment(editorComment);
 		setStatus(status);
 	}
+
+	public Submission(Submission copy) {
+		this.paperID = copy.paperID;
+		this.version = new String(copy.version);
+		this.submissionDate = (Date) copy.submissionDate.clone();
+		this.decisionDate = (Date) copy.decisionDate.clone();
+		this.resubmissionDeadline = (Date) copy.decisionDate.clone();
+		this.filePath = new String(copy.filePath);
+		this.researcherMessage = new String(copy.researcherMessage);
+		this.editorComment = new String(copy.editorComment);
+		this.status = copy.status;
+	}
 	
+	public int getPaperID() {
+		return paperID;
+	}
+	
+	public void setPaperID(int paperID) {
+		this.paperID = paperID;
+	}
+	
+	public String getVersion() {
+		return version;
+	}
+	
+	public void setVersion(String version) {
+		this.version = version;
+	}
+	
+	public Date getSubmissionDate() {
+		return submissionDate;
+	}
+	
+	public void setSubmissionDate(Date submissionDate) {
+		this.submissionDate = submissionDate;
+	}
 
 	public Date getDecisionDate() {
 		return decisionDate;
@@ -115,6 +165,10 @@ public class Submission {
 		return researcherMessage;
 	}
 	
+	public void setResearcherMessage(String researcherMessage) {
+		this.researcherMessage = researcherMessage;
+	}
+	
 	public String getEditorComment() {
 		return editorComment;
 	}
@@ -131,18 +185,9 @@ public class Submission {
 		this.status = status;
 	}
 	
-	public int getPaperID() {
-		return paperID;
+	public String formatOrNull(Date date) {
+		return date == null ? null : dateFormat.format(date);
 	}
-	
-	public String getVersion() {
-		return version;
-	}
-	
-	public Date getSubmissionDate() {
-		return submissionDate;
-	}
-	
 
 	/**
 	 * Creates a JSONObject representation of this instance
@@ -154,10 +199,10 @@ public class Submission {
 		
 		o.put("PaperID", getPaperID());
 		o.put("Version", getVersion());
-		o.put("SubmissionDate", getSubmissionDate());
-		o.put("DecisionDate", getDecisionDate());
-		o.put("ResubmissionDeadline", getResubmissionDeadline());
-		o.put("ReviewDeadline", getReviewDeadline());
+		o.put("SubmissionDate", formatOrNull(getSubmissionDate()));
+		o.put("DecisionDate", formatOrNull(getDecisionDate()));
+		o.put("ResubmissionDeadline", formatOrNull(getResubmissionDeadline()));
+		o.put("ReviewDeadline", formatOrNull(getReviewDeadline()));
 		o.put("FilePath", getFilePath());
 		o.put("ResearcherMessage", getResearcherMessage());
 		o.put("EditorComment", getEditorComment());
