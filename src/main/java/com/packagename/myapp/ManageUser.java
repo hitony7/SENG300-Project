@@ -9,6 +9,8 @@ import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.dialog.Dialog;
+import com.vaadin.flow.component.formlayout.FormLayout;
+import com.vaadin.flow.component.formlayout.FormLayout.ResponsiveStep;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.grid.Grid.SelectionMode;
 import com.vaadin.flow.component.html.H5;
@@ -43,6 +45,27 @@ public class ManageUser extends VerticalLayout {
 	static ArrayList<String> data = new ArrayList<>();
 	public ManageUser() {
 
+		//Make a form layout for the adding user
+		FormLayout form = new FormLayout();
+		
+		form.setResponsiveSteps(
+				new ResponsiveStep("25em",1),
+				new ResponsiveStep("32em",2),
+				new ResponsiveStep("40em",3));
+		
+		TextField userName = new TextField();
+		userName.setLabel("Username");
+		
+		TextField password = new TextField();
+		password.setLabel("Password");
+		
+		Select userType = new Select();
+		userType.setLabel("User Type");
+		userType.setItems("Editor","Reviewer","Researcher");
+		
+		form.add(userName,password,userType);
+		
+		
 		//Add dialog
 		Dialog removed = new Dialog();
 		Dialog added = new Dialog();
@@ -52,9 +75,8 @@ public class ManageUser extends VerticalLayout {
 
 		//Prompt
 		added.add(new Label("Added selected user."));
-
-		Select<String> addUser = new Select<>();
-
+		
+		
 		//JSON Parser object to parse read file
 		JSONParser jsonParser = new JSONParser();
 
@@ -80,6 +102,7 @@ public class ManageUser extends VerticalLayout {
 			Users temp = new Users(data.get(i), data.get(i+1), data.get(i+2));
 			userList.add(temp);
 		}
+		data.clear();
 
 		//Create new grid
 		Grid<Users> userGrid = new Grid<>();
@@ -110,11 +133,6 @@ public class ManageUser extends VerticalLayout {
 		Button remove = new Button("Remove Selected User(s)",
 				e -> removed.open());
 
-		//Label to select user
-		addUser.setLabel("Select User");
-		//Temporary placeholders
-		addUser.setItems("Adam","Eve");
-
 
 		//Set the buttons to the left side of the page.
 		setDefaultHorizontalComponentAlignment(FlexComponent.Alignment.START);
@@ -123,7 +141,7 @@ public class ManageUser extends VerticalLayout {
 
 		back.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
 
-		add(userGrid,remove,newUser,addUser,add,back);
+		add(userGrid,remove,form,add,back);
 	}
 
 	private static void parseEmployeeObject(JSONObject employee) {

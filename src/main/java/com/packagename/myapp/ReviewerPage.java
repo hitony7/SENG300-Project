@@ -38,9 +38,9 @@ public class ReviewerPage extends VerticalLayout {
 		
 		//Temporary list for reviewer submissions
 		ArrayList<ReviewerSubmissions> submissionList = new ArrayList<>();
-		ReviewerSubmissions submission1 = new ReviewerSubmissions("submission1","xx-xx-xxxx");
-		ReviewerSubmissions submission2 = new ReviewerSubmissions("submission2","xx-xx-xxxx");
-		ReviewerSubmissions submission3 = new ReviewerSubmissions("submission3","xx-xx-xxxx");
+		ReviewerSubmissions submission1 = new ReviewerSubmissions("Journal 1","Paper 1","2","Jane Doe","XX-XX-XXXX","John Doe");
+		ReviewerSubmissions submission2 = new ReviewerSubmissions("Journal 2","Paper 2","3","Jane Doe","XX-XX-XXXX","John Doe");
+		ReviewerSubmissions submission3 = new ReviewerSubmissions("Journal 3","Paper 3","4","Jane Doe","XX-XX-XXXX","John Doe");
 		
 		
 		//Add temporary submissions
@@ -50,17 +50,21 @@ public class ReviewerPage extends VerticalLayout {
 		
 		//Submission Grid
 		Grid<ReviewerSubmissions> submitGrid = new Grid<>();
-		Label submitLabel = new Label("Submitted Reviews");
+		Label submitLabel = new Label("Review Requests");
 		submitGrid.setItems(submissionList);
-		submitGrid.addColumn(ReviewerSubmissions::getName).setHeader("Submission Name");
-		submitGrid.addColumn(ReviewerSubmissions::getSubmitDate).setHeader("Date Submitted");
+		submitGrid.addColumn(ReviewerSubmissions::getJournal).setHeader("Journal");
+		submitGrid.addColumn(ReviewerSubmissions::getPaper).setHeader("Paper");
+		submitGrid.addColumn(ReviewerSubmissions::getVersion).setHeader("Version");
+		submitGrid.addColumn(ReviewerSubmissions::getResearcher).setHeader("Researcher");
+		submitGrid.addColumn(ReviewerSubmissions::getReviewDeadline).setHeader("ReviewDeadline");
+		submitGrid.addColumn(ReviewerSubmissions::getEditor).setHeader("Editor");
 
 		
 		//Temporary ArrayList for reviewed papers
 		ArrayList<ReviewedPapers> reviewList = new ArrayList<>();
-		ReviewedPapers paper1 = new ReviewedPapers("paper1","SomeJournal","XX-XX-XXXX","A Journal","Jane Doe","Accepted");
-		ReviewedPapers paper2 = new ReviewedPapers("paper2","SomeJournal","XX-XX-XXXX","A Journal","Jane Doe","Rejected");
-		ReviewedPapers paper3 = new ReviewedPapers("paper3","SomeJournal","XX-XX-XXXX","A Journal","Jane Doe","In Review");
+		ReviewedPapers paper1 = new ReviewedPapers("Journal 1","Paper 1","1","Jane Doe","XX-XX-XXXX","John Doe");
+		ReviewedPapers paper2 = new ReviewedPapers("Journal 2","Paper 2","2","Jane Doe","XX-XX-XXXX","John Doe");
+		ReviewedPapers paper3 = new ReviewedPapers("Journal 3","Paper 3","3","Jane Doe","XX-XX-XXXX","John Doe");
 		
 		//Add temporary reviewed papers
 		reviewList.add(paper1);
@@ -69,14 +73,14 @@ public class ReviewerPage extends VerticalLayout {
 		
 		//Review Grid
 		Grid<ReviewedPapers> reviewGrid = new Grid<>();
-		Label reviewLabel = new Label("Reviewed Journals");
+		Label reviewLabel = new Label("Review History");
 		reviewGrid.setItems(reviewList);
-		reviewGrid.addColumn(ReviewedPapers::getPaper).setHeader("Paper");
 		reviewGrid.addColumn(ReviewedPapers::getJournal).setHeader("Journal");
-		reviewGrid.addColumn(ReviewedPapers::getDate).setHeader("Date");
-		reviewGrid.addColumn(ReviewedPapers::getDesc).setHeader("Description");
-		reviewGrid.addColumn(ReviewedPapers::getReviewer).setHeader("Reviewer");
-		reviewGrid.addColumn(ReviewedPapers::getStatus).setHeader("Status");
+		reviewGrid.addColumn(ReviewedPapers::getPaper).setHeader("Paper");
+		reviewGrid.addColumn(ReviewedPapers::getVersion).setHeader("Version");
+		reviewGrid.addColumn(ReviewedPapers::getResearcher).setHeader("Researcher");
+		reviewGrid.addColumn(ReviewedPapers::getReviewDeadline).setHeader("Review Deadline");
+		reviewGrid.addColumn(ReviewedPapers::getEditor).setHeader("Editor");
 		
 		//Layout for the page
 		SplitLayout layout = new SplitLayout();
