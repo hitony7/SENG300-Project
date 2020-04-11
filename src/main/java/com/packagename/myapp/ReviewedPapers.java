@@ -4,21 +4,21 @@ public class ReviewedPapers {
 
 	String paper;
 	String journal;
-	String date;
-	String desc;
-	String reviewer;
-	String status;
+	String reviewDeadline;
+	String version;
+	String researcher;
+	String editor;
 	
-	public ReviewedPapers(String paper, String journal, String date, String desc, String reviewer, String status) {
+	public ReviewedPapers(String journal, String paper, String version, String researcher, String reviewDeadline, String editor) {
 		super();
 		this.paper = paper;
 		this.journal = journal;
-		this.date = date;
-		this.desc = desc;
-		this.reviewer = reviewer;
-		this.status = status;
+		this.reviewDeadline = reviewDeadline;
+		this.version = version;
+		this.researcher = researcher;
+		this.editor = editor;
 	}
-
+	
 	public String getPaper() {
 		return paper;
 	}
@@ -35,37 +35,41 @@ public class ReviewedPapers {
 		this.journal = journal;
 	}
 
-	public String getDate() {
-		return date;
+	public String getReviewDeadline() {
+		return reviewDeadline;
 	}
 
-	public void setDate(String date) {
-		this.date = date;
+	public void setReviewDeadline(String reviewDeadline) {
+		this.reviewDeadline = reviewDeadline;
 	}
 
-	public String getDesc() {
-		return desc;
+	public String getVersion() {
+		return version;
 	}
 
-	public void setDesc(String desc) {
-		this.desc = desc;
+	public void setVersion(String version) {
+		this.version = version;
 	}
 
-	public String getReviewer() {
-		return reviewer;
+	public String getResearcher() {
+		return researcher;
 	}
 
-	public void setReviewer(String reviewer) {
-		this.reviewer = reviewer;
+	public void setResearcher(String researcher) {
+		this.researcher = researcher;
 	}
 
-	public String getStatus() {
-		return status;
+	public String getEditor() {
+		return editor;
 	}
 
-	public void setStatus(String status) {
-		this.status = status;
+	public void setEditor(String editor) {
+		this.editor = editor;
 	}
+
+	
+
+	
 	
 	
 	
