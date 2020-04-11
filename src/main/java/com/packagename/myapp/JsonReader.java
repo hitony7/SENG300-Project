@@ -1,12 +1,20 @@
 package com.packagename.myapp;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
+import org.apache.commons.lang3.tuple.ImmutablePair;
+import org.apache.commons.lang3.tuple.Pair;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
+
+import com.packagename.myapp.control.Paper;
+import com.packagename.myapp.control.Submission;
+
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 
@@ -24,7 +32,7 @@ public class JsonReader {
         JSONObject user = new JSONObject();
         user.put("user",employeeDetails );
         //get orignal list
-        userList= readOLD("users.json");
+        JSONArray userList= readOLD("users.json");
 
         userList.add(user);
         write("users.json", userList);
@@ -84,9 +92,31 @@ public class JsonReader {
         System.out.println(username);
         //return string
     }
+    
+    private static JSONObject readData(String filename) {
+        //JSON parser object to parse read file
+        JSONParser jsonParser = new JSONParser();
+    	
+    	try (FileReader reader = new FileReader(filename)) {
+            //Read JSON file
+            return (JSONObject) jsonParser.parse(reader);
+            
+    	} catch (Exception e) {
+    		e.printStackTrace();
+    		return null;
+    	}
+    }
+    
+    private static void writeData(String filename, JSONObject obj) {
+    	try (FileWriter writer = new FileWriter(filename, false)) {
+    		obj.writeJSONString(writer);
+    		
+    	} catch (IOException e) {
+    		e.printStackTrace();
+    	}
+    }
 
-
-        private void write(String filename, JSONArray userList){
+    private void write(String filename, JSONArray userList){
         try (FileWriter file = new FileWriter(filename,false)) {
 
             file.write(userList.toJSONString());
@@ -96,4 +126,39 @@ public class JsonReader {
             e.printStackTrace();
         }
     }
+    
+    public static HashMap<Integer,Paper> getPaperData() {
+    	HashMap<String,JSONObject> jsonData = readData("data\\paper.json");
+    	HashMap<Integer,Paper> paperData = new HashMap<>();
+    	
+		for(Map.Entry<String, JSONObject> pair : jsonData.entrySet()) {
+    		paperData.put(new Integer(pair.getKey()), new Paper(pair.getValue()));
+    	}
+    	
+    	return paperData;
     }
+    
+    public static HashMap<Pair<Integer,String>,Paper> getSubmissionData() {
+    	HashMap<String,JSONObject> jsonData = readData("data\\submission.json");
+    	HashMap<Pair<Integer,String>,Paper> submissionData = new HashMap<>();
+    	
+    	for(Map.Entry<String, JSONObject> pair : jsonData.entrySet()) {
+    		String[] splitKey = pair.getKey().split("_");
+    		Integer paperID = new Integer(splitKey[0]);
+    		String version = splitKey[1];
+    		submissionData.put(new ImmutablePair<Integer, String>(paperID, version), new Paper(pair.getValue()));
+    	}
+    	
+    	return submissionData;
+    }
+    
+    public static void newPaperSubmission(HashMap<String,Paper> paperData, 
+    		HashMap<Pair<Integer,String>,Paper> submissionData, int ResearcherID, String journal, 
+    		String editorEmail, String title, String message, String reviewerNominations) {
+    	
+    }
+    
+    public static int getNumberOfPapers(HashMap<String,Paper> paperData) {
+    	return paperData.size();
+    }
+}
