@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 
+import com.packagename.myapp.control.ManageUserController;
 import com.packagename.myapp.model.JsonModel;
 import com.vaadin.flow.component.ClickEvent;
 import com.vaadin.flow.component.UI;
@@ -25,6 +26,7 @@ import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.select.Select;
 import com.vaadin.flow.component.textfield.TextField;
+import com.vaadin.flow.data.binder.Binder;
 import com.vaadin.flow.component.orderedlayout.FlexComponent.Alignment;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
@@ -52,6 +54,8 @@ public class ManageUser extends VerticalLayout {
 	static ArrayList<String> data = new ArrayList<>();
 	static ArrayList<String> data2 = new ArrayList<>();
 	public ManageUser() {
+		
+		Binder<ManageUserController> binder = new Binder(ManageUserController.class);
 
 		//Make a form layout for the adding user
 		FormLayout form = new FormLayout();
@@ -64,8 +68,15 @@ public class ManageUser extends VerticalLayout {
 		TextField userName = new TextField();
 		userName.setLabel("Username");
 		
+		binder.forField(userName)
+				.asRequired()
+				.bind(ManageUserController::getUserName, ManageUserController::setUserName);
+		
+		
 		TextField password = new TextField();
 		password.setLabel("Password");
+		
+		
 		
 		Select userType = new Select();
 		userType.setLabel("User Type");
@@ -126,6 +137,7 @@ public class ManageUser extends VerticalLayout {
 
 		//Allow admin to select multiple objects from the grid
 		userGrid.setSelectionMode(SelectionMode.SINGLE);
+		
 
 		//Label for adding new users.
 		H5 newUser = new H5("Add New User");
