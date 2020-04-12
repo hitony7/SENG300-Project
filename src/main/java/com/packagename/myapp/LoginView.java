@@ -10,6 +10,9 @@ import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.dependency.CssImport;
 import com.vaadin.flow.component.dialog.Dialog;
+import com.vaadin.flow.component.html.H1;
+import com.vaadin.flow.component.html.H2;
+import com.vaadin.flow.component.html.H3;
 import com.vaadin.flow.component.html.Label;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.PasswordField;
@@ -33,13 +36,14 @@ public class LoginView extends VerticalLayout  {
     private HashMap<String, User> userList;
 
     public LoginView() {
+        H1 Title = new H1("Welcome to the University of Winnipeg");
+        H2 project= new H2("Journal Login System.");
+        H3 Login = new H3("Please Login with follow fields");
         Binder<ManageUserController> binder = new Binder(ManageUserController.class);
         try {
             userList = JsonModel.getUserData() ;
             System.out.println("Loaded");
-
-      } catch (IOException e1) {
-
+        } catch (IOException e1) {
           e1.printStackTrace();
            userList = new HashMap<>();
         }
@@ -56,9 +60,8 @@ public class LoginView extends VerticalLayout  {
                     User user = ManageUserController.validateLogin(userList, textField.getValue(), passwordField.getValue());
                     if(user != null){
                         Dialog logSucc = new Dialog();
-
                         //Prompt
-                        logSucc.add(new Label("Login Sucessful"  +  "\n" + "Welcome:"  + user.getUserID()) + " (" + user.getUserType() + " )" );
+                        logSucc.add(new Label("Login Sucessful"  +  "\n" + "Welcome:"  + user.getUserID() + " (" + user.getUserType() + " )"));
                         logSucc.open();
                         //Logic for what type of user
                         UI.getCurrent().navigate("dashboard");
