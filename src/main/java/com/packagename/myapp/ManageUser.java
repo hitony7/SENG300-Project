@@ -166,7 +166,7 @@ public class ManageUser extends VerticalLayout {
 			}
 			else{
 				HashMap<String, User> addNewUser = new HashMap<String, User>();
-				User temp = new User(UserId.getValue(), userName.getValue(), password.getValue(), (String) userType.getValue(), field.getValue(), email.getValue());
+				User temp = new User(UserId.getValue(), password.getValue(), userName.getValue(), email.getValue(), field.getValue(), (String) userType.getValue());
 				try {
 					addNewUser = JsonModel.getUserData();
 				} catch(IOException e2){
