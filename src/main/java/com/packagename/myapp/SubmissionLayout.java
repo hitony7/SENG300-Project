@@ -75,7 +75,7 @@ public class SubmissionLayout extends VerticalLayout{
 		
 		int paperID = NewSubmissionController.getNumberOfPapers(paperData);
 		// placeholder value
-		int researcherID = 15;
+		String researcherID = "JohnDoe3";
 		paperSubmission = new NewSubmissionController(paperID, researcherID);
 		
 		//Paper paper = new Paper(paperID, researcherID);
