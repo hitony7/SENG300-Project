@@ -36,9 +36,14 @@ public class DashboardView extends VerticalLayout {
         Button reviewer = new Button("To reviewer page",
         		e -> UI.getCurrent().navigate("reviewer"));
         
-        reviewer.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
+        Button editor = new Button("To editor page",
+        		e -> UI.getCurrent().navigate("editor"));
         
-        add(logo,reviewer);
+        reviewer.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
+        editor.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
+        
+        
+        add(logo,reviewer,editor);
         
         
       
