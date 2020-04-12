@@ -47,6 +47,15 @@ public class ManageUserController {
         }
         return null;
     }
+    
+    
+    public void setUserName(String userName) {
+        user.setName(userName);
+    }
+
+    /public ArrayList<User> getAllUsers(HashMap<Integer,User> userData) {
+        return List. userData.keySet()
+    }/
 
 
 
