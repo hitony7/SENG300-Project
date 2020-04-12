@@ -27,6 +27,7 @@ import com.vaadin.flow.component.notification.Notification;
  *
  */
 public class ManageUserController {
+    private HashMap <String, User> userData;
 
     private User user;
     private InputStream inputStream;
@@ -35,7 +36,12 @@ public class ManageUserController {
 
 
     public ManageUserController() {
-
+        try{
+            userData = JsonModel.getUserData();
+        } catch (IOException e){
+            e.printStackTrace();
+            userData = new HashMap<>();
+        }
     }
 
 
@@ -47,8 +53,7 @@ public class ManageUserController {
         }
         return null;
     }
-    
-    
+
 
 
     public void setUserName(String username){
@@ -98,4 +103,7 @@ public class ManageUserController {
         user.setField(field);
     }
 
+    public void removeUser(){
+        
+    }
 }
