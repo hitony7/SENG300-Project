@@ -28,7 +28,7 @@ import java.util.HashMap;
 @CssImport(value = "./styles/vaadin-text-field-styles.css", themeFor = "vaadin-text-field")
 public class LoginView extends VerticalLayout  {
     JsonModel jsonReader = new JsonModel();
-    private HashMap<Integer, User> userList;
+    private HashMap<String, User> userList;
 
     public LoginView() {
         Binder<ManageUserController> binder = new Binder(ManageUserController.class);

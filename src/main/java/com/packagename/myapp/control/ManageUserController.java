@@ -49,7 +49,7 @@ public class ManageUserController {
         // researcher = new User(researcherID)
     }
 
-    public static User validateLogin(HashMap<Integer, User> userList, String username, String password) {
+    public static User validateLogin(HashMap<String, User> userList, String username, String password) {
         for (User i : userList.values()) {
             if(i.checkUserPass(username,password)){
                 return i;
