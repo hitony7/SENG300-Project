@@ -2,18 +2,18 @@ package com.packagename.myapp.model;
 
 import org.json.simple.JSONObject;
 
-public class JournalEditor {
+public class EditorJournal {
 
-	private String jName;
 	private String editorID;
+	private String jName;
 	
-	public JournalEditor(String jName, String editorID) {
-		setJName(jName);
+	public EditorJournal(String editorID, String jName) {
 		setEditorID(editorID);
+		setJName(jName);
 	}
 	
-	public JournalEditor(JournalEditor copy) {
-		this(copy.jName, copy.editorID);
+	public EditorJournal(EditorJournal copy) {
+		this(copy.editorID, copy.jName);
 	}
 	
 	/**
@@ -21,17 +21,9 @@ public class JournalEditor {
 	 * 
 	 * @param obj
 	 */
-	public JournalEditor(JSONObject obj) {
-		this((String) obj.get("JName"), 
-				(String) obj.get("EditorID"));
-	}
-
-	public String getJName() {
-		return jName == null ? null : new String(jName);
-	}
-
-	public void setJName(String jName) {
-		this.jName = jName == null ? null : new String(jName);
+	public EditorJournal(JSONObject obj) {
+		this((String) obj.get("EditorID"), 
+				(String) obj.get("JName"));
 	}
 
 	public String getEditorID() {
@@ -40,6 +32,14 @@ public class JournalEditor {
 
 	public void setEditorID(String editorID) {
 		this.editorID = editorID == null ? null : new String(editorID);
+	}
+
+	public String getJName() {
+		return jName == null ? null : new String(jName);
+	}
+
+	public void setJName(String jName) {
+		this.jName = jName == null ? null : new String(jName);
 	}
 	
 	/**
@@ -50,9 +50,14 @@ public class JournalEditor {
 	public JSONObject jsonObject() {
 		JSONObject o = new JSONObject();
 
-		o.put("JName", getJName());
 		o.put("EditorID", getEditorID());
+		o.put("JName", getJName());
 		
 		return o;
+	}
+	
+	@Override
+	public String toString() {
+		return "{" + editorID + "," + jName + "}";
 	}
 }

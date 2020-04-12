@@ -143,4 +143,10 @@ public class Paper {
 		return o;
 	}
 	
+	@Override
+	public String toString() {
+		return "{" + paperID + "," + title + "," + researcherID + "," + journal + "," + editorID
+				 + "," + collectionYear + "," + collectionHalfYear + "}";
+	}
+	
 }

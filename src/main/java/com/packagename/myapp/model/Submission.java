@@ -209,5 +209,14 @@ public class Submission {
 		
 		return o;
 	}
+	
+	@Override
+	public String toString() {
+		return "{" + paperID + "," + version + "," + dateFormat.format(submissionDate)
+				 + "," + dateFormat.format(decisionDate)
+				 + "," + dateFormat.format(resubmissionDeadline)
+				 + "," + dateFormat.format(reviewDeadline) + "," + filePath
+				 + "," + researcherMessage + "," + editorComment + "," + status + "}";
+	}
 
 }
