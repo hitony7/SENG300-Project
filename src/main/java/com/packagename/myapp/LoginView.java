@@ -39,7 +39,6 @@ public class LoginView extends VerticalLayout  {
     public LoginView() {
         H1 title = new H1("Welcome to the University of Winnipeg");
         H2 project= new H2("Journal Login System.");
-        H3 login = new H3("Please Login with follow fields");
         Binder<ManageUserController> binder = new Binder(ManageUserController.class);
         try {
             userList = JsonModel.getUserData() ;
@@ -90,8 +89,9 @@ public class LoginView extends VerticalLayout  {
         //button.addClickShortcut(Key.ENTER);
 
         // Use custom CSS classes to apply styling. This is defined in shared-styles.css.
-       // addClassName("centered-content");
-        add(title,project,login, logincomponent);
+        addClassName("centered-content");
+        //setHorizontalComponentAlignment( logincomponent,);
+        add(title,project, logincomponent);
         add(newpage, adminPage);
     }
 
