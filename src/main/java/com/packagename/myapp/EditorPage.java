@@ -3,7 +3,7 @@ package com.packagename.myapp;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import com.packagename.myapp.model.JournalEditor;
+import com.packagename.myapp.model.EditorJournal;
 import com.packagename.myapp.model.JsonModel;
 import com.packagename.myapp.model.Paper;
 import com.packagename.myapp.model.Submission;
@@ -29,7 +29,7 @@ public class EditorPage extends VerticalLayout{
 		ArrayList<Paper> papers;
 		ArrayList<Submission> submissions;
 		ArrayList<User> users;
-		ArrayList<JournalEditor> journalEditors;
+		ArrayList<EditorJournal> journalEditors;
 		
 		//The ArrayList that sorts the papers by editor ID.
 		ArrayList<Paper> paperByEditorID = new ArrayList<>();
@@ -64,7 +64,7 @@ public class EditorPage extends VerticalLayout{
 		}
 		
 		try {
-			journalEditors = new ArrayList<>(JsonModel.getJournalEditorData().values());
+			journalEditors = new ArrayList<>(JsonModel.getEditorJournalData().values());
 		} catch(IOException e) {
 			e.printStackTrace();
 			journalEditors = new ArrayList<>();

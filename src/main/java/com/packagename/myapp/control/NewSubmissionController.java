@@ -6,16 +6,22 @@ import java.io.InputStream;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
 
 import com.packagename.myapp.model.Journal;
+import com.google.common.base.Functions;
+import com.packagename.myapp.ReviewerListController;
 import com.packagename.myapp.model.EditorJournal;
 import com.packagename.myapp.model.JsonModel;
 import com.packagename.myapp.model.Paper;
 import com.packagename.myapp.model.Submission;
+import com.packagename.myapp.model.NominatedReviewer;
 import com.packagename.myapp.model.Submission.SubStatus;
 import com.packagename.myapp.model.User;
 import com.vaadin.flow.component.notification.Notification;
@@ -31,11 +37,12 @@ import com.vaadin.flow.component.notification.Notification;
  */
 public class NewSubmissionController {
 	
-	private HashMap<String, User> userData;
-	private HashMap<Integer, Paper> paperData;
-	private HashMap<Pair<Integer, String>, Submission> submissionData;
-	private HashMap<String, Journal> journalData;
-	private HashMap<String, EditorJournal> journalEditorData;
+	private HashMap<String,User> userData;
+	private HashMap<Integer,Paper> paperData;
+	private HashMap<Pair<Integer,String>,Submission> submissionData;
+	private HashMap<String,Journal> journalData;
+	private HashMap<String,EditorJournal> journalEditorData;
+	private HashMap<Pair<Integer,String>,NominatedReviewer> nominatedReviewerData;
 	
 	private Paper paper;
 	private Submission submission;
@@ -43,28 +50,22 @@ public class NewSubmissionController {
 	private String filename;
 	//private User researcher;
 	private User editor;
-	private Collection<User> reviewers;
 	
-
-	public NewSubmissionController() {
-		this(null);
-	}
 	
-	public NewSubmissionController(String researcherID) {
-		try {
-			userData = JsonModel.getUserData();
-			paperData = JsonModel.getPaperData();
-			submissionData = JsonModel.getSubmissionData();
-			journalData = JsonModel.getJournalData();
-			journalEditorData = JsonModel.getEditorJournalData();
-		} catch (IOException e1) {
-			e1.printStackTrace();
-			userData = new HashMap<>();
-			paperData = new HashMap<>();
-			submissionData = new HashMap<>();
-			journalData = new HashMap<>();
-			journalEditorData = new HashMap<>();
-		}
+	public NewSubmissionController(HashMap<String, User> userData,
+			HashMap<Integer, Paper> paperData,
+			HashMap<Pair<Integer, String>, Submission> submissionData,
+			HashMap<String, Journal> journalData,
+			HashMap<String, EditorJournal> journalEditorData,
+			HashMap<Pair<Integer,String>,NominatedReviewer> nominatedReviewerData, 
+			String researcherID) {
+		
+		this.userData = userData;
+		this.paperData = paperData;
+		this.submissionData = submissionData;
+		this.journalData = journalData;
+		this.journalEditorData = journalEditorData;
+		this.nominatedReviewerData = nominatedReviewerData;
     
 		int paperID = getNumberOfPapers();
 		
@@ -84,8 +85,6 @@ public class NewSubmissionController {
 	public User getEditor() {
 		return editor;
 	}
-	
-	//public Collection<User> 
 	
 	public void setEditor(User editor) {
 		this.editor = editor;
@@ -158,8 +157,7 @@ public class NewSubmissionController {
 				.collect(Collectors.toSet());
 	}
 
-	public void newResearcherSubmission()
-					throws IOException {
+	public void newResearcherSubmission(ReviewerListController revController) throws IOException {
 	
 	    // create journal directory if it does not exist
 		String journalPath = "data\\journals\\" + paper.getJournal();
@@ -181,13 +179,16 @@ public class NewSubmissionController {
 	    Notification.show("File upload successful: " + f.getName());
 	    
 	    // add to data maps and write to data files
-	    
 	    paperData.put(paper.getPaperID(), paper);
 	    submissionData.put(Pair.of(new Integer(submission.getPaperID()), 
 	    		submission.getVersion()), submission);
+	    nominatedReviewerData.putAll(revController.getAllReviewers().stream()
+	    		.collect(Collectors.toMap(rev -> ImmutablePair.of(paper.getPaperID(), rev.getUserID()), 
+	    				rev -> new NominatedReviewer(paper.getPaperID(), rev.getUserID()))));
 	    
 	    JsonModel.setPaperData(paperData);
 	    JsonModel.setSubmissionData(submissionData);
+	    JsonModel.setNominatedReviewerData(nominatedReviewerData);
 	}
 	
 }
