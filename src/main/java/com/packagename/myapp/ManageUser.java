@@ -58,12 +58,13 @@ import javax.swing.*;
 public class ManageUser extends VerticalLayout {
 
 	public ManageUser() {
-		
+
 		Binder<ManageUserController> binder = new Binder(ManageUserController.class);
 
 		//Make a form layout for the adding user
 		FormLayout form = new FormLayout();
-		
+
+		//create the column for the display
 		form.setResponsiveSteps(
 				new ResponsiveStep("20em",1),
 				new ResponsiveStep("25em",2),
@@ -71,15 +72,17 @@ public class ManageUser extends VerticalLayout {
 				new ResponsiveStep("50em", 4),
 				new ResponsiveStep("65em", 5),
 				new ResponsiveStep("80em", 6));
-		
+
+		//create text field for the username input
 		TextField userName = new TextField();
 		userName.setLabel("Username");
-		
+
+		//creates the binder to get data easier from the user.json file
 		binder.forField(userName)
 				.asRequired()
 				.bind(ManageUserController::getUserName, ManageUserController::setUserName);
 
-		
+
 		
 		TextField password = new TextField();
 		password.setLabel("Password");
@@ -113,14 +116,6 @@ public class ManageUser extends VerticalLayout {
 		added.add(new Label("Added selected user."));
 		edited.add(new Label("Selected user have been edited"));
 
-//		HashMap<String, User> firstUser = new HashMap<String, User>();
-//		User temp = new User("Admin", "Pass123", "Admin", "Admin@gmail.com", "Admin", "Admin");
-//		firstUser.put("Admin",temp);
-//		try {
-//			JsonModel.setUserData(firstUser);
-//		}catch(IOException e){
-//			e.printStackTrace();
-//		}
 
 		ArrayList<User> userList;
 		try{
@@ -156,10 +151,10 @@ public class ManageUser extends VerticalLayout {
 		Button back = new Button("Back",
 				e -> UI.getCurrent().navigate("admin"));
 
-		//Button to add a user.
+		//Button to add a user and rund the code to add the user.
 		Button add = new Button("Add User", e -> {
-			if(UserId.getValue().equals(null) || userName.getValue().equals(null) || password.getValue().equals(null)
-			|| userType.getValue().equals(null) || field.getValue().equals(null) || email.getValue().equals(null)){
+			if(UserId.getValue() == null || userName.getValue() == null || password.getValue() == null
+			|| field.getValue() == null || ((String)userType.getValue()) == null || email.getValue() == null){
 				Dialog invalid = new Dialog();
 				invalid.add(new Label("Please fill out all of the fields"));
 				invalid.open();
