@@ -39,10 +39,10 @@ public class NewSubmissionController {
 	
 
 	public NewSubmissionController() {
-		this(-1, -1);
+		this(-1, null);
 	}
 	
-	public NewSubmissionController(int paperID, int researcherID) {
+	public NewSubmissionController(int paperID, String researcherID) {
 		paper = new Paper(paperID, null, researcherID, null);
 		submission = new Submission(paperID, "0.0.0", new Date(), null, null, SubStatus.PN_CL);
 		// researcher = new User(researcherID)
@@ -65,11 +65,11 @@ public class NewSubmissionController {
 		//this.paper.setEditorID(editorID);
 	}
 
-	public int getResearcherID() {
+	public String getResearcherID() {
 		return paper.getResearcherID();
 	}
 	
-	public void setResearcherID(int researcherID) {
+	public void setResearcherID(String researcherID) {
 		this.paper.setResearcherID(researcherID);
 	}
 	

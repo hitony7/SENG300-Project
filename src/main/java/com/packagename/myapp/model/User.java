@@ -13,7 +13,7 @@ public class User {
 	
 	public User(String userID, String password, String name, String email, String field,
 			String userType) {
-		this.userID = userID;
+		setUserID(userID);
 		setPassword(password);
 		setName(name);
 		setEmail(email);
@@ -32,7 +32,7 @@ public class User {
 	 * @param obj
 	 */
 	public User(JSONObject obj) {
-		this(((String) obj.get("UserID")),
+		this((String) obj.get("UserID"),
 				(String) obj.get("Password"),
 				(String) obj.get("Name"),
 				(String) obj.get("Email"),
@@ -40,12 +40,12 @@ public class User {
 				(String) obj.get("UserType"));
 	}
 
-	public String  getUserID() {
-		return userID;
+	public String getUserID() {
+		return userID == null ? null : new String(userID);
 	}
 
-	public String setUserID(String userID) {
-		return this.userID = userID;
+	public void setUserID(String userID) {
+		this.userID = userID == null ? null : new String(userID);
 	}
 
 	public String getPassword() {
@@ -87,13 +87,7 @@ public class User {
 	public void setUserType(String userType) {
 		this.userType = userType == null ? null : new String(userType);
 	}
-	// validate if username and password are vaild
-	public boolean checkUserPass(String username, String password){
-		if((this.userID == username) && (this.password == password)){
-			return true;
-		}
-		return false;
-	}
+	
 	/**
 	 * Creates a JSONObject representation of this instance
 	 * 
