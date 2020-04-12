@@ -5,11 +5,11 @@ import org.json.simple.JSONObject;
 public class NominatedReviewer {
 	
 	private int paperID;
-	private int reviewerID;
+	private String reviewerID;
 	
-	public NominatedReviewer(int paperID, int reviewerID) {
+	public NominatedReviewer(int paperID, String reviewerID) {
 		this.paperID = paperID;
-		this.reviewerID = reviewerID;
+		setReviewerID(reviewerID);
 	}
 	
 	public NominatedReviewer(NominatedReviewer copy) {
@@ -23,7 +23,7 @@ public class NominatedReviewer {
 	 */
 	public NominatedReviewer(JSONObject obj) {
 		this(((Long) obj.get("PaperID")).intValue(),
-				((Long) obj.get("ReviewerID")).intValue());
+				(String) obj.get("ReviewerID"));
 	}
 
 	public int getPaperID() {
@@ -34,12 +34,12 @@ public class NominatedReviewer {
 		this.paperID = paperID;
 	}
 
-	public int getReviewerID() {
-		return reviewerID;
+	public String getReviewerID() {
+		return reviewerID == null ? null : new String(reviewerID);
 	}
 
-	public void setReviewerID(int reviewerID) {
-		this.reviewerID = reviewerID;
+	public void setReviewerID(String reviewerID) {
+		this.reviewerID = reviewerID == null ? null : new String(reviewerID);
 	}
 	
 	/**

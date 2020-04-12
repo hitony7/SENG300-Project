@@ -12,24 +12,24 @@ public class Paper {
 	
 	private int paperID;
 	private String title;
-	private int researcherID;
+	private String researcherID;
 	private String journal;
 	// Following instance variabels are wrapped in Integer to allow null values.
-	private Integer editorID;
+	private String editorID;
 	private Integer collectionYear;
 	private Integer collectionHalfYear;
 	
 	
-	public Paper(int paperID, int researcherID) {
+	public Paper(int paperID, String researcherID) {
 		this(paperID, null, researcherID, null);
 	}
 	
-	public Paper(int paperID, String title, int researcherID, String journal) {
+	public Paper(int paperID, String title, String researcherID, String journal) {
 		this(paperID, title, researcherID, journal, null, null, null);
 	}
 	
-	public Paper(int paperID, String title, int researcherID, String journal, 
-			Integer editorID, Integer collectionYear, Integer collectionHalfYear) {
+	public Paper(int paperID, String title, String researcherID, String journal, 
+			String editorID, Integer collectionYear, Integer collectionHalfYear) {
 		this.paperID = paperID;
 		setTitle(title);
 		this.researcherID = researcherID;
@@ -53,9 +53,9 @@ public class Paper {
 	public Paper(JSONObject obj) {
 		this(((Long) obj.get("PaperID")).intValue(), 
 				(String) obj.get("Title"), 
-				((Long) obj.get("ResearcherID")).intValue(), 
+				(String) obj.get("ResearcherID"), 
 				(String) obj.get("Journal"), 
-				((Long) obj.get("EditorID")).intValue(),
+				(String) obj.get("EditorID"),
 				((Long) obj.get("CollectionYear")).intValue(),
 				((Long) obj.get("CollectionHalfYear")).intValue());
 	}
@@ -76,12 +76,12 @@ public class Paper {
 		this.title = title == null ? null : new String(title);
 	}
 
-	public int getResearcherID() {
-		return researcherID;
+	public String getResearcherID() {
+		return researcherID == null ? null : new String(researcherID);
 	}
 	
-	public void setResearcherID(int researcherID) {
-		this.researcherID = researcherID;
+	public void setResearcherID(String researcherID) {
+		this.researcherID = researcherID == null ? null : new String(researcherID);
 	}
 
 	public String getJournal() {
@@ -92,16 +92,12 @@ public class Paper {
 		this.journal = journal == null ? null : new String(journal);
 	}
 
-	public Integer getEditorID() {
-		return editorID == null ? null : new Integer(editorID);
+	public String getEditorID() {
+		return editorID == null ? null : new String(editorID);
 	}
 	
-	public void setEditorID(Integer editorID) {
-		this.editorID = editorID == null ? null : new Integer(editorID);
-	}
-
-	public void setEditorID(int editorID) {
-		this.editorID = new Integer(editorID);
+	public void setEditorID(String editorID) {
+		this.editorID = editorID == null ? null : new String(editorID);
 	}
 
 	public Integer getCollectionYear() {
