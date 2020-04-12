@@ -107,8 +107,9 @@ public class User {
 	}
 
 	public boolean checkUserPass(String username, String password) {
-		if (this.userID == username && this.password == password){
+		if (username.equals(getUserID()) && (password.equals(getPassword()))){
 			return true;
+
 		}
 		return false;
 	}
