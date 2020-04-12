@@ -78,6 +78,7 @@ public class ManageUser extends VerticalLayout {
 		binder.forField(userName)
 				.asRequired()
 				.bind(ManageUserController::getUserName, ManageUserController::setUserName);
+
 		
 		
 		TextField password = new TextField();
