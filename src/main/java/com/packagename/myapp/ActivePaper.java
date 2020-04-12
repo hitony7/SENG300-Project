@@ -4,13 +4,13 @@ import com.packagename.myapp.model.Paper;
 import com.packagename.myapp.model.Submission;
 import com.packagename.myapp.model.User;
 
-public class ActivePapers {
+public class ActivePaper {
 
 	private Paper paper;
 	private Submission submission;
 	private User researcher;
 	
-	public ActivePapers(Paper paper, Submission submission, User researcher) {
+	public ActivePaper(Paper paper, Submission submission, User researcher) {
 		super();
 		this.paper = paper;
 		this.submission = submission;

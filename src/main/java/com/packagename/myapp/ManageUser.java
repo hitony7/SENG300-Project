@@ -73,9 +73,9 @@ public class ManageUser extends VerticalLayout {
 				new ResponsiveStep("65em", 5),
 				new ResponsiveStep("80em", 6));
 
-		//create text field for the username input
+		//create text field for the name input
 		TextField userName = new TextField();
-		userName.setLabel("Username");
+		userName.setLabel("Name");
 
 		//creates the binder to get data easier from the user.json file
 		binder.forField(userName)
@@ -86,22 +86,42 @@ public class ManageUser extends VerticalLayout {
 		
 		TextField password = new TextField();
 		password.setLabel("Password");
+
+		binder.forField(password)
+				.asRequired()
+				.bind(ManageUserController::getPassword, ManageUserController::setPassword);
 		
 		
 		
-		Select userType = new Select();
+		Select <String> userType = new Select();
 		userType.setLabel("User Type");
 		userType.setValue("Editor");
-		userType.setItems("Editor","Reviewer","Researcher");
+		userType.setItems("Editor","Reviewer","Researcher","Admin");
+
+		binder.forField(userType)
+				.asRequired()
+				.bind(ManageUserController::getUserType, ManageUserController::setUserType);
 
 		TextField email = new TextField();
 		email.setLabel("Email");
 
+		binder.forField(email)
+				.asRequired()
+				.bind(ManageUserController::getEmail, ManageUserController::setEmail);
+
 		TextField UserId = new TextField();
 		UserId.setLabel("UserId");
 
+		binder.forField(UserId)
+				.asRequired()
+				.bind(ManageUserController::getUserId, ManageUserController::setUserId);
+
 		TextField field = new TextField();
 		field.setLabel("field");
+
+		binder.forField(field)
+				.asRequired()
+				.bind(ManageUserController::getField, ManageUserController::setField);
 		
 		form.add(UserId,userName,password,userType, field,email);
 		
@@ -133,7 +153,7 @@ public class ManageUser extends VerticalLayout {
 
 		//Add columns to the grid
 		userGrid.addColumn(User::getUserID).setHeader("UserID");
-		userGrid.addColumn(User::getName).setHeader("Username");
+		userGrid.addColumn(User::getName).setHeader("Name");
 		userGrid.addColumn(User::getPassword).setHeader("Password");
 		userGrid.addColumn(User::getUserType).setHeader("User Type");
 		userGrid.addColumn(User::getField).setHeader("Field");
