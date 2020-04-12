@@ -36,9 +36,9 @@ public class LoginView extends VerticalLayout  {
     private HashMap<String, User> userList;
 
     public LoginView() {
-        H1 Title = new H1("Welcome to the University of Winnipeg");
+        H1 title = new H1("Welcome to the University of Winnipeg");
         H2 project= new H2("Journal Login System.");
-        H3 Login = new H3("Please Login with follow fields");
+        H3 login = new H3("Please Login with follow fields");
         Binder<ManageUserController> binder = new Binder(ManageUserController.class);
         try {
             userList = JsonModel.getUserData() ;
@@ -97,7 +97,7 @@ public class LoginView extends VerticalLayout  {
 
         // Use custom CSS classes to apply styling. This is defined in shared-styles.css.
         addClassName("centered-content");
-
+        add(title,project,login);
         add(textField, passwordField, button, newpage, adminPage);
     }
 
