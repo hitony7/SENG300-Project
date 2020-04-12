@@ -47,6 +47,13 @@ public class ManageUserController {
         return null;
     }
 
+    public void setUsername(String username){
+        user.setUserID(username);
+    }
+    public String getUserName(){
+        return user.getUserID();
+    }
+
 
 
 }
