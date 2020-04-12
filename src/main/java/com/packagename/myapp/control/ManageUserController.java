@@ -47,7 +47,9 @@ public class ManageUserController {
 
     public static User validateLogin(HashMap<String, User> userList, String username, String password) {
         for (User i : userList.values()) {
+            System.out.println(i.getUserID()+i.getPassword());
             if(i.checkUserPass(username,password)){
+                System.out.println("TRUE");
                 return i;
             }
         }
