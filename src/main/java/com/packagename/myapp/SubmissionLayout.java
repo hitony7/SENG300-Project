@@ -7,7 +7,7 @@ import java.util.List;
 
 import org.apache.commons.lang3.tuple.Pair;
 
-import com.packagename.myapp.control.NewSubmissionController;
+import com.packagename.myapp.control.ManageUserController;
 import com.packagename.myapp.model.JsonModel;
 import com.packagename.myapp.model.Paper;
 import com.packagename.myapp.model.Submission;
@@ -32,7 +32,7 @@ public class SubmissionLayout extends VerticalLayout{
 	
 	private HashMap<Integer, Paper> paperData;
 	private HashMap<Pair<Integer, String>, Submission> submissionData;
-	NewSubmissionController paperSubmission;
+	ManageUserController paperSubmission;
 	
 	private TextField titleField = new TextField();
 	private TextField versionField = new TextField();
@@ -61,7 +61,7 @@ public class SubmissionLayout extends VerticalLayout{
 		FormLayout form = new FormLayout();
 		setMaxWidth("50em");
 		
-		Binder<NewSubmissionController> binder = new Binder(NewSubmissionController.class);
+		Binder<ManageUserController> binder = new Binder(ManageUserController.class);
 		//Binder<Paper> paperBinder = new Binder(Paper.class);
 		//Binder<Submission> submissionBinder = new Binder(Submission.class);
 		try {
@@ -73,10 +73,10 @@ public class SubmissionLayout extends VerticalLayout{
 			submissionData = new HashMap<>();
 		}
 		
-		int paperID = NewSubmissionController.getNumberOfPapers(paperData);
+		int paperID = ManageUserController.getNumberOfPapers(paperData);
 		// placeholder value
 		int researcherID = 15;
-		paperSubmission = new NewSubmissionController(paperID, researcherID);
+		paperSubmission = new ManageUserController(paperID, researcherID);
 		
 		//Paper paper = new Paper(paperID, researcherID);
 		//Submission submission = new Submission(paperID);
@@ -85,7 +85,7 @@ public class SubmissionLayout extends VerticalLayout{
 		binder.forField(titleField)
 				.asRequired("Title required.")
 				.withValidator(new StringLengthValidator("Maximum 50 character.", 0, 50))
-				.bind(NewSubmissionController::getTitle, NewSubmissionController::setTitle);
+				.bind(ManageUserController::getTitle, ManageUserController::setTitle);
 		
 		
 		// version field
@@ -106,7 +106,7 @@ public class SubmissionLayout extends VerticalLayout{
 		binder.forField(journalSelect)
 				.asRequired("Journal must be selected.")
 				.withConverter(TempJournal::getName, null)
-				.bind(NewSubmissionController::getJournal, NewSubmissionController::setJournal);
+				.bind(ManageUserController::getJournal, ManageUserController::setJournal);
 
 		// optional field for editor email
 		editorEmailField.setClearButtonVisible(true);
@@ -119,7 +119,7 @@ public class SubmissionLayout extends VerticalLayout{
 						            + "\\." + "[a-zA-Z0-9-]{2,}" // tld
 						            + "$)?",
 			            true))
-				.bind(NewSubmissionController::getEditorEmail, NewSubmissionController::setEditorEmail);
+				.bind(ManageUserController::getEditorEmail, ManageUserController::setEditorEmail);
 		
 		
 		// optional comment/message to editor
@@ -129,7 +129,7 @@ public class SubmissionLayout extends VerticalLayout{
 		
 		binder.forField(messageField)
 				.withValidator(new StringLengthValidator("Maximum 1000 characters.", 0, 1000))
-				.bind(NewSubmissionController::getResearcherMessage, NewSubmissionController::setResearcherMessage);
+				.bind(ManageUserController::getResearcherMessage, ManageUserController::setResearcherMessage);
 		
 		
 		// optional field for reviewer email

@@ -116,7 +116,7 @@ public class NewSubmissionController {
 		if (!journalDir.exists()) {
 			journalDir.mkdirs();
 		}
-		
+
 		// create file in journal directory
 		String filePath = journalPath + filename;
 		submission.setFilePath(filePath);

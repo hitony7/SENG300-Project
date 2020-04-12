@@ -1,6 +1,9 @@
 package com.packagename.myapp;
 
+import com.packagename.myapp.control.ManageUserController;
 import com.packagename.myapp.model.JsonModel;
+import com.packagename.myapp.model.Paper;
+import com.packagename.myapp.model.User;
 import com.vaadin.flow.component.Key;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
@@ -9,7 +12,11 @@ import com.vaadin.flow.component.dependency.CssImport;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.PasswordField;
 import com.vaadin.flow.component.textfield.TextField;
+import com.vaadin.flow.data.binder.Binder;
 import com.vaadin.flow.router.Route;
+
+import java.io.IOException;
+import java.util.HashMap;
 
 
 /**
@@ -21,19 +28,37 @@ import com.vaadin.flow.router.Route;
 @CssImport(value = "./styles/vaadin-text-field-styles.css", themeFor = "vaadin-text-field")
 public class LoginView extends VerticalLayout  {
     JsonModel jsonReader = new JsonModel();
+    private HashMap<Integer, User> userList;
 
     public LoginView() {
+        Binder<ManageUserController> binder = new Binder(ManageUserController.class);
+        try {
+            userList = JsonModel.getUserData() ;
+        } catch (IOException e1) {
+            e1.printStackTrace();
+            userList = new HashMap<>();
+        }
         // Use TextField for standard text input
         TextField textField = new TextField("Username");
         PasswordField passwordField = new PasswordField("Password");
-        passwordField.setLabel("Password");
         passwordField.setPlaceholder("Enter password");
         passwordField.setValue("secret1");
         // Button click listeners can be defined as lambda expressions
 
         GreetService greetService = new GreetService();
-        Button button = new Button("Say hello my dudes",
-                e -> jsonReader.newUser(textField.getValue(),textField2.getValue(),"admin"));
+        Button button = new Button("Login",
+                e -> {
+                    User user = ManageUserController.validateLogin(userList, textField.getValue(), passwordField.getValue());
+                    if(user != null){
+                        UI.getCurrent().navigate("dashboard");
+                        System.out.println("Login SUCESSFUL");
+                        //Logic for what type of user
+                    } else   {
+                        System.out.println("WRONG USERNAME/PASSWORD");
+                    }
+                    //jsonReader.checkUserPass();
+                    //jsonReader.newUser(textField.getValue(), passwordField.getValue(), "admin");
+                });
 
         Button newpage = new Button("Click this to go to main page (This is after login)",
                 e -> UI.getCurrent().navigate("dashboard"));
