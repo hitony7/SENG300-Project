@@ -1,7 +1,6 @@
 package com.packagename.myapp.model;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -22,19 +21,21 @@ public class JsonModel {
 
     public void newUser(String username, String password, String usertype) {
 
-        JSONObject employeeDetails = new JSONObject();
-        employeeDetails.put("username", username);
-        employeeDetails.put("password", password);
-        employeeDetails.put("usertype", usertype);
+        JSONObject userDetails = new JSONObject();
+        userDetails.put("username", username);
+        userDetails.put("password", password);
+        userDetails.put("usertype", usertype);
         //nested
         JSONObject user = new JSONObject();
-        user.put("user",employeeDetails );
+        user.put("user",userDetails );
         //get orignal list
         JSONArray userList= readOLD("users.json");
-
+        //appends the new user
         userList.add(user);
+        //write to file
         write("users.json", userList);
     }
+    //Read the OLDlist
     public JSONArray readOLD(String filename){
         //JSON parser object to parse read file
         JSONParser jsonParser = new JSONParser();
@@ -44,9 +45,9 @@ public class JsonModel {
             //Read JSON file
             Object obj = jsonParser.parse(reader);
 
-            JSONArray employeeList = (JSONArray) obj;
-            System.out.println(employeeList);
-            return employeeList;
+            JSONArray userList = (JSONArray) obj;
+            System.out.println(userList);
+            return userList;
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
@@ -66,11 +67,11 @@ public class JsonModel {
             //Read JSON file
             Object obj = jsonParser.parse(reader);
 
-            JSONArray employeeList = (JSONArray) obj;
-            System.out.println(employeeList);
+            JSONArray userList = (JSONArray) obj;
+            System.out.println(userList);
 
             //Iterate over employee array
-            employeeList.forEach( emp -> parseEmployeeObject( (JSONObject) emp ) );
+            userList.forEach( emp -> parseUserObject( (JSONObject) emp ) );
 
         } catch (FileNotFoundException e) {
             e.printStackTrace();
@@ -81,12 +82,12 @@ public class JsonModel {
         }
     }
 
-    private static void parseEmployeeObject(JSONObject employee) {
-        //Get employee object within list
-        JSONObject employeeObject = (JSONObject) employee.get("user");
+    private static void parseUserObject(JSONObject user) {
+        //Get user object within list
+        JSONObject userObject = (JSONObject) user.get("user");
 
-        //Get employee first name
-        String username = (String) employeeObject.get("username");
+        //Get user first name
+        String username = (String) userObject.get("username");
         System.out.println(username);
         //return string
     }
