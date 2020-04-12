@@ -114,7 +114,7 @@ public class NewSubmissionController {
 		File journalDir = new File(journalPath);
 		
 		if (!journalDir.exists()) {
-			journalDir.mkdir();
+			journalDir.mkdirs();
 		}
 		
 		// create file in journal directory
