@@ -12,7 +12,7 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.tuple.Pair;
 
 import com.packagename.myapp.model.Journal;
-import com.packagename.myapp.model.JournalEditor;
+import com.packagename.myapp.model.EditorJournal;
 import com.packagename.myapp.model.JsonModel;
 import com.packagename.myapp.model.Paper;
 import com.packagename.myapp.model.Submission;
@@ -35,7 +35,7 @@ public class NewSubmissionController {
 	private HashMap<Integer, Paper> paperData;
 	private HashMap<Pair<Integer, String>, Submission> submissionData;
 	private HashMap<String, Journal> journalData;
-	private HashMap<String, JournalEditor> journalEditorData;
+	private HashMap<String, EditorJournal> journalEditorData;
 	
 	private Paper paper;
 	private Submission submission;
@@ -56,7 +56,7 @@ public class NewSubmissionController {
 			paperData = JsonModel.getPaperData();
 			submissionData = JsonModel.getSubmissionData();
 			journalData = JsonModel.getJournalData();
-			journalEditorData = JsonModel.getJournalEditorData();
+			journalEditorData = JsonModel.getEditorJournalData();
 		} catch (IOException e1) {
 			e1.printStackTrace();
 			userData = new HashMap<>();
@@ -154,7 +154,7 @@ public class NewSubmissionController {
 	public Collection<User> getAllReviewers() {
 		return userData.values().stream()
 				.filter(user
-						-> user.getUserType().equals("Reviewer"))
+						-> user.getUserType() != null && user.getUserType().equals("Reviewer"))
 				.collect(Collectors.toSet());
 	}
 
