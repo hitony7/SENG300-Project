@@ -1,3 +1,4 @@
+
 package com.packagename.myapp.control;
 
 import java.io.File;
@@ -46,6 +47,11 @@ public class ManageUserController {
         }
         return null;
     }
+    
+    
+    public void setUserName(String userName) {
+        user.setName(userName);
+    }
 
     public void setUsername(String username){
         user.setUserID(username);
@@ -56,5 +62,6 @@ public class ManageUserController {
 
 
 
-}
 
+
+}
