@@ -104,6 +104,12 @@ public class User {
 		o.put("UserType", getUserType());
 		
 		return o;
-	}	
-	
+	}
+
+	public boolean checkUserPass(String username, String password) {
+		if (this.userID == username && this.password == password){
+			return true;
+		}
+		return false;
+	}
 }
