@@ -149,6 +149,56 @@ public class JsonModel {
     	writeData("data\\user.json", jsonData);
     }
     
+    public static HashMap<String,Journal> getJournalData() throws IOException {
+    	HashMap<String,JSONObject> jsonData = readData("data\\journal.json");
+    	HashMap<String,Journal> journalData = new HashMap<>();
+    	
+		for (Map.Entry<String, JSONObject> entry : jsonData.entrySet()) {
+			JSONObject jsonJournal = entry.getValue();
+
+			journalData.put(entry.getKey(), new Journal(jsonJournal));
+    	}
+    	
+    	return journalData;
+    }
+    
+    public static void setJournalData(HashMap<String,Journal> journalData) throws IOException {
+    	JSONObject jsonData = new JSONObject();
+    	
+    	for (Map.Entry<String, Journal> entry : journalData.entrySet()) {
+    		Journal journal = entry.getValue();
+    		
+    		jsonData.put(entry.getKey(), journal.jsonObject());
+    	}
+    	
+    	writeData("data\\journal.json", jsonData);
+    }
+
+    public static HashMap<String,JournalEditor> getJournalEditorData() throws IOException {
+    	HashMap<String,JSONObject> jsonData = readData("data\\journal_editor.json");
+    	HashMap<String,JournalEditor> journalEditorData = new HashMap<>();
+    	
+		for (Map.Entry<String, JSONObject> entry : jsonData.entrySet()) {
+			JSONObject jsonJournalEditor = entry.getValue();
+
+			journalEditorData.put(entry.getKey(), new JournalEditor(jsonJournalEditor));
+    	}
+    	
+    	return journalEditorData;
+    }
+    
+    public static void setJournalEditorData(HashMap<String,JournalEditor> journalData) throws IOException {
+    	JSONObject jsonData = new JSONObject();
+    	
+    	for (Map.Entry<String, JournalEditor> entry : journalData.entrySet()) {
+    		JournalEditor journalEditor = entry.getValue();
+    		
+    		jsonData.put(entry.getKey(), journalEditor.jsonObject());
+    	}
+    	
+    	writeData("data\\journal_editor.json", jsonData);
+    }
+    
     public static HashMap<Integer,Paper> getPaperData() throws IOException {
     	HashMap<String,JSONObject> jsonData = readData("data\\paper.json");
     	HashMap<Integer,Paper> paperData = new HashMap<>();
