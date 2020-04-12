@@ -90,13 +90,6 @@ public class JsonModel {
         System.out.println(username);
         //return string
     }
-    
-    private static void writeData(String filename, JSONObject obj) throws IOException {
-    	FileWriter writer = new FileWriter(filename, false);
-		obj.writeJSONString(writer);
-		writer.flush();
-		writer.close();
-    }
 
     private void write(String filename, JSONArray userList){
         try (FileWriter file = new FileWriter(filename,false)) {
@@ -123,6 +116,38 @@ public class JsonModel {
     	}
     }
     
+    private static void writeData(String filename, JSONObject obj) throws IOException {
+    	FileWriter writer = new FileWriter(filename, false);
+		obj.writeJSONString(writer);
+		writer.flush();
+		writer.close();
+    }
+    
+    public static HashMap<Integer,User> getUserData() throws IOException {
+    	HashMap<String,JSONObject> jsonData = readData("data\\user.json");
+    	HashMap<Integer,User> userData = new HashMap<>();
+    	
+		for (Map.Entry<String, JSONObject> entry : jsonData.entrySet()) {
+			JSONObject jsonUser = entry.getValue();
+
+			userData.put(new Integer(entry.getKey()), new User(jsonUser));
+    	}
+    	
+    	return userData;
+    }
+    
+    public static void setUserData(HashMap<Integer,User> userData) throws IOException {
+    	JSONObject jsonData = new JSONObject();
+    	
+    	for (Map.Entry<Integer, User> entry : userData.entrySet()) {
+    		User user = entry.getValue();
+    		
+    		jsonData.put(entry.getKey(), user.jsonObject());
+    	}
+    	
+    	writeData("data\\user.json", jsonData);
+    }
+    
     public static HashMap<Integer,Paper> getPaperData() throws IOException {
     	HashMap<String,JSONObject> jsonData = readData("data\\paper.json");
     	HashMap<Integer,Paper> paperData = new HashMap<>();
@@ -130,7 +155,6 @@ public class JsonModel {
 		for (Map.Entry<String, JSONObject> entry : jsonData.entrySet()) {
 			JSONObject jsonPaper = entry.getValue();
 
-			System.out.println(((Long) jsonPaper.get("PaperID")).intValue());
     		paperData.put(new Integer(entry.getKey()), new Paper(jsonPaper));
     	}
     	
@@ -143,13 +167,14 @@ public class JsonModel {
     	for (Map.Entry<Integer, Paper> entry : paperData.entrySet()) {
     		Paper paper = entry.getValue();
     		
-    		jsonData.put(entry.getKey(), paper.getJSONObject());
+    		jsonData.put(entry.getKey(), paper.jsonObject());
     	}
     	
     	writeData("data\\paper.json", jsonData);
     }
     
-    public static HashMap<Pair<Integer,String>,Submission> getSubmissionData() throws IOException {
+    public static HashMap<Pair<Integer,String>,Submission> getSubmissionData()
+    		throws IOException {
     	HashMap<String,JSONObject> jsonData = readData("data\\submission.json");
     	HashMap<Pair<Integer,String>,Submission> submissionData = new HashMap<>();
     	
@@ -159,13 +184,15 @@ public class JsonModel {
     		String version = splitKey[1];
     		JSONObject jsonSubmission = entry.getValue();
     		
-    		submissionData.put(new ImmutablePair<Integer, String>(paperID, version), new Submission(jsonSubmission));
+    		submissionData.put(new ImmutablePair<Integer, String>(paperID, version),
+    				new Submission(jsonSubmission));
     	}
     	
     	return submissionData;
     }
     
-    public static void setSubmissionData(HashMap<Pair<Integer,String>,Submission> submissionData) throws IOException {
+    public static void setSubmissionData(
+    		HashMap<Pair<Integer,String>,Submission> submissionData) throws IOException {
     	JSONObject jsonData = new JSONObject();
     	
     	for (Map.Entry<Pair<Integer,String>,Submission> entry : submissionData.entrySet()) {
@@ -173,9 +200,45 @@ public class JsonModel {
     		String primaryKey = pair.getLeft() + "_" + pair.getRight();
     		Submission submission = entry.getValue();
     		
-    		jsonData.put(primaryKey, submission.getJSONObject());
+    		jsonData.put(primaryKey, submission.jsonObject());
     	}
     	
     	writeData("data\\submission.json", jsonData);
+    }
+    
+    public static HashMap<Pair<Integer,Integer>,NominatedReviewer> getNominatedReviewerData()
+    		throws IOException {
+    	HashMap<String,JSONObject> jsonData = readData("data\\nominated_reviewer.json");
+    	HashMap<Pair<Integer,Integer>,NominatedReviewer> nominatedReviewerData
+    		= new HashMap<>();
+    	
+    	for (Map.Entry<String, JSONObject> entry : jsonData.entrySet()) {
+    		String[] splitKey = entry.getKey().split("_");
+    		Integer paperID = new Integer(splitKey[0]);
+    		Integer reviewerID = new Integer(splitKey[1]);
+    		JSONObject jsonNominatedReviewer = entry.getValue();
+    		
+    		nominatedReviewerData.put(new ImmutablePair<Integer, Integer>(paperID, reviewerID),
+    				new NominatedReviewer(jsonNominatedReviewer));
+    	}
+    	
+    	return nominatedReviewerData;
+    }
+    
+    public static void setNominatedReviewerData(
+    		HashMap<Pair<Integer,Integer>,NominatedReviewer> nominatedReviewerData)
+    				throws IOException {
+    	JSONObject jsonData = new JSONObject();
+    	
+    	for (Map.Entry<Pair<Integer,Integer>,NominatedReviewer> entry 
+    			: nominatedReviewerData.entrySet()) {
+    		Pair<Integer,Integer> pair = entry.getKey();
+    		String primaryKey = pair.getLeft() + "_" + pair.getRight();
+    		NominatedReviewer nominatedReviewer = entry.getValue();
+    		
+    		jsonData.put(primaryKey, nominatedReviewer.jsonObject());
+    	}
+    	
+    	writeData("data\\nominated_reviewer.json", jsonData);
     }
 }

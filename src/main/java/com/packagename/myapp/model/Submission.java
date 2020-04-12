@@ -48,6 +48,37 @@ public class Submission {
 	private String researcherMessage;
 	private String editorComment;
 	private SubStatus status;
+	
+	
+	public Submission(int paperID) {
+		this(paperID, null, null, null, null, null);
+	}
+	
+	public Submission(int paperID, String version, Date submissionDate, String filePath, 
+			String researcherMessage, SubStatus status) {
+		this(paperID, version, submissionDate, null, null, null, filePath, researcherMessage, null, status);
+	}
+	
+	public Submission(int paperID, String version, Date submissionDate, Date decisionDate, 
+			Date resubmissionDeadline, Date reviewDeadline, String filePath, 
+			String researcherMessage, String editorComment, SubStatus status) {
+		this.paperID = paperID;
+		setVersion(version);
+		setSubmissionDate(submissionDate);
+		setDecisionDate(decisionDate);
+		setResubmissionDeadline(resubmissionDeadline);
+		setReviewDeadline(reviewDeadline);
+		setFilePath(filePath);
+		setResearcherMessage(researcherMessage);
+		setEditorComment(editorComment);
+		setStatus(status);
+	}
+
+	public Submission(Submission copy) {
+		this(copy.paperID, copy.version, copy.submissionDate, copy.decisionDate,
+				copy.resubmissionDeadline, copy.reviewDeadline, copy.filePath,
+				copy.researcherMessage, copy.editorComment, copy.status);
+	}
 
 	/**
 	 * Constructs from given JSONObject.
@@ -69,42 +100,6 @@ public class Submission {
 				SubStatus.valueOf((String) obj.get("Status")));
 	}
 	
-	public Submission(int paperID) {
-		this(paperID, null, null, null, null, null);
-	}
-	
-	public Submission(int paperID, String version, Date submissionDate, String filePath, 
-			String researcherMessage, SubStatus status) {
-		this(paperID, version, submissionDate, null, null, null, filePath, researcherMessage, null, status);
-	}
-	
-	public Submission(int paperID, String version, Date submissionDate, Date decisionDate, 
-			Date resubmissionDeadline, Date reviewDeadline, String filePath, 
-			String researcherMessage, String editorComment, SubStatus status) {
-		this.paperID = paperID;
-		this.version = version;
-		this.submissionDate = submissionDate;
-		setDecisionDate(decisionDate);
-		setResubmissionDeadline(resubmissionDeadline);
-		setReviewDeadline(reviewDeadline);
-		setFilePath(filePath);
-		this.researcherMessage = researcherMessage;
-		setEditorComment(editorComment);
-		setStatus(status);
-	}
-
-	public Submission(Submission copy) {
-		this.paperID = copy.paperID;
-		this.version = new String(copy.version);
-		this.submissionDate = (Date) copy.submissionDate.clone();
-		this.decisionDate = (Date) copy.decisionDate.clone();
-		this.resubmissionDeadline = (Date) copy.decisionDate.clone();
-		this.filePath = new String(copy.filePath);
-		this.researcherMessage = new String(copy.researcherMessage);
-		this.editorComment = new String(copy.editorComment);
-		this.status = copy.status;
-	}
-	
 	public int getPaperID() {
 		return paperID;
 	}
@@ -114,67 +109,71 @@ public class Submission {
 	}
 	
 	public String getVersion() {
-		return version;
+		return version == null ? null : new String(version);
 	}
 	
 	public void setVersion(String version) {
-		this.version = version;
+		this.version = version == null ? null : new String(version);
 	}
 	
 	public Date getSubmissionDate() {
-		return submissionDate;
+		return submissionDate == null ? null : (Date) submissionDate.clone();
 	}
 	
 	public void setSubmissionDate(Date submissionDate) {
-		this.submissionDate = submissionDate;
+		this.submissionDate = submissionDate == null ? null 
+				: (Date) submissionDate.clone();
 	}
 
 	public Date getDecisionDate() {
-		return decisionDate;
+		return decisionDate == null ? null : (Date) decisionDate.clone();
 	}
 	
 	public void setDecisionDate(Date decisionDate) {
-		this.decisionDate = decisionDate;
+		this.decisionDate = decisionDate == null ? null : (Date) decisionDate.clone();
 	}
 	
 	public Date getResubmissionDeadline() {
-		return resubmissionDeadline;
+		return resubmissionDeadline == null ? null : (Date) resubmissionDeadline.clone();
 	}
 	
 	public void setResubmissionDeadline(Date resubmissionDeadline) {
-		this.resubmissionDeadline = resubmissionDeadline;
+		this.resubmissionDeadline = resubmissionDeadline == null ? null 
+				: (Date) resubmissionDeadline.clone();
 	}
 	
 	public Date getReviewDeadline() {
-		return reviewDeadline;
+		return reviewDeadline == null ? null : (Date) reviewDeadline.clone();
 	}
 	
 	public void setReviewDeadline(Date reviewDeadline) {
-		this.reviewDeadline = reviewDeadline;
+		this.reviewDeadline = reviewDeadline == null ? null 
+				: (Date) reviewDeadline.clone();
 	}
 	
 	public String getFilePath() {
-		return filePath;
+		return filePath == null ? null : new String(filePath);
 	}
 	
 	public void setFilePath(String filePath) {
-		this.filePath = filePath;
+		this.filePath = filePath == null ? null : new String(filePath);
 	}
 	
 	public String getResearcherMessage() {
-		return researcherMessage;
+		return researcherMessage == null ? null : new String(researcherMessage);
 	}
 	
 	public void setResearcherMessage(String researcherMessage) {
-		this.researcherMessage = researcherMessage;
+		this.researcherMessage = researcherMessage == null ? null 
+				: new String(researcherMessage);
 	}
 	
 	public String getEditorComment() {
-		return editorComment;
+		return editorComment == null ? null : new String(editorComment);
 	}
 	
 	public void setEditorComment(String editorComment) {
-		this.editorComment = editorComment;
+		this.editorComment = editorComment == null ? null : new String(editorComment);
 	}
 	
 	public SubStatus getStatus() {
@@ -194,7 +193,7 @@ public class Submission {
 	 * 
 	 * @return JSONObject representation
 	 */
-	public JSONObject getJSONObject() {
+	public JSONObject jsonObject() {
 		JSONObject o = new JSONObject();
 		
 		o.put("PaperID", getPaperID());

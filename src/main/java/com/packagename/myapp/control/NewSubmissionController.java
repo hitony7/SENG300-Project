@@ -16,10 +16,10 @@ import com.packagename.myapp.model.Submission.SubStatus;
 import com.vaadin.flow.component.notification.Notification;
 
 /**
- * Business object combining model objects into one.
+ * 'Controller object' for new paper submission page.
  * 
  * Used to help bind form data of researcher's new submission page to model data,
- * which is then used to write to files.
+ * which is then used to write to files using JsonModel.
  * 
  * @author SeanP1225
  *
@@ -108,14 +108,15 @@ public class NewSubmissionController {
 			HashMap<Pair<Integer,String>,Submission> submissionData)
 					throws IOException {
 	
-	    // create new file in data directory sorted by journal name
-		String journalPath = "data\\journals\\" + paper.getJournal() + "\\";
+	    // create journal directory if it does not exist
+		String journalPath = "data\\journals\\" + paper.getJournal();
 		File journalDir = new File(journalPath);
 		
 		if (!journalDir.exists()) {
 			journalDir.mkdir();
 		}
 		
+		// create file in journal directory
 		String filePath = journalPath + filename;
 		submission.setFilePath(filePath);
 		
