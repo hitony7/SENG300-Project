@@ -9,29 +9,21 @@ public class User {
 	private String name;
 	private String email;
 	private String field;
-	private boolean researcherFlag;
-	private boolean reviewerFlag;
-	private boolean editorFlag;
-	private boolean adminFlag;
+	private String userType;
 	
 	public User(int userID, String password, String name, String email, String field,
-			boolean researcherFlag, boolean reviewerFlag, boolean editorFlag,
-			boolean adminFlag) {
+			String userType) {
 		this.userID = userID;
 		setPassword(password);
 		setName(name);
 		setEmail(email);
 		setField(field);
-		this.researcherFlag = researcherFlag;
-		this.reviewerFlag = reviewerFlag;
-		this.editorFlag = editorFlag;
-		this.adminFlag = adminFlag;		
+		setUserType(userType);	
 	}
 	
 	public User(User copy) {
 		this(copy.userID, copy.password, copy.name, copy.email, copy.field,
-				copy.researcherFlag, copy.reviewerFlag, copy.editorFlag,
-				copy.adminFlag);
+				copy.userType);
 	}
 	
 	/**
@@ -45,10 +37,7 @@ public class User {
 				(String) obj.get("Name"),
 				(String) obj.get("Email"),
 				(String) obj.get("Field"),
-				(boolean) obj.get("ResearcherFlag"),
-				(boolean) obj.get("ReviewerFlag"),
-				(boolean) obj.get("EditorFlag"),
-				(boolean) obj.get("AdminFlag"));
+				(String) obj.get("UserType"));
 	}
 
 	public int getUserID() {
@@ -91,36 +80,12 @@ public class User {
 		this.field = field == null ? null : new String(field);
 	}
 
-	public boolean getResearcherFlag() {
-		return researcherFlag;
+	public String getUserType() {
+		return userType == null ? null : new String(userType);
 	}
-
-	public void setResearcherFlag(boolean researcherFlag) {
-		this.researcherFlag = researcherFlag;
-	}
-
-	public boolean getReviewerFlag() {
-		return reviewerFlag;
-	}
-
-	public void setReviewerFlag(boolean reviewerFlag) {
-		this.reviewerFlag = reviewerFlag;
-	}
-
-	public boolean getEditorFlag() {
-		return editorFlag;
-	}
-
-	public void setEditorFlag(boolean editorFlag) {
-		this.editorFlag = editorFlag;
-	}
-
-	public boolean getAdminFlag() {
-		return adminFlag;
-	}
-
-	public void setAdminFlag(boolean adminFlag) {
-		this.adminFlag = adminFlag;
+	
+	public void setUserType(String userType) {
+		this.userType = userType == null ? null : new String(userType);
 	}
 	
 	/**
@@ -136,10 +101,7 @@ public class User {
 		o.put("Name", getName());
 		o.put("Email", getEmail());
 		o.put("Field", getField());
-		o.put("ResearcherFlag", getResearcherFlag());
-		o.put("ReviewerFlag", getReviewerFlag());
-		o.put("EditorFlag", getEditorFlag());
-		o.put("AdminFlag", getAdminFlag());
+		o.put("UserType", getUserType());
 		
 		return o;
 	}	
