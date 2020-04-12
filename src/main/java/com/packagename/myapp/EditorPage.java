@@ -3,7 +3,8 @@ package com.packagename.myapp;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import com.packagename.myapp.model.JournalEditor;
+import com.packagename.myapp.model.EditorJournal;
+import com.packagename.myapp.model.Journal;
 import com.packagename.myapp.model.JsonModel;
 import com.packagename.myapp.model.Paper;
 import com.packagename.myapp.model.Submission;
@@ -29,15 +30,17 @@ public class EditorPage extends VerticalLayout{
 		ArrayList<Paper> papers;
 		ArrayList<Submission> submissions;
 		ArrayList<User> users;
-		ArrayList<JournalEditor> journalEditors;
+		ArrayList<Journal> journals;
+		ArrayList<EditorJournal> editorJournals; 
 		
 		//The ArrayList that sorts the papers by editor ID.
 		ArrayList<Paper> paperByEditorID = new ArrayList<>();
-		//The ArrayList that is added to the grid.
+		//The ArrayList that sorts the editorJournals by ID.
+		ArrayList<EditorJournal> editorJournalByID = new ArrayList<>();
+		
+		//The ArrayLists that are added to the grids.
 		ArrayList<ActivePaper> actPaper = new ArrayList<>();
-		
-		//TODO make arraylist that grabs the filtered journal things.
-		
+		ArrayList<SubmissionHistory> subHistory = new ArrayList<>();		
 		//TODO The arraylist below is the arrayList that should be added to the grid. WIP
 		ArrayList<JournalHistory> jHistory = new ArrayList<>(); 
 		
@@ -64,10 +67,17 @@ public class EditorPage extends VerticalLayout{
 		}
 		
 		try {
-			journalEditors = new ArrayList<>(JsonModel.getJournalEditorData().values());
+			editorJournals = new ArrayList<>(JsonModel.getEditorJournalData().values());
 		} catch(IOException e) {
 			e.printStackTrace();
-			journalEditors = new ArrayList<>();
+			editorJournals = new ArrayList<>();
+		}
+		
+		try {
+			journals = new ArrayList<>(JsonModel.getJournalData().values());
+		} catch(IOException e) {
+			e.printStackTrace();
+			journals = new ArrayList<>();
 		}
 		
 		//Just a temporary ID for now
@@ -80,25 +90,69 @@ public class EditorPage extends VerticalLayout{
 		}
 		
 		//This nested for loop makes it so that papers should be added to the grid for that specific user.
+		//Also adds submission history to the third grid.
 		for (Paper paper:paperByEditorID) {
 			for (Submission submission:submissions) {
 				if (paper.getPaperID() == submission.getPaperID()) {
 					for (User user:users) {
 						if (user.getUserID().equals(paper.getResearcherID())) {
 							actPaper.add(new ActivePaper(paper,submission,user));
+							subHistory.add(new SubmissionHistory(submission,user));
 						}
 					}
 				}
 			}
 		}
+
 		
 		//TODO Filter the journals??? (Ask Sean or refer to RM)
 		//The filtered arrayList should be added to the second grid. The Arraylist should already be 
 		//declared as jHistory above.
+
+		//Temporary ID
+		String tempID2 = "JohnDoe";
+		for (EditorJournal edJournal:editorJournals) {
+			if (edJournal.getEditorID().equals(tempID2)) {
+				editorJournalByID.add(edJournal);
+			}
+		}
 		
+		//NOTE//
+		//Below is a loop to add to the journalHistory. No idea if it's what we need, I'm not quite sure what
+		//we are trying to add to the grids; edit the loop as much as needed (I know it looks disgusting but I'm confused)
+		
+		for (EditorJournal edJournal:editorJournalByID) {
+			for (Journal journal:journals) {
+				if (edJournal.getJName().equals(journal.getJName())) {
+					for (Paper paper:papers) {
+						if (paper.getJournal().equals(journal.getJName())) {
+							for (Submission submission:submissions) {
+								if (submission.getPaperID() == paper.getPaperID()) {
+									for (User user:users) {
+										if (user.getUserID().equals(paper.getResearcherID())) {
+											jHistory.add(new JournalHistory(paper,submission,user));
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
 	
-		//TODO Do the same above, except filter in terms of submission history (Ask Sean or refer to RM)
-		//The filtered ArrayList should be added to the third grid.
+
+	//Below is what I had before to add to third grid, realized it can done in above loop.
+//		for (Paper paper:paperByEditorID) {
+//			for (Submission submission:submissions) {
+//				for (User user:users) {
+//					if (user.getUserID().equals(paper.getResearcherID())) {
+//						subHistory.add(new SubmissionHistory(submission,user));
+//					}
+//				}
+//			}
+//		}
+//		
 		
 		//The first grid.
 		Label first = new Label("Active Papers");
@@ -122,6 +176,7 @@ public class EditorPage extends VerticalLayout{
 		//The third grid.
 		Label third = new Label("Submission History");
 		Grid<SubmissionHistory> submissionHistory = new Grid<>();
+		submissionHistory.setItems(subHistory);
 		submissionHistory.addColumn(SubmissionHistory::getVersion).setHeader("Version");
 		submissionHistory.addColumn(SubmissionHistory::getSubDate).setHeader("Submission Date");
 		submissionHistory.addColumn(SubmissionHistory::getResubDeadline).setHeader("Resubmission Deadline");

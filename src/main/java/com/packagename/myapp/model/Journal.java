@@ -56,4 +56,9 @@ public class Journal {
 		return o;
 	}
 	
+	@Override
+	public String toString() {
+		return "{" + jName + "," + field + "}";
+	}
+	
 }

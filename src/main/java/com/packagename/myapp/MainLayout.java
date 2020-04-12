@@ -31,6 +31,19 @@ public class MainLayout extends AppLayout {
         header.addClassName("header");   //HTML
         header.setWidth("100%");   //SCALE TO WINDOW SIZE
         header.setDefaultVerticalComponentAlignment(FlexComponent.Alignment.CENTER);
+
+        Button jButton = new Button("Journals",
+                e -> UI.getCurrent().navigate("submit"));
+        jButton.setWidth("250px");
+        Button resButton = new Button("Researchers",
+                e -> UI.getCurrent().navigate("submit"));
+        resButton.setWidth("250px");
+        Button revButton = new Button("Reviewers",
+                e -> UI.getCurrent().navigate("submit"));
+        revButton.setWidth("250px");
+        Button eButton = new Button("Editors",
+                e -> UI.getCurrent().navigate("submit"));
+        eButton.setWidth("250px");
         
         //Button to go to the submit page
         Button submitPage = new Button("Create Submission",
@@ -51,6 +64,7 @@ public class MainLayout extends AppLayout {
         addToNavbar(header);
         addToNavbar(submitPage);
         addToNavbar(resubmitPage);
+        addToNavbar(jButton,resButton,revButton,eButton);
 
         addToNavbar(logoutB);
     }

@@ -174,29 +174,29 @@ public class JsonModel {
     	writeData("data\\journal.json", jsonData);
     }
 
-    public static HashMap<String,JournalEditor> getJournalEditorData() throws IOException {
-    	HashMap<String,JSONObject> jsonData = readData("data\\journal_editor.json");
-    	HashMap<String,JournalEditor> journalEditorData = new HashMap<>();
+    public static HashMap<String,EditorJournal> getEditorJournalData() throws IOException {
+    	HashMap<String,JSONObject> jsonData = readData("data\\editor_journal.json");
+    	HashMap<String,EditorJournal> journalEditorData = new HashMap<>();
     	
 		for (Map.Entry<String, JSONObject> entry : jsonData.entrySet()) {
 			JSONObject jsonJournalEditor = entry.getValue();
 
-			journalEditorData.put(entry.getKey(), new JournalEditor(jsonJournalEditor));
+			journalEditorData.put(entry.getKey(), new EditorJournal(jsonJournalEditor));
     	}
     	
     	return journalEditorData;
     }
     
-    public static void setJournalEditorData(HashMap<String,JournalEditor> journalData) throws IOException {
+    public static void setEditorJournalData(HashMap<String,EditorJournal> journalData) throws IOException {
     	JSONObject jsonData = new JSONObject();
     	
-    	for (Map.Entry<String, JournalEditor> entry : journalData.entrySet()) {
-    		JournalEditor journalEditor = entry.getValue();
+    	for (Map.Entry<String, EditorJournal> entry : journalData.entrySet()) {
+    		EditorJournal journalEditor = entry.getValue();
     		
     		jsonData.put(entry.getKey(), journalEditor.jsonObject());
     	}
     	
-    	writeData("data\\journal_editor.json", jsonData);
+    	writeData("data\\editor_journal.json", jsonData);
     }
     
     public static HashMap<Integer,Paper> getPaperData() throws IOException {
