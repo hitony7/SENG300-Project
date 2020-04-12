@@ -4,16 +4,16 @@ import org.json.simple.JSONObject;
 
 public class User {
 
-	private int userID;
+	private String userID;
 	private String password;
 	private String name;
 	private String email;
 	private String field;
 	private String userType;
 	
-	public User(int userID, String password, String name, String email, String field,
+	public User(String userID, String password, String name, String email, String field,
 			String userType) {
-		this.userID = userID;
+		setUserID(userID);
 		setPassword(password);
 		setName(name);
 		setEmail(email);
@@ -32,7 +32,7 @@ public class User {
 	 * @param obj
 	 */
 	public User(JSONObject obj) {
-		this(((Long) obj.get("UserID")).intValue(),
+		this((String) obj.get("UserID"),
 				(String) obj.get("Password"),
 				(String) obj.get("Name"),
 				(String) obj.get("Email"),
@@ -40,12 +40,12 @@ public class User {
 				(String) obj.get("UserType"));
 	}
 
-	public int getUserID() {
-		return userID;
+	public String getUserID() {
+		return userID == null ? null : new String(userID);
 	}
 
-	public void setUserID(int userID) {
-		this.userID = userID;
+	public void setUserID(String userID) {
+		this.userID = userID == null ? null : new String(userID);
 	}
 
 	public String getPassword() {
