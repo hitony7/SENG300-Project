@@ -123,23 +123,23 @@ public class JsonModel {
 		writer.close();
     }
     
-    public static HashMap<Integer,User> getUserData() throws IOException {
+    public static HashMap<String,User> getUserData() throws IOException {
     	HashMap<String,JSONObject> jsonData = readData("data\\user.json");
-    	HashMap<Integer,User> userData = new HashMap<>();
+    	HashMap<String,User> userData = new HashMap<>();
     	
 		for (Map.Entry<String, JSONObject> entry : jsonData.entrySet()) {
 			JSONObject jsonUser = entry.getValue();
 
-			userData.put(new Integer(entry.getKey()), new User(jsonUser));
+			userData.put(entry.getKey(), new User(jsonUser));
     	}
     	
     	return userData;
     }
     
-    public static void setUserData(HashMap<Integer,User> userData) throws IOException {
+    public static void setUserData(HashMap<String,User> userData) throws IOException {
     	JSONObject jsonData = new JSONObject();
     	
-    	for (Map.Entry<Integer, User> entry : userData.entrySet()) {
+    	for (Map.Entry<String, User> entry : userData.entrySet()) {
     		User user = entry.getValue();
     		
     		jsonData.put(entry.getKey(), user.jsonObject());
