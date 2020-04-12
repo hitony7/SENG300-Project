@@ -9,6 +9,8 @@ import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.dependency.CssImport;
+import com.vaadin.flow.component.dialog.Dialog;
+import com.vaadin.flow.component.html.Label;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.PasswordField;
 import com.vaadin.flow.component.textfield.TextField;
@@ -34,9 +36,12 @@ public class LoginView extends VerticalLayout  {
         Binder<ManageUserController> binder = new Binder(ManageUserController.class);
         try {
             userList = JsonModel.getUserData() ;
-        } catch (IOException e1) {
-            e1.printStackTrace();
-            userList = new HashMap<>();
+            System.out.println("Loaded");
+
+      } catch (IOException e1) {
+
+          e1.printStackTrace();
+           userList = new HashMap<>();
         }
         // Use TextField for standard text input
         TextField textField = new TextField("Username");
@@ -50,11 +55,23 @@ public class LoginView extends VerticalLayout  {
                 e -> {
                     User user = ManageUserController.validateLogin(userList, textField.getValue(), passwordField.getValue());
                     if(user != null){
+                        Dialog logSucc = new Dialog();
+
+                        //Prompt
+                        logSucc.add(new Label("Login Sucessful"  +  "\n" + "Welcome:"  + user.getUserID()) + " (" + user.getUserType() + " )" );
+                        logSucc.open();
+                        //Logic for what type of user
                         UI.getCurrent().navigate("dashboard");
                         System.out.println("Login SUCESSFUL");
+
                         //Logic for what type of user
                     } else   {
                         System.out.println("WRONG USERNAME/PASSWORD");
+                        Dialog logFail = new Dialog();
+
+                        //Prompt
+                        logFail.add(new Label("Invaild Username and/or Password."));
+                        logFail.open();
                     }
                     //jsonReader.checkUserPass();
                     //jsonReader.newUser(textField.getValue(), passwordField.getValue(), "admin");
