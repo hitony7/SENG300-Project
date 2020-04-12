@@ -3,12 +3,16 @@ package com.packagename.myapp.control;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.stream.Collectors;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.tuple.Pair;
 
+import com.packagename.myapp.model.Journal;
+import com.packagename.myapp.model.JournalEditor;
 import com.packagename.myapp.model.JsonModel;
 import com.packagename.myapp.model.Paper;
 import com.packagename.myapp.model.Submission;
@@ -27,22 +31,42 @@ import com.vaadin.flow.component.notification.Notification;
  */
 public class NewSubmissionController {
 	
+	private HashMap<String, User> userData;
+	private HashMap<Integer, Paper> paperData;
+	private HashMap<Pair<Integer, String>, Submission> submissionData;
+	private HashMap<String, Journal> journalData;
+	private HashMap<String, JournalEditor> journalEditorData;
+	
 	private Paper paper;
 	private Submission submission;
 	private InputStream inputStream;
 	private String filename;
-	
-	// temporary, to be replaced by actual User objects (corresponding to User table in RM)
-	//private String editorEmail;
-	private User researcher;
+	//private User researcher;
 	private User editor;
+	private Collection<User> reviewers;
 	
 
 	public NewSubmissionController() {
-		this(-1, -1);
+		this(null);
 	}
 	
-	public NewSubmissionController(int paperID, int researcherID) {
+	public NewSubmissionController(String researcherID) {
+		try {
+			userData = JsonModel.getUserData();
+			paperData = JsonModel.getPaperData();
+			submissionData = JsonModel.getSubmissionData();
+			journalData = JsonModel.getJournalData();
+			journalEditorData = JsonModel.getJournalEditorData();
+		} catch (IOException e1) {
+			e1.printStackTrace();
+			userData = new HashMap<>();
+			paperData = new HashMap<>();
+			submissionData = new HashMap<>();
+			journalData = new HashMap<>();
+			journalEditorData = new HashMap<>();
+		}
+		int paperID = getNumberOfPapers();
+		
 		paper = new Paper(paperID, null, researcherID, null);
 		submission = new Submission(paperID, "0.0.0", new Date(), null, null, SubStatus.PN_CL);
 		// researcher = new User(researcherID)
@@ -56,20 +80,22 @@ public class NewSubmissionController {
 		this.filename = filename;
 	}
 	
-	public String getEditorEmail() {
-		return editor == null ? null : editor.getEmail();
+	public User getEditor() {
+		return editor;
 	}
 	
-	public void setEditorEmail(String editorEmail) {
-		//this.editorEmail = editorEmail;
-		//this.paper.setEditorID(editorID);
+	//public Collection<User> 
+	
+	public void setEditor(User editor) {
+		this.editor = editor;
+		this.paper.setEditorID(editor.getUserID());
 	}
 
-	public int getResearcherID() {
+	public String getResearcherID() {
 		return paper.getResearcherID();
 	}
 	
-	public void setResearcherID(int researcherID) {
+	public void setResearcherID(String researcherID) {
 		this.paper.setResearcherID(researcherID);
 	}
 	
@@ -100,13 +126,38 @@ public class NewSubmissionController {
 	public void setStatus(SubStatus status) {
 		submission.setStatus(status);
 	}
-
-	public static int getNumberOfPapers(HashMap<Integer,Paper> paperData) {
+	
+	// Query Methods
+	public int getNumberOfPapers() {
 		return paperData.size();
 	}
+	
+	public Collection<Journal> getAllJournals() {
+		return journalData.values();
+	}
+	
+	public Collection<User> getAllEditorsByJournal(Journal journal) {
+		Collection<String> editorIDsByJournal = journalEditorData.values().stream()
+				.filter(journalEditor
+						-> journalEditor.getJName().equals(journal.getJName()))
+				.map(journalEditor
+						-> journalEditor.getEditorID())
+				.collect(Collectors.toSet());
+		
+		return userData.values().stream()
+				.filter(editor
+						-> editorIDsByJournal.contains(editor.getUserID()))
+				.collect(Collectors.toSet());
+	}
+	
+	public Collection<User> getAllReviewers() {
+		return userData.values().stream()
+				.filter(user
+						-> user.getUserType().equals("Reviewer"))
+				.collect(Collectors.toSet());
+	}
 
-	public void newResearcherSubmission(HashMap<Integer,Paper> paperData, 
-			HashMap<Pair<Integer,String>,Submission> submissionData)
+	public void newResearcherSubmission()
 					throws IOException {
 	
 	    // create journal directory if it does not exist

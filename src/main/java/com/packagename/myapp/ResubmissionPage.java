@@ -2,16 +2,23 @@ package com.packagename.myapp;
 
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.select.Select;
+import com.vaadin.flow.component.textfield.EmailField;
 import com.vaadin.flow.component.textfield.TextArea;
+import com.vaadin.flow.component.textfield.TextField;
 
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang3.tuple.Pair;
 
+import com.packagename.myapp.control.NewSubmissionController;
+import com.packagename.myapp.model.Paper;
+import com.packagename.myapp.model.Submission;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
@@ -30,6 +37,19 @@ import com.vaadin.flow.component.upload.receivers.MemoryBuffer;
 //Which has the path localhost:8080/dashboard
 @Route(value = "resubmit")
 public class ResubmissionPage extends VerticalLayout {
+	
+	private HashMap<Integer, Paper> paperData;
+	private HashMap<Pair<Integer, String>, Submission> submissionData;
+	NewSubmissionController paperSubmission;
+	
+	private TextField titleField = new TextField();
+	private TextField versionField = new TextField();
+	private Select<Journal> journalSelect = new Select<>();
+	private TextField editorEmailField = new TextField();
+	private TextArea messageField = new TextArea("Message to Editor");
+	private EmailField reviewerEmailsField = new EmailField("Reviewer Email Nominations");
+	private MemoryBuffer memBuffer = new MemoryBuffer();
+	private Upload upload = new Upload(memBuffer);
 	
 	private class Journal {
 		private String name;

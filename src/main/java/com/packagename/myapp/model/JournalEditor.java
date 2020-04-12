@@ -2,18 +2,18 @@ package com.packagename.myapp.model;
 
 import org.json.simple.JSONObject;
 
-public class Journal {
+public class JournalEditor {
 
 	private String jName;
-	private String field;
+	private String editorID;
 	
-	public Journal(String jName, String field) {
+	public JournalEditor(String jName, String editorID) {
 		setJName(jName);
-		setField(field);
+		setEditorID(editorID);
 	}
 	
-	public Journal(Journal copy) {
-		this(copy.jName, copy.field);
+	public JournalEditor(JournalEditor copy) {
+		this(copy.jName, copy.editorID);
 	}
 	
 	/**
@@ -21,9 +21,9 @@ public class Journal {
 	 * 
 	 * @param obj
 	 */
-	public Journal(JSONObject obj) {
-		this((String) obj.get("JName"),
-				(String) obj.get("Field"));
+	public JournalEditor(JSONObject obj) {
+		this((String) obj.get("JName"), 
+				(String) obj.get("EditorID"));
 	}
 
 	public String getJName() {
@@ -34,12 +34,12 @@ public class Journal {
 		this.jName = jName == null ? null : new String(jName);
 	}
 
-	public String getField() {
-		return field == null ? null : new String(field);
+	public String getEditorID() {
+		return editorID == null ? null : new String(editorID);
 	}
 
-	public void setField(String field) {
-		this.field = field == null ? null : new String(field);
+	public void setEditorID(String editorID) {
+		this.editorID = editorID == null ? null : new String(editorID);
 	}
 	
 	/**
@@ -49,11 +49,10 @@ public class Journal {
 	 */
 	public JSONObject jsonObject() {
 		JSONObject o = new JSONObject();
-		
+
 		o.put("JName", getJName());
-		o.put("Field", getField());
+		o.put("EditorID", getEditorID());
 		
 		return o;
 	}
-	
 }
