@@ -49,19 +49,53 @@ public class ManageUserController {
     }
     
     
-    public void setUserName(String userName) {
-        user.setName(userName);
-    }
 
-    public void setUsername(String username){
+
+    public void setUserName(String username){
         user.setUserID(username);
     }
     public String getUserName(){
         return user.getUserID();
     }
 
+    public String getPassword() {
+        return user.getPassword();
+    }
 
+    public void setPassword(String password){
+        user.setPassword(password);
+    }
 
+    public String getUserType(){
+        return user.getUserType();
+    }
 
+    public void setUserType(String userType){
+        user.setUserType(userType);
+    }
+
+    public String getEmail(){
+        return user.getEmail();
+    }
+
+    public void setEmail(String email){
+        user.setEmail(email);
+    }
+
+    public String getUserId(){
+        return user.getUserID();
+    }
+
+    public void setUserId(String userId){
+        user.setUserID(userId);
+    }
+
+    public String getField(){
+        return user.getField();
+    }
+
+    public void setField(String field){
+        user.setField(field);
+    }
 
 }

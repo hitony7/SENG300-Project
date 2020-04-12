@@ -86,22 +86,42 @@ public class ManageUser extends VerticalLayout {
 		
 		TextField password = new TextField();
 		password.setLabel("Password");
+
+		binder.forField(password)
+				.asRequired()
+				.bind(ManageUserController::getPassword, ManageUserController::setPassword);
 		
 		
 		
-		Select userType = new Select();
+		Select <String> userType = new Select();
 		userType.setLabel("User Type");
 		userType.setValue("Editor");
 		userType.setItems("Editor","Reviewer","Researcher");
 
+		binder.forField(userType)
+				.asRequired()
+				.bind(ManageUserController::getUserType, ManageUserController::setUserType);
+
 		TextField email = new TextField();
 		email.setLabel("Email");
+
+		binder.forField(email)
+				.asRequired()
+				.bind(ManageUserController::getEmail, ManageUserController::setEmail);
 
 		TextField UserId = new TextField();
 		UserId.setLabel("UserId");
 
+		binder.forField(UserId)
+				.asRequired()
+				.bind(ManageUserController::getUserId, ManageUserController::setUserId);
+
 		TextField field = new TextField();
 		field.setLabel("field");
+
+		binder.forField(field)
+				.asRequired()
+				.bind(ManageUserController::getField, ManageUserController::setField);
 		
 		form.add(UserId,userName,password,userType, field,email);
 		
