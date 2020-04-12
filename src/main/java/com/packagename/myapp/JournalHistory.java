@@ -18,6 +18,7 @@ public class JournalHistory {
 		super();
 		this.paper = paper;
 		this.submission = submission;
+		this.researcher = researcher;
 	}
 	
 	public String getPaperTitle() {

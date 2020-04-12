@@ -9,13 +9,11 @@ import com.packagename.myapp.model.Submission;
 import com.packagename.myapp.model.User;
 
 public class SubmissionHistory {
-	private Paper paper;
 	private Submission submission;
 	private User editor;
 	
-	public SubmissionHistory(Paper paper, Submission submission, User editor) {
+	public SubmissionHistory(Submission submission, User editor) {
 		super();
-		this.paper = paper;
 		this.submission = submission;
 		this.editor = editor;
 	}
