@@ -4,6 +4,7 @@ package com.packagename.myapp.control;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 
@@ -105,7 +106,4 @@ public class ManageUserController {
         user.setField(field);
     }
 
-    public void removeUser(){
-        
-    }
 }
