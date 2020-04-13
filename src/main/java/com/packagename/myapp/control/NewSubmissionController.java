@@ -87,8 +87,10 @@ public class NewSubmissionController {
 	}
 	
 	public void setEditor(User editor) {
-		this.editor = editor;
-		this.paper.setEditorID(editor.getUserID());
+		if (editor != null) {
+			this.editor = editor;
+			this.paper.setEditorID(editor.getUserID());
+		}
 	}
 
 	public String getResearcherID() {
@@ -168,10 +170,13 @@ public class NewSubmissionController {
 		}
 
 		// create file in journal directory
-		String filePath = journalPath + filename;
+		String filePath = journalPath + "\\" + filename;
 		submission.setFilePath(filePath);
 		
-	    File f = new File(journalPath + filename);
+	    File f = new File(filePath);
+	    if (f.exists()) {
+	    	throw new IOException("File already exists.");
+	    }
 	    f.createNewFile();
 	
 	    // copy uploaded content to f
@@ -189,6 +194,10 @@ public class NewSubmissionController {
 	    JsonModel.setPaperData(paperData);
 	    JsonModel.setSubmissionData(submissionData);
 	    JsonModel.setNominatedReviewerData(nominatedReviewerData);
+	    
+	    int newPaperID = getNumberOfPapers();
+	    this.paper = new Paper(newPaperID, null, paper.getResearcherID(), null);
+	    this.submission = new Submission(newPaperID, "0.0.0", new Date(), null, null, SubStatus.PN_CL);
 	}
 	
 }

@@ -56,8 +56,10 @@ public class Paper {
 				(String) obj.get("ResearcherID"), 
 				(String) obj.get("Journal"), 
 				(String) obj.get("EditorID"),
-				((Long) obj.get("CollectionYear")).intValue(),
-				((Long) obj.get("CollectionHalfYear")).intValue());
+				obj.get("CollectionYear") == null ? null
+						: ((Long) obj.get("CollectionYear")).intValue(),
+				obj.get("CollectionHalfYear") == null ? null
+						: ((Long) obj.get("CollectionHalfYear")).intValue());
 	}
 
 	public int getPaperID() {

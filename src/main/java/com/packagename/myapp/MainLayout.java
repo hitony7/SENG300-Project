@@ -16,10 +16,15 @@ import com.vaadin.flow.router.RouterLink;
 @CssImport("./styles/shared-styles.css")
 //Which has the path localhost:8080/dashboard
 public class MainLayout extends AppLayout {
+	
+	
+	
     //Constructor of Two components
     public MainLayout() {
         createHeader();
         createDrawer();
+        
+        
     }
 
     //Top Bar the header

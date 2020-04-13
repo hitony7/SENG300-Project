@@ -17,13 +17,11 @@ import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.formlayout.FormLayout;
-import com.vaadin.flow.component.formlayout.FormLayout.FormItem;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.select.Select;
-import com.vaadin.flow.component.textfield.EmailField;
 import com.vaadin.flow.component.textfield.TextArea;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.component.upload.Upload;
@@ -52,12 +50,11 @@ public class SubmissionLayout extends VerticalLayout{
 	private Select<User> editorEmailSelect = new Select<>();
 	private TextArea messageField = new TextArea("Message to Editor");
 	private Grid<User> reviewerEmailGrid = new Grid<>();
-	private ComboBox<User> reviewerEmailCombo = new ComboBox<>();
+	private ComboBox<User> reviewerEmailCombo = new ComboBox<>("Nominate Reviewer");
 	private Button addReviewerButton = new Button("Add");
 	private Button removeReviewerButton = new Button("Remove");
 	private HorizontalLayout reviewerListForm = new HorizontalLayout();
-	private MemoryBuffer memBuffer = new MemoryBuffer();
-	private Upload upload = new Upload(memBuffer);
+	private Upload upload = new Upload(new MemoryBuffer());
 	
 	private Button submitButton = new Button("Submit");
 	private Button backButton = new Button("Back");
@@ -65,7 +62,7 @@ public class SubmissionLayout extends VerticalLayout{
 	
 	
 	public SubmissionLayout() {
-		setMaxWidth("80em");
+		setMaxWidth("50em");
 		
 		Binder<NewSubmissionController> subBinder = new Binder(NewSubmissionController.class);
 
@@ -87,7 +84,7 @@ public class SubmissionLayout extends VerticalLayout{
 		}
 		
 		// placeholder value
-		String researcherID = "yes";
+		String researcherID = "admin";
 		subController = new NewSubmissionController(userData, paperData, submissionData,
 				journalData, journalEditorData, nominatedReviewerData, researcherID);
 		revController = new ReviewerListController(userData);
@@ -143,7 +140,9 @@ public class SubmissionLayout extends VerticalLayout{
 		// reviewerEmailGrid
 		reviewerEmailGrid.setItems(revController.getReviewerList());
 		reviewerEmailGrid.addColumn(User::getEmail).setHeader("Email");
-		reviewerEmailGrid.addColumn(User::getField).setHeader("Field");
+		reviewerEmailGrid.addColumn(User::getField).setHeader("Field").setAutoWidth(true);
+		reviewerEmailGrid.setHeightByRows(true);
+		reviewerEmailGrid.setMaxWidth("20em");
 		reviewerEmailGrid.getElement().setAttribute("theme", "small");
 		
 		reviewerEmailCombo.setItems((reviewer, filter)
@@ -157,27 +156,30 @@ public class SubmissionLayout extends VerticalLayout{
 			reviewerEmailGrid.getDataProvider().refreshAll();
 		});
 		
+		removeReviewerButton.setMinWidth("5em");
 		removeReviewerButton.addClickListener(e -> {
 			revController.removeReviewer(reviewerEmailCombo.getValue());
 			reviewerEmailGrid.getDataProvider().refreshAll();
 		});
 
 		
-		subBinder.withValidator(value -> memBuffer.getFileName() != "", "File required.");
+		subBinder.withValidator(value -> ((MemoryBuffer) upload.getReceiver()).getFileName() != "", "File required.");
 		
 		submitButton.addClickListener(event -> {
 			try {
 				// attempt to fill paperSubmission with form values
 				subBinder.writeBean(subController);						
-				subController.setInputStream(memBuffer.getInputStream());
-				subController.setFilename(memBuffer.getFileName());
-				
-				System.out.println("Editor email: " + subController.getEditor());
+				subController.setInputStream(((MemoryBuffer) upload.getReceiver()).getInputStream());
+				subController.setFilename(((MemoryBuffer) upload.getReceiver()).getFileName());
 				
 			    // save to data
 				subController.newResearcherSubmission(revController);
 			    
 				Notification.show("Submission made.");
+				
+				upload.setReceiver(new MemoryBuffer());
+				
+				subBinder.readBean(subController);
 				
 			} catch (ValidationException ex){
 				for (ValidationResult c : ex.getValidationErrors()) {
@@ -197,8 +199,10 @@ public class SubmissionLayout extends VerticalLayout{
 		submissionForm.addFormItem(versionField, "Version");
 		submissionForm.addFormItem(journalSelect, "Journal");
 		submissionForm.addFormItem(editorEmailSelect, "Editor Email");
-		reviewerListForm.add(reviewerEmailGrid, new VerticalLayout(reviewerEmailCombo, addReviewerButton, removeReviewerButton));
-		submissionForm.add(messageField, reviewerListForm, upload);
+		reviewerListForm.add(reviewerEmailGrid, reviewerEmailCombo, addReviewerButton, removeReviewerButton);
+		submissionForm.add(messageField);
+		submissionForm.add(reviewerListForm);
+		submissionForm.add(upload);
 		
 		submissionForm.setColspan(messageField, 2);
 		submissionForm.setColspan(reviewerListForm, 2);
