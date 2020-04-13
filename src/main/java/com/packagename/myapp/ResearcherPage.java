@@ -20,7 +20,7 @@ import com.vaadin.flow.router.Route;
 @PageTitle("Reviewer | Vaadin CRM")
 //Child of MainLayout Right side of Main Page
 //Which has the path localhost:8080/dashboard
-@Route(value = "editor", layout = MainLayout.class)
+@Route(value = "researcher", layout = MainLayout.class)
 public class ResearcherPage extends VerticalLayout{
 
 	public ResearcherPage() {

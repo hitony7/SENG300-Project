@@ -41,24 +41,24 @@ public class MainLayout extends AppLayout {
                 e -> UI.getCurrent().navigate("submit"));
         jButton.setWidth("250px");
         Button resButton = new Button("Researchers",
-                e -> UI.getCurrent().navigate("submit"));
+                e -> UI.getCurrent().navigate("researcher"));
         resButton.setWidth("250px");
         Button revButton = new Button("Reviewers",
                 e -> UI.getCurrent().navigate("submit"));
         revButton.setWidth("250px");
         Button eButton = new Button("Editors",
-                e -> UI.getCurrent().navigate("submit"));
+                e -> UI.getCurrent().navigate("editor"));
         eButton.setWidth("250px");
         
         //Button to go to the submit page
         Button submitPage = new Button("Create Submission",
         		e -> UI.getCurrent().navigate("submit"));
-        submitPage.setWidth("250px");
+        submitPage.setWidth("300px");
         
         //Button to go to the resubmit page
         Button resubmitPage = new Button("Resubmit a Journal",
         		e -> UI.getCurrent().navigate("resubmit"));
-        resubmitPage.setWidth("280px");
+        resubmitPage.setWidth("300px");
         
         
         //Button needs to be repositioned
