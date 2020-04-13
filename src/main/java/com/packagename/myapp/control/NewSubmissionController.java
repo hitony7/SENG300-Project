@@ -51,7 +51,6 @@ public class NewSubmissionController {
 	//private User researcher;
 	private User editor;
 	
-	
 	public NewSubmissionController(HashMap<String, User> userData,
 			HashMap<Integer, Paper> paperData,
 			HashMap<Pair<Integer, String>, Submission> submissionData,

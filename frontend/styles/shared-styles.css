@@ -22,7 +22,7 @@ a[highlight] {
 }
 
 .centered-content {
-  margin: 0 auto;
-  max-width: 250px;
+  margin: auto;
+  max-width: 500px;
 }
 
