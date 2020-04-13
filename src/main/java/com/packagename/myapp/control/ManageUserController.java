@@ -4,6 +4,7 @@ package com.packagename.myapp.control;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 
@@ -27,6 +28,7 @@ import com.vaadin.flow.component.notification.Notification;
  *
  */
 public class ManageUserController {
+    private HashMap <String, User> userData;
 
     private User user;
     private InputStream inputStream;
@@ -35,7 +37,12 @@ public class ManageUserController {
 
 
     public ManageUserController() {
-
+        try{
+            userData = JsonModel.getUserData();
+        } catch (IOException e){
+            e.printStackTrace();
+            userData = new HashMap<>();
+        }
     }
 
 
@@ -49,8 +56,7 @@ public class ManageUserController {
         }
         return null;
     }
-    
-    
+
 
 
     public void setUserName(String username){

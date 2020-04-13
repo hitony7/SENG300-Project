@@ -4,7 +4,7 @@ import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.lang.reflect.Array;
-import java.util.ArrayList;
+import java.util.*;
 
 import com.packagename.myapp.control.ManageUserController;
 import com.packagename.myapp.model.JsonModel;
@@ -36,9 +36,6 @@ import com.vaadin.flow.router.Route;
 
 
 import java.io.FileReader;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
 
 import elemental.json.Json;
 import org.apache.commons.lang3.ObjectUtils;
@@ -164,6 +161,7 @@ public class ManageUser extends VerticalLayout {
 
 
 
+
 		//Label for adding new users.
 		H5 newUser = new H5("Add New User");
 
@@ -203,7 +201,30 @@ public class ManageUser extends VerticalLayout {
 		Button edit =  new Button("Edit User");
 
 		//Button to remove a user.
-		Button remove = new Button("Remove Selected User(s)");
+		Button remove = new Button("Remove Selected User(s)", e ->{
+			//Grabs all of the user data in the user.json file and put it in a Hashmap
+			HashMap <String, User> allUser;
+			try{
+				allUser = JsonModel.getUserData();
+			}catch(IOException error){
+				error.printStackTrace();
+				allUser = new HashMap<>();
+			}
+	
+			Set<User> select = userGrid.getSelectedItems();
+			User[] selectedInfo = new User [1];
+			select.toArray(selectedInfo);
+
+			allUser.remove(selectedInfo[0].getUserID());
+
+			try {
+				JsonModel.setUserData(allUser);
+			} catch(IOException e3){
+				e3.printStackTrace();
+			}
+			removed.open();
+			UI.getCurrent().getPage().reload();
+		});
 
 
 		//Set the buttons to the left side of the page.
