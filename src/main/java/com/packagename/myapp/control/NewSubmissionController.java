@@ -6,22 +6,19 @@ import java.io.InputStream;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
 
-import com.packagename.myapp.model.Journal;
-import com.google.common.base.Functions;
 import com.packagename.myapp.ReviewerListController;
 import com.packagename.myapp.model.EditorJournal;
+import com.packagename.myapp.model.Journal;
 import com.packagename.myapp.model.JsonModel;
+import com.packagename.myapp.model.NominatedReviewer;
 import com.packagename.myapp.model.Paper;
 import com.packagename.myapp.model.Submission;
-import com.packagename.myapp.model.NominatedReviewer;
 import com.packagename.myapp.model.Submission.SubStatus;
 import com.packagename.myapp.model.User;
 import com.vaadin.flow.component.notification.Notification;

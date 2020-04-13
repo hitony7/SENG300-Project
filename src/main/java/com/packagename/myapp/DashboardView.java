@@ -33,6 +33,9 @@ public class DashboardView extends VerticalLayout {
         H1 logo = new H1("This is a Blank Page on the rightside of the MainPage");
         
         //Button to go to the reviewer page
+        Button researcher = new Button("To researcher page",
+        		e -> UI.getCurrent().navigate("researcher"));
+        
         Button reviewer = new Button("To reviewer page",
         		e -> UI.getCurrent().navigate("reviewer"));
         
@@ -43,7 +46,7 @@ public class DashboardView extends VerticalLayout {
         editor.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
         
         
-        add(logo,reviewer,editor);
+        add(logo,researcher,reviewer,editor);
         
         
       

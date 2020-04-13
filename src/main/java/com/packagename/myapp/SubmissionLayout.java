@@ -40,8 +40,8 @@ public class SubmissionLayout extends VerticalLayout{
 	private HashMap<String,EditorJournal> journalEditorData;
 	private HashMap<Pair<Integer,String>,NominatedReviewer> nominatedReviewerData;
 	
-	NewSubmissionController subController;
-	ReviewerListController revController;
+	private NewSubmissionController subController;
+	private ReviewerListController revController;
 	
 	private FormLayout submissionForm = new FormLayout();
 	private TextField titleField = new TextField();
@@ -85,6 +85,7 @@ public class SubmissionLayout extends VerticalLayout{
 		
 		// placeholder value
 		String researcherID = "admin";
+		
 		subController = new NewSubmissionController(userData, paperData, submissionData,
 				journalData, journalEditorData, nominatedReviewerData, researcherID);
 		revController = new ReviewerListController(userData);
@@ -179,7 +180,8 @@ public class SubmissionLayout extends VerticalLayout{
 				
 				upload.setReceiver(new MemoryBuffer());
 				
-				subBinder.readBean(subController);
+				//subBinder.readBean(subController);
+				UI.getCurrent().navigate("researcher");
 				
 			} catch (ValidationException ex){
 				for (ValidationResult c : ex.getValidationErrors()) {
@@ -192,7 +194,7 @@ public class SubmissionLayout extends VerticalLayout{
 		});
 		
 		backButton.addClickListener(
-				e -> UI.getCurrent().navigate("dashboard"));
+				e -> UI.getCurrent().navigate("researcher"));
 		
 		
 		submissionForm.addFormItem(titleField, "Paper Title");
