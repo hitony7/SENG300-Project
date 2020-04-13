@@ -235,7 +235,7 @@ public class JsonModel {
     		String version = splitKey[1];
     		JSONObject jsonSubmission = entry.getValue();
     		
-    		submissionData.put(new ImmutablePair<Integer, String>(paperID, version),
+    		submissionData.put(ImmutablePair.of(paperID, version),
     				new Submission(jsonSubmission));
     	}
     	
@@ -257,19 +257,19 @@ public class JsonModel {
     	writeData("data\\submission.json", jsonData);
     }
     
-    public static HashMap<Pair<Integer,Integer>,NominatedReviewer> getNominatedReviewerData()
+    public static HashMap<Pair<Integer,String>,NominatedReviewer> getNominatedReviewerData()
     		throws IOException {
     	HashMap<String,JSONObject> jsonData = readData("data\\nominated_reviewer.json");
-    	HashMap<Pair<Integer,Integer>,NominatedReviewer> nominatedReviewerData
+    	HashMap<Pair<Integer,String>,NominatedReviewer> nominatedReviewerData
     		= new HashMap<>();
     	
     	for (Map.Entry<String, JSONObject> entry : jsonData.entrySet()) {
     		String[] splitKey = entry.getKey().split("_");
     		Integer paperID = new Integer(splitKey[0]);
-    		Integer reviewerID = new Integer(splitKey[1]);
+    		String reviewerID = splitKey[1];
     		JSONObject jsonNominatedReviewer = entry.getValue();
     		
-    		nominatedReviewerData.put(new ImmutablePair<Integer, Integer>(paperID, reviewerID),
+    		nominatedReviewerData.put(ImmutablePair.of(paperID, reviewerID),
     				new NominatedReviewer(jsonNominatedReviewer));
     	}
     	
@@ -277,13 +277,13 @@ public class JsonModel {
     }
     
     public static void setNominatedReviewerData(
-    		HashMap<Pair<Integer,Integer>,NominatedReviewer> nominatedReviewerData)
+    		HashMap<Pair<Integer,String>,NominatedReviewer> nominatedReviewerData)
     				throws IOException {
     	JSONObject jsonData = new JSONObject();
     	
-    	for (Map.Entry<Pair<Integer,Integer>,NominatedReviewer> entry 
+    	for (Map.Entry<Pair<Integer,String>,NominatedReviewer> entry 
     			: nominatedReviewerData.entrySet()) {
-    		Pair<Integer,Integer> pair = entry.getKey();
+    		Pair<Integer,String> pair = entry.getKey();
     		String primaryKey = pair.getLeft() + "_" + pair.getRight();
     		NominatedReviewer nominatedReviewer = entry.getValue();
     		

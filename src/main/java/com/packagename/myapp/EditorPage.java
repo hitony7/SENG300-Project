@@ -31,7 +31,7 @@ public class EditorPage extends VerticalLayout{
 		ArrayList<Submission> submissions;
 		ArrayList<User> users;
 		ArrayList<Journal> journals;
-		ArrayList<EditorJournal> editorJournals; 
+		ArrayList<EditorJournal> editorJournals;
 		
 		//The ArrayList that sorts the papers by editor ID.
 		ArrayList<Paper> paperByEditorID = new ArrayList<>();
