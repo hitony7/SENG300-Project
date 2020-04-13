@@ -6,10 +6,10 @@ import java.util.HashMap;
 import org.apache.commons.lang3.tuple.Pair;
 
 import com.packagename.myapp.control.ResubmissionController;
-import com.packagename.myapp.model.JsonModel;
-import com.packagename.myapp.model.Paper;
-import com.packagename.myapp.model.Submission;
-import com.packagename.myapp.model.User;
+import com.packagename.myapp.model.base.JsonModel;
+import com.packagename.myapp.model.base.Paper;
+import com.packagename.myapp.model.base.Submission;
+import com.packagename.myapp.model.base.User;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.formlayout.FormLayout;

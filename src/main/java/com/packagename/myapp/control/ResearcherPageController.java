@@ -2,18 +2,16 @@ package com.packagename.myapp.control;
 
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import org.apache.commons.lang3.tuple.Pair;
 
-import com.packagename.myapp.model.Journal;
-import com.packagename.myapp.model.Paper;
-import com.packagename.myapp.model.PersonalJournalHistory;
-import com.packagename.myapp.model.PersonalSubmissionHistory;
-import com.packagename.myapp.model.Submission;
-import com.packagename.myapp.model.User;
+import com.packagename.myapp.model.base.Journal;
+import com.packagename.myapp.model.base.Paper;
+import com.packagename.myapp.model.base.Submission;
+import com.packagename.myapp.model.base.User;
+import com.packagename.myapp.model.composite.PersonalJournalHistory;
+import com.packagename.myapp.model.composite.PersonalSubmissionHistory;
 
 public class ResearcherPageController {
 
@@ -40,31 +38,6 @@ public class ResearcherPageController {
 	
 	// Query Methods	
 	public Collection<PersonalJournalHistory> getPersonalJournalHistory() {
-		/*return journalData.values().stream()
-				.map(journal -> {
-					Stream<Paper> papers = paperData.values().stream()
-							.filter(paper -> paper.getResearcherID().equals(userID)
-									&& paper.getJournal().equals(journal.getJName()));
-					
-					Collection<PersonalSubmissionHistory> personalSubmissionHistory = 
-							submissionData.values().stream().map(sub -> {
-								Paper matchedPaper = papers
-										.filter(paper -> sub.getPaperID() == paper.getPaperID())
-										.findAny().orElse(null);
-								if (matchedPaper != null) {
-									User editor = userData.values().stream()
-											.filter(user -> user.getUserID().equals(matchedPaper.getEditorID()))
-											.findAny().orElse(null);
-									return new PersonalSubmissionHistory(matchedPaper, sub, editor);
-								} else {
-									return null;
-								}
-							}).filter(sub -> sub != null)
-							.collect(Collectors.toSet());
-					
-					return new PersonalJournalHistory(journal, (int) papers.count(), 
-							personalSubmissionHistory.size(), personalSubmissionHistory);
-				}).collect(Collectors.toSet());*/
 		return journalData.values().stream()
 				.map(journal -> {
 					Collection<Paper> papers = paperData.values().stream()

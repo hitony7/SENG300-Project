@@ -1,6 +1,8 @@
-package com.packagename.myapp.model;
+package com.packagename.myapp.model.composite;
 
 import java.util.Collection;
+
+import com.packagename.myapp.model.base.Journal;
 
 public class PersonalJournalHistory {
 

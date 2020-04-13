@@ -13,14 +13,14 @@ import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
 
 import com.packagename.myapp.ReviewerListController;
-import com.packagename.myapp.model.EditorJournal;
-import com.packagename.myapp.model.Journal;
-import com.packagename.myapp.model.JsonModel;
-import com.packagename.myapp.model.NominatedReviewer;
-import com.packagename.myapp.model.Paper;
-import com.packagename.myapp.model.Submission;
-import com.packagename.myapp.model.Submission.SubStatus;
-import com.packagename.myapp.model.User;
+import com.packagename.myapp.model.base.EditorJournal;
+import com.packagename.myapp.model.base.Journal;
+import com.packagename.myapp.model.base.JsonModel;
+import com.packagename.myapp.model.base.NominatedReviewer;
+import com.packagename.myapp.model.base.Paper;
+import com.packagename.myapp.model.base.Submission;
+import com.packagename.myapp.model.base.Submission.SubStatus;
+import com.packagename.myapp.model.base.User;
 import com.vaadin.flow.component.notification.Notification;
 
 /**

@@ -1,12 +1,12 @@
-package com.packagename.myapp;
+package com.packagename.myapp.model.composite;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import com.packagename.myapp.model.Paper;
-import com.packagename.myapp.model.Submission;
-import com.packagename.myapp.model.User;
+import com.packagename.myapp.model.base.Paper;
+import com.packagename.myapp.model.base.Submission;
+import com.packagename.myapp.model.base.User;
 
 public class JournalHistory {
 
