@@ -1,28 +1,22 @@
 package com.packagename.myapp;
 
+import java.io.IOException;
+import java.util.HashMap;
+
 import com.packagename.myapp.control.ManageUserController;
-import com.packagename.myapp.model.JsonModel;
-import com.packagename.myapp.model.Paper;
-import com.packagename.myapp.model.User;
-import com.vaadin.flow.component.Key;
+import com.packagename.myapp.model.base.JsonModel;
+import com.packagename.myapp.model.base.User;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
-import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.dependency.CssImport;
 import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.html.H1;
 import com.vaadin.flow.component.html.H2;
-import com.vaadin.flow.component.html.H3;
 import com.vaadin.flow.component.html.Label;
 import com.vaadin.flow.component.login.LoginForm;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
-import com.vaadin.flow.component.textfield.PasswordField;
-import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.binder.Binder;
 import com.vaadin.flow.router.Route;
-
-import java.io.IOException;
-import java.util.HashMap;
 
 
 /**

@@ -7,7 +7,6 @@ import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.html.H1;
 import com.vaadin.flow.component.html.Label;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
-import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 
@@ -33,6 +32,9 @@ public class DashboardView extends VerticalLayout {
         H1 logo = new H1("This is a Blank Page on the rightside of the MainPage");
         
         //Button to go to the reviewer page
+        Button researcher = new Button("To researcher page",
+        		e -> UI.getCurrent().navigate("researcher"));
+        
         Button reviewer = new Button("To reviewer page",
         		e -> UI.getCurrent().navigate("reviewer"));
         
@@ -43,7 +45,7 @@ public class DashboardView extends VerticalLayout {
         editor.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
         
         
-        add(logo,reviewer,editor);
+        add(logo,researcher,reviewer,editor);
         
         
       
