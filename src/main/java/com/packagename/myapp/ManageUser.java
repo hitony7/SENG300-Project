@@ -210,11 +210,10 @@ public class ManageUser extends VerticalLayout {
 				error.printStackTrace();
 				allUser = new HashMap<>();
 			}
-
+	
 			Set<User> select = userGrid.getSelectedItems();
 			User[] selectedInfo = new User [1];
 			select.toArray(selectedInfo);
-			System.out.println(selectedInfo[0]);
 
 			allUser.remove(selectedInfo[0].getUserID());
 
