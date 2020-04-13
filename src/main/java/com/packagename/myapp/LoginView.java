@@ -14,6 +14,7 @@ import com.vaadin.flow.component.html.H1;
 import com.vaadin.flow.component.html.H2;
 import com.vaadin.flow.component.html.H3;
 import com.vaadin.flow.component.html.Label;
+import com.vaadin.flow.component.login.LoginForm;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.PasswordField;
 import com.vaadin.flow.component.textfield.TextField;
@@ -38,7 +39,6 @@ public class LoginView extends VerticalLayout  {
     public LoginView() {
         H1 title = new H1("Welcome to the University of Winnipeg");
         H2 project= new H2("Journal Login System.");
-        H3 login = new H3("Please Login with follow fields");
         Binder<ManageUserController> binder = new Binder(ManageUserController.class);
         try {
             userList = JsonModel.getUserData() ;
@@ -47,38 +47,31 @@ public class LoginView extends VerticalLayout  {
           e1.printStackTrace();
            userList = new HashMap<>();
         }
-        // Use TextField for standard text input
-        TextField textField = new TextField("Username");
-        PasswordField passwordField = new PasswordField("Password");
-        passwordField.setPlaceholder("Enter password");
-        passwordField.setValue("secret1");
         // Button click listeners can be defined as lambda expressions
+        LoginForm logincomponent = new LoginForm();
+        logincomponent.addLoginListener(e -> {
+            User user = ManageUserController.validateLogin(userList, e.getUsername(), e.getPassword());
+            if(user != null){
+                Dialog logSucc = new Dialog();
+                //Prompt
+                logSucc.add(new Label("Login Sucessful"  +  "\n" + "Welcome:"  + user.getUserID() + " (" + user.getUserType() + " )"));
+                logSucc.open();
+                //Logic for what type of user
+                UI.getCurrent().navigate("dashboard");
+                System.out.println("Login SUCESSFUL");
 
-        GreetService greetService = new GreetService();
-        Button button = new Button("Login",
-                e -> {
-                    User user = ManageUserController.validateLogin(userList, textField.getValue(), passwordField.getValue());
-                    if(user != null){
-                        Dialog logSucc = new Dialog();
-                        //Prompt
-                        logSucc.add(new Label("Login Sucessful"  +  "\n" + "Welcome:"  + user.getUserID() + " (" + user.getUserType() + " )"));
-                        logSucc.open();
-                        //Logic for what type of user
-                        UI.getCurrent().navigate("dashboard");
-                        System.out.println("Login SUCESSFUL");
+                //Logic for what type of user
+            } else   {
+                System.out.println("WRONG USERNAME/PASSWORD");
+                Dialog logFail = new Dialog();
 
-                        //Logic for what type of user
-                    } else   {
-                        System.out.println("WRONG USERNAME/PASSWORD");
-                        Dialog logFail = new Dialog();
+                //Prompt
+                logFail.add(new Label("Invaild Username and/or Password."));
+                logFail.open();
+            }
+            logincomponent.setEnabled(true);
+        });
 
-                        //Prompt
-                        logFail.add(new Label("Invaild Username and/or Password."));
-                        logFail.open();
-                    }
-                    //jsonReader.checkUserPass();
-                    //jsonReader.newUser(textField.getValue(), passwordField.getValue(), "admin");
-                });
 
         Button newpage = new Button("Click this to go to main page (This is after login)",
                 e -> UI.getCurrent().navigate("dashboard"));
@@ -89,16 +82,17 @@ public class LoginView extends VerticalLayout  {
 
         // Theme variants give you predefined extra styles for components.
         // Example: Primary button is more prominent look.
-        button.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
+        //button.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
 
         // You can specify keyboard shortcuts for buttons.
         // Example: Pressing enter in this view clicks the Button.
-        button.addClickShortcut(Key.ENTER);
+        //button.addClickShortcut(Key.ENTER);
 
         // Use custom CSS classes to apply styling. This is defined in shared-styles.css.
         addClassName("centered-content");
-        add(title,project,login);
-        add(textField, passwordField, button, newpage, adminPage);
+        //setHorizontalComponentAlignment( logincomponent,);
+        add(title,project, logincomponent);
+        add(newpage, adminPage);
     }
 
 
