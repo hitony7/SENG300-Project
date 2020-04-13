@@ -180,7 +180,6 @@ public class SubmissionLayout extends VerticalLayout{
 				
 				upload.setReceiver(new MemoryBuffer());
 				
-				//subBinder.readBean(subController);
 				UI.getCurrent().navigate("researcher");
 				
 			} catch (ValidationException ex){

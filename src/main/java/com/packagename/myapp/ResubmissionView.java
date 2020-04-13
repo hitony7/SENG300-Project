@@ -133,7 +133,9 @@ public class ResubmissionView extends VerticalLayout{
 			    // save to data
 				subController.createResubmission();
 			    
-				Notification.show("Submission made.");
+				Notification.show("Resubmission made.");
+				
+				UI.getCurrent().navigate("researcher");
 				
 			} catch (ValidationException ex){
 				for (ValidationResult c : ex.getValidationErrors()) {
@@ -146,7 +148,7 @@ public class ResubmissionView extends VerticalLayout{
 		});
 		
 		backButton.addClickListener(
-				e -> UI.getCurrent().navigate("dashboard"));
+				e -> UI.getCurrent().navigate("researcher"));
 		
 		
 		titleField.setEnabled(false);

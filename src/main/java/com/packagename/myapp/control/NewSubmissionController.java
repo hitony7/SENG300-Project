@@ -190,10 +190,6 @@ public class NewSubmissionController {
 	    JsonModel.setPaperData(paperData);
 	    JsonModel.setSubmissionData(submissionData);
 	    JsonModel.setNominatedReviewerData(nominatedReviewerData);
-	    
-	    int newPaperID = getNumberOfPapers();
-	    this.paper = new Paper(newPaperID, null, paper.getResearcherID(), null);
-	    this.submission = new Submission(newPaperID, "0.0.0", new Date(), null, null, SubStatus.PN_CL);
 	}
 	
 }
