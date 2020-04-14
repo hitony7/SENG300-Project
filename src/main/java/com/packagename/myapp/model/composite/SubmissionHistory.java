@@ -25,6 +25,8 @@ public class SubmissionHistory {
 	public String getTitle() {
 		return new String(paper.getTitle());
 	}
+
+
 	
 	public String getVersion() {
 		return new String(submission.getVersion());
