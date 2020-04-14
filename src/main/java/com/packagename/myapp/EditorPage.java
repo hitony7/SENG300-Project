@@ -114,18 +114,7 @@ public class EditorPage extends VerticalLayout{
 		}
 		
 
-		try {
-			userData = JsonModel.getUserData();
-			paperData = JsonModel.getPaperData();
-			submissionData = JsonModel.getSubmissionData();
-			journalEditorData = JsonModel.getEditorJournalData();
-		} catch (IOException e1) {
-			e1.printStackTrace();
-			userData = new HashMap<>();
-			paperData = new HashMap<>();
-			submissionData = new HashMap<>();
-			journalEditorData = new HashMap<>();
-		}
+
 
 		// placeholder value
 		String userID = "TrTr564";
