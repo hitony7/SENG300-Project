@@ -75,7 +75,7 @@ public class ResearcherPage extends VerticalLayout{
 		journalHistory.setItems(controller.getPersonalJournalHistory());
 
 		
-		//The third grid.
+		//The Second grid.
 		H3 third = new H3("Submission History");
 		Grid<SubmissionHistory> submissionHistory = new Grid<>();
 		submissionHistory.addColumn(SubmissionHistory::getTitle)
@@ -98,6 +98,7 @@ public class ResearcherPage extends VerticalLayout{
 				submissionHistory.setItems(new HashSet<>());
 			} else {
 				submissionHistory.setItems(journal.getSubmissionHistory());
+
 			}
 		});
 		
