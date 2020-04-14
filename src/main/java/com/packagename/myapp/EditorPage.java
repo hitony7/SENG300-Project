@@ -149,6 +149,9 @@ public class EditorPage extends VerticalLayout{
 			} else {
 				journalHistory.deselectAll();
 				submissionHistory.setItems(controller.getSubmissionHistory(entry));
+				SetStatusPage.pName = entry.getPaperTitle();
+				ChoosePaperPage.pName = entry.getPaperTitle();
+				SetStatusPage.vName = entry.getVersion();
 			}
 			submissionHistory.getDataProvider().refreshAll();
 		});
