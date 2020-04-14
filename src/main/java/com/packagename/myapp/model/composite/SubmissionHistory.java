@@ -1,5 +1,7 @@
 package com.packagename.myapp.model.composite;
 
+import java.util.Date;
+
 import com.packagename.myapp.model.base.Paper;
 import com.packagename.myapp.model.base.Submission;
 import com.packagename.myapp.model.base.User;
@@ -16,6 +18,10 @@ public class SubmissionHistory {
 		this.editor = editor;
 	}
 	
+	public Submission getSubmission() {
+		return new Submission(submission);
+	}
+	
 	public String getTitle() {
 		return new String(paper.getTitle());
 	}
@@ -25,15 +31,21 @@ public class SubmissionHistory {
 	}
 	
 	public String getSubmissionDate() {
-		return submission.formatOrNull(submission.getSubmissionDate());
+		return Submission.formatOrNull(submission.getSubmissionDate());
 	}
 	
 	public String getResubmissionDeadline() {
-		return submission.formatOrNull(submission.getResubmissionDeadline());
+		Date deadline = submission.getResubmissionDeadline();
+		
+		return deadline == null ? "Not yet set." 
+				: Submission.dateFormat.format(deadline);
 	}
 	
 	public String getReviewDeadline() {
-		return submission.formatOrNull(submission.getReviewDeadline());
+		Date deadline = submission.getReviewDeadline();
+		
+		return deadline == null ? "Not yet set." 
+				: Submission.dateFormat.format(deadline);
 	}
 	
 	public String getEditorEmail() {

@@ -120,7 +120,7 @@ public class Review {
 	@Override
 	public String toString() {
 		return "{" + paperID + "," + version + "," + reviewerID
-				 + "," + dateFormat.format(reviewDate)
+				 + "," + formatOrNull(reviewDate)
 				 + "," + filePath + "," + comment + "}";
 	}	
 }
