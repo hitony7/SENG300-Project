@@ -92,7 +92,7 @@ public class EditorPage extends VerticalLayout{
 		journalHistory.addColumn(PaperEntry::getLastDecisionDate).setHeader("Last Decision Date");
 		journalHistory.addColumn(PaperEntry::getStatus).setHeader("Status");
 
-		activePapers.addSelectionListener(selection -> {
+		journalHistory.addSelectionListener(selection -> {
 			PaperEntry entry = selection.getFirstSelectedItem().orElse(null);
 			
 			if (entry == null) {
