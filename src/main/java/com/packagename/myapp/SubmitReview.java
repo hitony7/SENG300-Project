@@ -48,6 +48,13 @@ public class SubmitReview extends VerticalLayout {
 		Label selectPaper = new Label("Select Paper");
 		
 		Select<Paper> paperSelect = new Select<>();
+		//Try to display all fo the papers
+//		paperSelect.setItems(SendReviewController.getPaper());
+
+		//TODO finish setting up binder
+//		binder.forField(paperSelect)
+//				.asRequired()
+//				.bind(SendReviewController::getPaper, SendReviewController::setPaper);
 
 		TextArea comment = new TextArea("Comment");
 		comment.setPlaceholder("Comments");
