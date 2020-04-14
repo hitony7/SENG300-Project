@@ -1,55 +1,38 @@
 package com.packagename.myapp.model.composite;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
+import com.packagename.myapp.model.base.Paper;
 import com.packagename.myapp.model.base.Submission;
 import com.packagename.myapp.model.base.User;
 
-public class SubmissionHistory {
+public class PersonalSubmissionHistory {
+
+	private Paper paper;
 	private Submission submission;
 	private User editor;
 	
-	public SubmissionHistory(Submission submission, User editor) {
-		super();
+	public PersonalSubmissionHistory(Paper paper, Submission submission, User editor) {
+		this.paper = paper;
 		this.submission = submission;
 		this.editor = editor;
 	}
 	
+	public String getTitle() {
+		return new String(paper.getTitle());
+	}
+	
 	public String getVersion() {
-		return submission.getVersion();
+		return new String(submission.getVersion());
 	}
 	
-	public String getSubDate() {
-		Date temp = submission.getSubmissionDate();
-		String date = dateToString(temp);
-		return date;
+	public String getSubmissionDate() {
+		return submission.formatOrNull(submission.getSubmissionDate());
 	}
 	
-	public String getResubDeadline() {
-		Date temp = submission.getResubmissionDeadline();
-		String date = dateToString(temp);
-		return date;
+	public String getEditorEmail() {
+		return editor == null ? "Not assigned." : editor.getEmail();
 	}
 	
-	public String getReviewDeadline() {
-		Date temp = submission.getReviewDeadline();
-		String date = dateToString(temp);
-		return date;
+	public String getStatus() {
+		return submission.getStatus().toString();
 	}
-	
-	public String getEditor() {
-		return editor.getName();
-	}
-	
-	/*
-	 * Takes a date as a paramater, and turns it into a string.
-	 */
-	public String dateToString(Date temp) {
-		DateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd");
-		String str = dateFormat.format(temp);
-		return str;
-	}
-	
 }

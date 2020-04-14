@@ -184,7 +184,7 @@ public class Submission {
 		this.status = status;
 	}
 	
-	public String formatOrNull(Date date) {
+	public static String formatOrNull(Date date) {
 		return date == null ? null : dateFormat.format(date);
 	}
 
