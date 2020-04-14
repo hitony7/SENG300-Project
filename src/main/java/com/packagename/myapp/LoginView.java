@@ -53,7 +53,6 @@ public class LoginView extends VerticalLayout  {
                 //Logic for what type of user
                 if(user.getUserType().equals("Admin")){
                     new SessionUser(user);
-                    MainLayout.userName = user.getName();
                     UI.getCurrent().navigate("admin");
                 }
                 else if(user.getUserType().equals("Reviewer")){

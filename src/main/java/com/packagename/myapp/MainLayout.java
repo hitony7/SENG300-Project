@@ -21,8 +21,6 @@ public class MainLayout extends AppLayout {
     public MainLayout() {
         createHeader();
         createDrawer();
-        
-        
     }
 
     //Top Bar the header
