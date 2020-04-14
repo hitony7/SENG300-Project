@@ -4,12 +4,20 @@ import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.dialog.Dialog;
+import com.vaadin.flow.component.html.Anchor;
 import com.vaadin.flow.component.html.H1;
 import com.vaadin.flow.component.html.Label;
+import com.vaadin.flow.component.icon.Icon;
+import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.select.Select;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
+import com.vaadin.flow.server.StreamResource;
+
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 
 @PageTitle("Reviewer | Vaadin CRM")
 //Child of MainLayout Right side of Main Page
@@ -29,6 +37,18 @@ public class ChoosePaperPage extends VerticalLayout {
 		
 		Button set = new Button("Set", 
 				e -> popup.open());
+
+		Anchor download = new Anchor(new StreamResource("filename.ext", () -> {
+			try {
+				return createResource();
+			} catch (FileNotFoundException e) {
+				e.printStackTrace();
+			}
+			return null;
+		}), "");
+		download.getElement().setAttribute("download", true);
+		download.add(new Button(new Icon(VaadinIcon.DOWNLOAD_ALT)));
+
 		Button back = new Button("Back",
 				e -> UI.getCurrent().navigate("editor"));
 		
@@ -37,5 +57,10 @@ public class ChoosePaperPage extends VerticalLayout {
 		
 		add(header,label,papers,set,back);
 	}
-	
+
+	private InputStream createResource() throws FileNotFoundException {
+		InputStream inputstream = new FileInputStream("data\\journals\\Science\\stamps.def");
+		return  inputstream;
+	}
+
 }
