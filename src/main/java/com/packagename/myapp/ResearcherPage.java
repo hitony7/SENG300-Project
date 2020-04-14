@@ -38,6 +38,7 @@ public class ResearcherPage extends VerticalLayout{
 	
 	public ResearcherPage() {
 
+
 		try {
 			userData = JsonModel.getUserData();
 			paperData = JsonModel.getPaperData();
@@ -111,5 +112,6 @@ public class ResearcherPage extends VerticalLayout{
 		
 		
 	}
-	
+
+
 }
