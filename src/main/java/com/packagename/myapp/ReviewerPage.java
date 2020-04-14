@@ -19,6 +19,7 @@ import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.html.H3;
+import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
@@ -38,7 +39,14 @@ public class ReviewerPage extends VerticalLayout{
 
     public  ReviewerPage() {
 
-
+    	HorizontalLayout layout = new HorizontalLayout();
+    	
+    	Button submitReview = new Button("Submit Review",
+    			e -> UI.getCurrent().navigate("submit-review"));
+    	submitReview.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
+    	
+    	layout.add(submitReview);
+    	
         try {
             userData = JsonModel.getUserData();
             paperData = JsonModel.getPaperData();
@@ -107,7 +115,7 @@ public class ReviewerPage extends VerticalLayout{
 
         back.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
 
-        add(first,journalHistory,third,submissionHistory,back);
+        add(layout,first,journalHistory,third,submissionHistory,back);
 
 
 
