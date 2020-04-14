@@ -11,6 +11,7 @@ import com.vaadin.flow.component.html.Label;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.select.Select;
 import com.vaadin.flow.component.textfield.TextArea;
+import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.component.upload.Upload;
 import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.upload.receivers.MemoryBuffer;
@@ -23,16 +24,18 @@ import com.vaadin.flow.router.Route;
 @Route(value = "submit-review", layout = MainLayout.class)
 public class SubmitReview extends VerticalLayout {
 	public static String jName ="none";
+	public static String pName = "none";
 	public SubmitReview() {
 		
 		H1 header = new H1("Submit Review");
 		H4 subheader = new H4("You have selected " + jName + "(journal)");
 		Label selectPaper = new Label("Select Paper");
 		
-		Select<Paper> paperSelect = new Select<>();
+		//Select<Paper> paperSelect = new Select<>();
+		TextField text = new TextField();
+		text.setReadOnly(true);
+		text.setValue(pName);
 
-
-		
 		TextArea comment = new TextArea("Comment");
 		comment.setPlaceholder("Comments");
 		comment.getStyle().set("minHeight","150px");
@@ -52,7 +55,10 @@ public class SubmitReview extends VerticalLayout {
 		popup.add(new Label("Review Submitted"));
 		
 		Button send = new Button("Send",
-				e -> popup.open()); 
+				e ->{
+					popup.open();
+
+				});
 		
 		Button back = new Button("Back",
 				e -> UI.getCurrent().navigate("reviewer"));
@@ -60,7 +66,7 @@ public class SubmitReview extends VerticalLayout {
 		back.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
 		send.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
 		
-		add(header,selectPaper,paperSelect,comment,send,back);
+		add(header,subheader,selectPaper,text,comment,send,back);
 		
 	}
 	
