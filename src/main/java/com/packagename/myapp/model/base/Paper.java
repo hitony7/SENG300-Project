@@ -1,4 +1,4 @@
-package com.packagename.myapp.model;
+package com.packagename.myapp.model.base;
 
 import org.json.simple.JSONObject;
 

@@ -6,13 +6,13 @@ import java.util.HashMap;
 import org.apache.commons.lang3.tuple.Pair;
 
 import com.packagename.myapp.control.NewSubmissionController;
-import com.packagename.myapp.model.EditorJournal;
-import com.packagename.myapp.model.Journal;
-import com.packagename.myapp.model.JsonModel;
-import com.packagename.myapp.model.NominatedReviewer;
-import com.packagename.myapp.model.Paper;
-import com.packagename.myapp.model.Submission;
-import com.packagename.myapp.model.User;
+import com.packagename.myapp.model.base.EditorJournal;
+import com.packagename.myapp.model.base.Journal;
+import com.packagename.myapp.model.base.JsonModel;
+import com.packagename.myapp.model.base.NominatedReviewer;
+import com.packagename.myapp.model.base.Paper;
+import com.packagename.myapp.model.base.Submission;
+import com.packagename.myapp.model.base.User;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.combobox.ComboBox;
@@ -40,8 +40,8 @@ public class SubmissionLayout extends VerticalLayout{
 	private HashMap<String,EditorJournal> journalEditorData;
 	private HashMap<Pair<Integer,String>,NominatedReviewer> nominatedReviewerData;
 	
-	NewSubmissionController subController;
-	ReviewerListController revController;
+	private NewSubmissionController subController;
+	private ReviewerListController revController;
 	
 	private FormLayout submissionForm = new FormLayout();
 	private TextField titleField = new TextField();
@@ -85,6 +85,7 @@ public class SubmissionLayout extends VerticalLayout{
 		
 		// placeholder value
 		String researcherID = "admin";
+		
 		subController = new NewSubmissionController(userData, paperData, submissionData,
 				journalData, journalEditorData, nominatedReviewerData, researcherID);
 		revController = new ReviewerListController(userData);
@@ -179,7 +180,7 @@ public class SubmissionLayout extends VerticalLayout{
 				
 				upload.setReceiver(new MemoryBuffer());
 				
-				subBinder.readBean(subController);
+				UI.getCurrent().navigate("researcher");
 				
 			} catch (ValidationException ex){
 				for (ValidationResult c : ex.getValidationErrors()) {
@@ -192,7 +193,7 @@ public class SubmissionLayout extends VerticalLayout{
 		});
 		
 		backButton.addClickListener(
-				e -> UI.getCurrent().navigate("dashboard"));
+				e -> UI.getCurrent().navigate("researcher"));
 		
 		
 		submissionForm.addFormItem(titleField, "Paper Title");

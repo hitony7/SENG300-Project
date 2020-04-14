@@ -6,10 +6,10 @@ import java.util.HashMap;
 import org.apache.commons.lang3.tuple.Pair;
 
 import com.packagename.myapp.control.ResubmissionController;
-import com.packagename.myapp.model.JsonModel;
-import com.packagename.myapp.model.Paper;
-import com.packagename.myapp.model.Submission;
-import com.packagename.myapp.model.User;
+import com.packagename.myapp.model.base.JsonModel;
+import com.packagename.myapp.model.base.Paper;
+import com.packagename.myapp.model.base.Submission;
+import com.packagename.myapp.model.base.User;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.formlayout.FormLayout;
@@ -133,7 +133,9 @@ public class ResubmissionView extends VerticalLayout{
 			    // save to data
 				subController.createResubmission();
 			    
-				Notification.show("Submission made.");
+				Notification.show("Resubmission made.");
+				
+				UI.getCurrent().navigate("researcher");
 				
 			} catch (ValidationException ex){
 				for (ValidationResult c : ex.getValidationErrors()) {
@@ -146,7 +148,7 @@ public class ResubmissionView extends VerticalLayout{
 		});
 		
 		backButton.addClickListener(
-				e -> UI.getCurrent().navigate("dashboard"));
+				e -> UI.getCurrent().navigate("researcher"));
 		
 		
 		titleField.setEnabled(false);
