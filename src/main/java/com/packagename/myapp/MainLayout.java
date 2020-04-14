@@ -63,9 +63,13 @@ public class MainLayout extends AppLayout {
         logoutB.setWidth("220px");
 
         addToNavbar(header);
-        addToNavbar(submitPage);
-        addToNavbar(resubmitPage);
-        addToNavbar(jButton,resButton,revButton,eButton);
+        if(SessionUser.userType.equals("Researcher")) {
+            addToNavbar(submitPage);
+            addToNavbar(resubmitPage);
+        }
+        if(SessionUser.userType.equals("Researcher")){
+            //addToNavbar(jButton,resButton,revButton,eButton);
+        }
 
         addToNavbar(logoutB);
     }

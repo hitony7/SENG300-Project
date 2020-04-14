@@ -6,6 +6,7 @@ import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.html.H1;
+import com.vaadin.flow.component.html.H4;
 import com.vaadin.flow.component.html.Label;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.select.Select;
@@ -21,14 +22,16 @@ import com.vaadin.flow.router.Route;
 //Which has the path localhost:8080/dashboard
 @Route(value = "submit-review", layout = MainLayout.class)
 public class SubmitReview extends VerticalLayout {
-	
+	public static String jName ="none";
 	public SubmitReview() {
 		
 		H1 header = new H1("Submit Review");
-		
+		H4 subheader = new H4("You have selected " + jName + "(journal)");
 		Label selectPaper = new Label("Select Paper");
 		
 		Select<Paper> paperSelect = new Select<>();
+
+
 		
 		TextArea comment = new TextArea("Comment");
 		comment.setPlaceholder("Comments");
