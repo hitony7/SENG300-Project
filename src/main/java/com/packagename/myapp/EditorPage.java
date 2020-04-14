@@ -18,7 +18,11 @@ import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.grid.Grid;
+import com.vaadin.flow.component.html.Label;
+import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
+
 import com.vaadin.flow.component.html.H3;
+
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
@@ -33,7 +37,7 @@ public class EditorPage extends VerticalLayout{
 	private HashMap<Integer,Paper> paperData;
 	private HashMap<Pair<Integer,String>,Submission> submissionData;
 	private HashMap<String,EditorJournal> journalEditorData;
-	
+
 	private EditorPageController controller;
 
 	H3 first = new H3("Assigned Active Papers");
@@ -44,6 +48,71 @@ public class EditorPage extends VerticalLayout{
 	Grid<SubmissionHistory> submissionHistory = new Grid<>();
 
 	public EditorPage() {
+
+
+		HorizontalLayout topButtons = new HorizontalLayout();
+		Button status = new Button("Status",
+				e -> UI.getCurrent().navigate("set-status"));
+		Button request = new Button("Request Reviews",
+				e -> UI.getCurrent().navigate("request-review"));
+		Button choosePaper = new Button("Choose Paper",
+				e -> UI.getCurrent().navigate("choose-paper"));
+
+		status.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
+		request.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
+		choosePaper.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
+
+		topButtons.add(status,request,choosePaper);
+
+
+
+		//Below are arraylists of the different objects we use to grab data with the try and catch blocks.
+		ArrayList<Paper> papers;
+		ArrayList<Submission> submissions;
+		ArrayList<User> users;
+		//ArrayList<Journal> journals;
+		ArrayList<EditorJournal> editorJournals;
+
+		//The ArrayList that sorts the papers by editor ID.
+		ArrayList<Paper> paperByEditorID = new ArrayList<>();
+		//The ArrayList that sorts the editorJournals by ID.
+		ArrayList<EditorJournal> editorJournalByID = new ArrayList<>();
+
+		//The ArrayLists that are added to the grids.
+		//ArrayList<ActivePaper> actPaper = new ArrayList<>();
+		ArrayList<SubmissionHistory> subHistory = new ArrayList<>();
+		//TODO The arraylist below is the arrayList that should be added to the grid. WIP
+		//ArrayList<JournalHistory> jHistory = new ArrayList<>();
+
+		//These try and catch blocks just get the data for that respective object.
+		try {
+			papers = new ArrayList<>(JsonModel.getPaperData().values());
+		} catch(IOException e) {
+			e.printStackTrace();
+			papers = new ArrayList<>();
+		}
+
+		try {
+			submissions = new ArrayList<>(JsonModel.getSubmissionData().values());
+		} catch(IOException e) {
+			e.printStackTrace();
+			submissions = new ArrayList<>();
+		}
+
+		try {
+			users = new ArrayList<>(JsonModel.getUserData().values());
+		} catch(IOException e) {
+			e.printStackTrace();
+			users = new ArrayList<>();
+		}
+
+		try {
+			editorJournals = new ArrayList<>(JsonModel.getEditorJournalData().values());
+		} catch(IOException e) {
+			e.printStackTrace();
+			editorJournals = new ArrayList<>();
+		}
+
 
 		try {
 			userData = JsonModel.getUserData();
@@ -60,11 +129,11 @@ public class EditorPage extends VerticalLayout{
 
 		// placeholder value
 		String userID = "TrTr564";
-		
+
 		controller = new EditorPageController(userData, paperData, submissionData,
 				journalEditorData, userID);
-		
-		
+
+
 		//The first grid.
 		activePapers.setItems(controller.getActivePapers());
 		activePapers.addColumn(PaperEntry::getPaperTitle).setHeader("Paper");
@@ -74,7 +143,7 @@ public class EditorPage extends VerticalLayout{
 
 		activePapers.addSelectionListener(selection -> {
 			PaperEntry entry = selection.getFirstSelectedItem().orElse(null);
-			
+
 			if (entry == null) {
 				submissionHistory.setItems();
 			} else {
@@ -83,7 +152,7 @@ public class EditorPage extends VerticalLayout{
 			}
 			submissionHistory.getDataProvider().refreshAll();
 		});
-		
+
 		//The second grid.
 		journalHistory.setItems(controller.getJournalHistory());
 		journalHistory.addColumn(PaperEntry::getPaperTitle).setHeader("Paper");
@@ -94,7 +163,7 @@ public class EditorPage extends VerticalLayout{
 
 		journalHistory.addSelectionListener(selection -> {
 			PaperEntry entry = selection.getFirstSelectedItem().orElse(null);
-			
+
 			if (entry == null) {
 				submissionHistory.setItems();
 			} else {
@@ -103,25 +172,26 @@ public class EditorPage extends VerticalLayout{
 			}
 			submissionHistory.getDataProvider().refreshAll();
 		});
-		
+
 		//The third grid.
 		submissionHistory.addColumn(SubmissionHistory::getVersion).setHeader("Version");
 		submissionHistory.addColumn(SubmissionHistory::getSubmissionDate).setHeader("Submission Date");
 		submissionHistory.addColumn(SubmissionHistory::getResubmissionDeadline).setHeader("Resubmission Deadline");
 		submissionHistory.addColumn(SubmissionHistory::getReviewDeadline).setHeader("Review Deadline");
 		submissionHistory.addColumn(SubmissionHistory::getEditorEmail).setHeader("Editor");
-		
-		
+
+
 		//Back button that sends you back to the dashboard.
 		Button back = new Button("Back",
 				e -> UI.getCurrent().navigate("dashboard"));
-		
+
 		back.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
-		
-		add(first,activePapers,second,journalHistory,third,submissionHistory,back);
-		
-		
-		
+
+		add(topButtons,first,activePapers,second,journalHistory,third,submissionHistory,back);
+
+
+
 	}
-	
+
 }
+

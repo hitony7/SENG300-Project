@@ -1,3 +1,4 @@
+//MAIN LAYOUT//
 package com.packagename.myapp;
 
 
