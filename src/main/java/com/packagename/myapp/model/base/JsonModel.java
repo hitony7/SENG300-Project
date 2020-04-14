@@ -7,7 +7,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.commons.lang3.tuple.ImmutablePair;
+import org.apache.commons.lang3.tuple.ImmutableTriple;
 import org.apache.commons.lang3.tuple.Pair;
+import org.apache.commons.lang3.tuple.Triple;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -289,5 +291,42 @@ public class JsonModel {
     	}
     	
     	writeData("data\\nominated_reviewer.json", jsonData);
+    }
+    
+    public static HashMap<Triple<Integer,String,String>,Review> getReviewData()
+    		throws IOException {
+    	HashMap<String,JSONObject> jsonData = readData("data\\review.json");
+    	HashMap<Triple<Integer,String,String>,Review> reviewData = new HashMap<>();
+    	
+    	for (Map.Entry<String, JSONObject> entry : jsonData.entrySet()) {
+    		String[] splitKey = entry.getKey().split("_");
+    		Integer paperID = new Integer(splitKey[0]);
+    		String version = splitKey[1];
+    		String reviewerID = splitKey[2];
+    		JSONObject jsonReview = entry.getValue();
+    		
+    		reviewData.put(ImmutableTriple.of(paperID, version, reviewerID),
+    				new Review(jsonReview));
+    	}
+    	
+    	return reviewData;
+    }
+    
+    public static void setReviewData(
+    		HashMap<Triple<Integer,String,String>,Review> reviewData)
+    				throws IOException {
+    	JSONObject jsonData = new JSONObject();
+    	
+    	for (Map.Entry<Triple<Integer,String,String>,Review> entry 
+    			: reviewData.entrySet()) {
+    		Triple<Integer,String,String> triple = entry.getKey();
+    		String primaryKey = triple.getLeft() + "_"+ triple.getMiddle() + "_" 
+    				+ triple.getRight();
+    		Review review = entry.getValue();
+    		
+    		jsonData.put(primaryKey, review.jsonObject());
+    	}
+    	
+    	writeData("data\\review.json", jsonData);
     }
 }

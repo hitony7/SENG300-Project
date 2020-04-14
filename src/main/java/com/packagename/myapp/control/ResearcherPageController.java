@@ -11,7 +11,7 @@ import com.packagename.myapp.model.base.Paper;
 import com.packagename.myapp.model.base.Submission;
 import com.packagename.myapp.model.base.User;
 import com.packagename.myapp.model.composite.PersonalJournalHistory;
-import com.packagename.myapp.model.composite.PersonalSubmissionHistory;
+import com.packagename.myapp.model.composite.SubmissionHistory;
 
 public class ResearcherPageController {
 
@@ -45,7 +45,7 @@ public class ResearcherPageController {
 									&& paper.getJournal().equals(journal.getJName()))
 							.collect(Collectors.toSet());
 					
-					Collection<PersonalSubmissionHistory> personalSubmissionHistory = 
+					Collection<SubmissionHistory> personalSubmissionHistory = 
 							submissionData.values().stream()
 							.filter(sub -> {
 								Paper matchedPaper = paperData.get(sub.getPaperID());
@@ -57,7 +57,7 @@ public class ResearcherPageController {
 								
 								User editor = userData.get(matchedPaper.getEditorID());
 								
-								return new PersonalSubmissionHistory(matchedPaper, sub, editor);
+								return new SubmissionHistory(matchedPaper, sub, editor);
 							}).collect(Collectors.toSet());
 					
 					return new PersonalJournalHistory(journal, (int) papers.size(),

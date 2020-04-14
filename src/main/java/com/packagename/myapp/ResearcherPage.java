@@ -13,7 +13,7 @@ import com.packagename.myapp.model.base.Paper;
 import com.packagename.myapp.model.base.Submission;
 import com.packagename.myapp.model.base.User;
 import com.packagename.myapp.model.composite.PersonalJournalHistory;
-import com.packagename.myapp.model.composite.PersonalSubmissionHistory;
+import com.packagename.myapp.model.composite.SubmissionHistory;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
@@ -77,19 +77,19 @@ public class ResearcherPage extends VerticalLayout{
 		
 		//The third grid.
 		H3 third = new H3("Submission History");
-		Grid<PersonalSubmissionHistory> submissionHistory = new Grid<>();
-		submissionHistory.addColumn(PersonalSubmissionHistory::getTitle)
+		Grid<SubmissionHistory> submissionHistory = new Grid<>();
+		submissionHistory.addColumn(SubmissionHistory::getTitle)
 				.setHeader("Paper Title");
-		submissionHistory.addColumn(PersonalSubmissionHistory::getVersion)
+		submissionHistory.addColumn(SubmissionHistory::getVersion)
 				.setWidth("1.2em")
 				.setHeader("Version");
-		submissionHistory.addColumn(PersonalSubmissionHistory::getSubmissionDate)
+		submissionHistory.addColumn(SubmissionHistory::getSubmissionDate)
 				.setWidth("5em")
 				.setHeader("Submission Date");
-		submissionHistory.addColumn(PersonalSubmissionHistory::getEditorEmail)
+		submissionHistory.addColumn(SubmissionHistory::getEditorEmail)
 				.setWidth("4.5em")
 				.setHeader("Editor");
-		submissionHistory.addColumn(PersonalSubmissionHistory::getStatus)
+		submissionHistory.addColumn(SubmissionHistory::getStatus)
 				.setHeader("Status");
 
 		journalHistory.addSelectionListener(e -> {

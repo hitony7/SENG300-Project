@@ -1,55 +1,58 @@
 package com.packagename.myapp.model.composite;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import com.packagename.myapp.model.base.Paper;
 import com.packagename.myapp.model.base.Submission;
 import com.packagename.myapp.model.base.User;
 
 public class SubmissionHistory {
+
+	private Paper paper;
 	private Submission submission;
 	private User editor;
 	
-	public SubmissionHistory(Submission submission, User editor) {
-		super();
+	public SubmissionHistory(Paper paper, Submission submission, User editor) {
+		this.paper = paper;
 		this.submission = submission;
 		this.editor = editor;
 	}
 	
+	public Submission getSubmission() {
+		return new Submission(submission);
+	}
+	
+	public String getTitle() {
+		return new String(paper.getTitle());
+	}
+	
 	public String getVersion() {
-		return submission.getVersion();
+		return new String(submission.getVersion());
 	}
 	
-	public String getSubDate() {
-		Date temp = submission.getSubmissionDate();
-		String date = dateToString(temp);
-		return date;
+	public String getSubmissionDate() {
+		return Submission.formatOrNull(submission.getSubmissionDate());
 	}
 	
-	public String getResubDeadline() {
-		Date temp = submission.getResubmissionDeadline();
-		String date = dateToString(temp);
-		return date;
+	public String getResubmissionDeadline() {
+		Date deadline = submission.getResubmissionDeadline();
+		
+		return deadline == null ? "Not yet set." 
+				: Submission.dateFormat.format(deadline);
 	}
 	
 	public String getReviewDeadline() {
-		Date temp = submission.getReviewDeadline();
-		String date = dateToString(temp);
-		return date;
+		Date deadline = submission.getReviewDeadline();
+		
+		return deadline == null ? "Not yet set." 
+				: Submission.dateFormat.format(deadline);
 	}
 	
-	public String getEditor() {
-		return editor.getName();
+	public String getEditorEmail() {
+		return editor == null ? "Not assigned." : editor.getEmail();
 	}
 	
-	/*
-	 * Takes a date as a paramater, and turns it into a string.
-	 */
-	public String dateToString(Date temp) {
-		DateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd");
-		String str = dateFormat.format(temp);
-		return str;
+	public String getStatus() {
+		return submission.getStatus().toString();
 	}
-	
 }

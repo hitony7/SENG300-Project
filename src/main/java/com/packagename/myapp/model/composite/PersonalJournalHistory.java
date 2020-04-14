@@ -10,10 +10,10 @@ public class PersonalJournalHistory {
 	private int papersSubmitted;
 	private int submissionsMade;
 	
-	private Collection<PersonalSubmissionHistory> submissionHistory;
+	private Collection<SubmissionHistory> submissionHistory;
 	
 	public PersonalJournalHistory(Journal journal, int papersSubmitted,
-			int submissionsMade, Collection<PersonalSubmissionHistory> submissionHistory) {
+			int submissionsMade, Collection<SubmissionHistory> submissionHistory) {
 		
 		this.journal = journal;
 		this.papersSubmitted = papersSubmitted;
@@ -37,7 +37,7 @@ public class PersonalJournalHistory {
 		return submissionsMade;
 	}
 
-	public Collection<PersonalSubmissionHistory> getSubmissionHistory() {
+	public Collection<SubmissionHistory> getSubmissionHistory() {
 		return submissionHistory;
 	}
 }
