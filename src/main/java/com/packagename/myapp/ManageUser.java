@@ -198,7 +198,11 @@ public class ManageUser extends VerticalLayout {
 			}
 		});
 
-		Button edit =  new Button("Edit User");
+		Button edit =  new Button("Edit User", e ->{
+			Set<User> select = userGrid.getSelectedItems();
+			User[] selectedInfo = new User [1];
+			select.toArray();
+		});
 
 		//Button to remove a user.
 		Button remove = new Button("Remove Selected User(s)", e ->{
@@ -210,7 +214,7 @@ public class ManageUser extends VerticalLayout {
 				error.printStackTrace();
 				allUser = new HashMap<>();
 			}
-	
+
 			Set<User> select = userGrid.getSelectedItems();
 			User[] selectedInfo = new User [1];
 			select.toArray(selectedInfo);
