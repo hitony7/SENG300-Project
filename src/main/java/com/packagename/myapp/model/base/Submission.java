@@ -184,7 +184,7 @@ public class Submission {
 		this.status = status;
 	}
 	
-	public String formatOrNull(Date date) {
+	public static String formatOrNull(Date date) {
 		return date == null ? null : dateFormat.format(date);
 	}
 
@@ -212,10 +212,10 @@ public class Submission {
 	
 	@Override
 	public String toString() {
-		return "{" + paperID + "," + version + "," + dateFormat.format(submissionDate)
-				 + "," + dateFormat.format(decisionDate)
-				 + "," + dateFormat.format(resubmissionDeadline)
-				 + "," + dateFormat.format(reviewDeadline) + "," + filePath
+		return "{" + paperID + "," + version + "," + formatOrNull(submissionDate)
+				 + "," + formatOrNull(decisionDate)
+				 + "," + formatOrNull(resubmissionDeadline)
+				 + "," + formatOrNull(reviewDeadline) + "," + filePath
 				 + "," + researcherMessage + "," + editorComment + "," + status + "}";
 	}
 
