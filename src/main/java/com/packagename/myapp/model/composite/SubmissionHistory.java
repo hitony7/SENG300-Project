@@ -4,13 +4,13 @@ import com.packagename.myapp.model.base.Paper;
 import com.packagename.myapp.model.base.Submission;
 import com.packagename.myapp.model.base.User;
 
-public class PersonalSubmissionHistory {
+public class SubmissionHistory {
 
 	private Paper paper;
 	private Submission submission;
 	private User editor;
 	
-	public PersonalSubmissionHistory(Paper paper, Submission submission, User editor) {
+	public SubmissionHistory(Paper paper, Submission submission, User editor) {
 		this.paper = paper;
 		this.submission = submission;
 		this.editor = editor;
@@ -26,6 +26,14 @@ public class PersonalSubmissionHistory {
 	
 	public String getSubmissionDate() {
 		return submission.formatOrNull(submission.getSubmissionDate());
+	}
+	
+	public String getResubmissionDeadline() {
+		return submission.formatOrNull(submission.getResubmissionDeadline());
+	}
+	
+	public String getReviewDeadline() {
+		return submission.formatOrNull(submission.getReviewDeadline());
 	}
 	
 	public String getEditorEmail() {
