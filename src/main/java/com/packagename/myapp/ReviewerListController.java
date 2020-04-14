@@ -42,4 +42,13 @@ public class ReviewerListController {
 				.collect(Collectors.toSet());
 	}
 
+	public Collection<User> getAllPapers(String journal) {
+		return userData.values().stream()
+				.filter(user
+						-> user.getUserType().equals("Reviewer"))
+				.collect(Collectors.toSet());
+	}
+
+
+
 }

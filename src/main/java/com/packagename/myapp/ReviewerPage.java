@@ -82,8 +82,17 @@ public class ReviewerPage extends VerticalLayout{
 
         journalHistory.setItems(controller.getPersonalJournalHistory());
 
+        journalHistory.addSelectionListener(e ->{
+            PersonalJournalHistory select = e.getFirstSelectedItem().orElse(null);
+            if(select == null){
+                //error msg
+            }else{
+                SubmitReview.jName=select.getJName();
+            }
+        });
 
-        //The third grid.
+
+        //The second grid.
         H3 third = new H3("Submission History");
         Grid<SubmissionHistory> submissionHistory = new Grid<>();
         submissionHistory.addColumn(SubmissionHistory::getTitle)

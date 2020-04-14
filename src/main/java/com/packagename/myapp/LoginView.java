@@ -48,7 +48,7 @@ public class LoginView extends VerticalLayout  {
             if(user != null){
                 Dialog logSucc = new Dialog();
                 //Prompt
-                logSucc.add(new Label("Login Sucessful"  +  "\n" + "Welcome:"  + user.getUserID() + " (" + user.getUserType() + " )"));
+                logSucc.add(new Label("Login Sucessful"  +  "\n" + "Welcome:"  + user.getUserID() + " (" + user.getUserType() + ")"));
                 logSucc.open();
                 //Logic for what type of user
                 if(user.getUserType().equals("Admin")){
