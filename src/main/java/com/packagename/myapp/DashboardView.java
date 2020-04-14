@@ -10,7 +10,7 @@ import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 
-
+import javax.swing.*;
 
 
 @PageTitle("Dashboard | Vaadin CRM")
@@ -18,7 +18,6 @@ import com.vaadin.flow.router.Route;
 //Which has the path localhost:8080/dashboard
 @Route(value = "dashboard", layout = MainLayout.class)
 public class DashboardView extends VerticalLayout {
-
     public DashboardView() {
 
 
@@ -29,7 +28,7 @@ public class DashboardView extends VerticalLayout {
         add(gap);
 
 
-        H1 logo = new H1("This is a Blank Page on the rightside of the MainPage");
+        H1 logo = new H1("Welcome to the MainPage");
         
         //Button to go to the reviewer page
         Button researcher = new Button("To researcher page",
@@ -40,7 +39,8 @@ public class DashboardView extends VerticalLayout {
         
         Button editor = new Button("To editor page",
         		e -> UI.getCurrent().navigate("editor"));
-        
+
+        researcher.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
         reviewer.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
         editor.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
         

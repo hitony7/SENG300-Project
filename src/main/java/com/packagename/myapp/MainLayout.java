@@ -17,20 +17,15 @@ import com.vaadin.flow.router.RouterLink;
 @CssImport("./styles/shared-styles.css")
 //Which has the path localhost:8080/dashboard
 public class MainLayout extends AppLayout {
-	
-	
-	
     //Constructor of Two components
     public MainLayout() {
         createHeader();
         createDrawer();
-        
-        
     }
 
     //Top Bar the header
     private void createHeader() {
-        H1 logo = new H1("Welcome to ripoff D2L");  // h1 HEADER LIKE html
+        H1 logo = new H1("Welcome, " + SessionUser.getName());  // h1 HEADER LIKE html
         logo.addClassName("logo");
 
         HorizontalLayout header = new HorizontalLayout(new DrawerToggle(), logo);
