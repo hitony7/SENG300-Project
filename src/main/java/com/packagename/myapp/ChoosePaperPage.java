@@ -11,6 +11,7 @@ import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.select.Select;
+import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.server.StreamResource;
@@ -24,7 +25,7 @@ import java.io.InputStream;
 //Which has the path localhost:8080/dashboard
 @Route(value = "choose-paper", layout = MainLayout.class)
 public class ChoosePaperPage extends VerticalLayout {
-	
+	public static String pName ="none";
 	public ChoosePaperPage() {
 		
 		Dialog popup = new Dialog();
@@ -33,8 +34,10 @@ public class ChoosePaperPage extends VerticalLayout {
 		H1 header = new H1("Choose Paper");
 		
 		Label label = new Label("Select Paper");
-		Select<Paper> papers = new Select<>();
-		
+		//Select<Paper> papers = new Select<>();
+		TextField text = new TextField();
+		text.setReadOnly(true);
+		text.setValue(pName);
 		Button set = new Button("Set", 
 				e -> popup.open());
 
@@ -55,7 +58,7 @@ public class ChoosePaperPage extends VerticalLayout {
 		set.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
 		back.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
 		
-		add(header,label,papers,set,back);
+		add(header,download,label,text,set,back);
 	}
 
 	private InputStream createResource() throws FileNotFoundException {

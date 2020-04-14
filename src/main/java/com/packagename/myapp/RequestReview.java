@@ -25,16 +25,29 @@ import com.vaadin.flow.router.Route;
 //Which has the path localhost:8080/dashboard
 @Route(value = "request-review", layout = MainLayout.class)
 public class RequestReview extends VerticalLayout {
-	
+	public static String pName= "None";
+
 	public RequestReview() {
 		
 		H1 header = new H1("Request Review");
+
+		ArrayList<User> userList;
+		try{
+			userList = new ArrayList<>(JsonModel.getUserData().values());
+		} catch(IOException e){
+			e.printStackTrace();
+			userList = new ArrayList<>();
+		}
 		
 		Select<Paper> selectPaper = new Select<>(); 
 		
 		
 		ArrayList<User> reviewers = new ArrayList<>();
-		
+		for(int i = 0; i < userList.size(); i++){
+			if(userList.get(i).getUserType().equals("Reviewer")){
+				reviewers.add((userList.get(i)));
+			}
+		}
 		//This below grabs the users and filters them by reviewer to put into the grid, but code breaks if 
 		//it's in. I commented it out.
 		
@@ -57,10 +70,7 @@ public class RequestReview extends VerticalLayout {
 		selectReviewers.addColumn(User::getField).setHeader("Field");
 		selectReviewers.addColumn(User::getName).setHeader("Name");
 		selectReviewers.addColumn(User::getEmail).setHeader("Email");
-		
-		Grid<User> reviewerGrid = new Grid<>();
-		reviewerGrid.addColumn(User::getName).setHeader("Name");
-		reviewerGrid.addColumn(User::getEmail).setHeader("Email");
+
 		
 		TextField setDeadline = new TextField("Set Review Deadline");
 		
@@ -76,7 +86,7 @@ public class RequestReview extends VerticalLayout {
 		send.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
 		back.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
 		
-		add(header,selectPaper,label,selectReviewers,reviewerGrid,setDeadline,send,back);
+		add(header,selectPaper,label,selectReviewers,setDeadline,send,back);
 		
 	}
 	
