@@ -37,7 +37,8 @@ public class ManageUser extends VerticalLayout {
 	public ManageUser() {
 
 		Binder<User> binder = new Binder(ManageUserController.class);
-
+		H5 UserManagement = new H5("User Management");
+		add(UserManagement);
 		//Make a form layout for the adding user
 		FormLayout form = new FormLayout();
 

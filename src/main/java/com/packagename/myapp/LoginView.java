@@ -51,8 +51,29 @@ public class LoginView extends VerticalLayout  {
                 logSucc.add(new Label("Login Sucessful"  +  "\n" + "Welcome:"  + user.getUserID() + " (" + user.getUserType() + " )"));
                 logSucc.open();
                 //Logic for what type of user
-                UI.getCurrent().navigate("dashboard");
-                System.out.println("Login SUCESSFUL");
+                if(user.getUserType().equals("Admin")){
+                    new SessionUser(user);
+                    MainLayout.userName = user.getName();
+                    UI.getCurrent().navigate("admin");
+                }
+                else if(user.getUserType().equals("Reviewer")){
+                    new SessionUser(user);
+                    UI.getCurrent().navigate("reviewer");
+
+                }
+                else if(user.getUserType().equals("Researcher")){
+                    new SessionUser(user);
+                    UI.getCurrent().navigate("researcher");
+                }
+                 else if(user.getUserType().equals("Editor")){
+                    new SessionUser(user);
+                    UI.getCurrent().navigate("editor");
+                } else  {
+                    new SessionUser(user);
+                    UI.getCurrent().navigate("dashboard");
+                    System.out.println("Login SUCESSFUL");
+                }
+
 
                 //Logic for what type of user
             } else   {

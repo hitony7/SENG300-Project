@@ -9,7 +9,7 @@ public class Users {
 	public Users(String name, String password, String userType, String email) {
 		super();
 		this.name = name;
-		this.password = email;
+		this.password = password;
 		this.userType = userType;
 		this.email = email;
 	}
