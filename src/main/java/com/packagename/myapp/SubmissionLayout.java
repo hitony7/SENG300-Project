@@ -1,20 +1,27 @@
 package com.packagename.myapp;
 
 import java.io.IOException;
+import java.util.HashMap;
+
+import org.apache.commons.lang3.tuple.Pair;
 
 import com.packagename.myapp.control.NewSubmissionController;
-import com.packagename.myapp.model.Journal;
-import com.packagename.myapp.model.User;
+import com.packagename.myapp.model.base.EditorJournal;
+import com.packagename.myapp.model.base.Journal;
+import com.packagename.myapp.model.base.JsonModel;
+import com.packagename.myapp.model.base.NominatedReviewer;
+import com.packagename.myapp.model.base.Paper;
+import com.packagename.myapp.model.base.Submission;
+import com.packagename.myapp.model.base.User;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.formlayout.FormLayout;
-import com.vaadin.flow.component.formlayout.FormLayout.FormItem;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.notification.Notification;
+import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.select.Select;
-import com.vaadin.flow.component.textfield.EmailField;
 import com.vaadin.flow.component.textfield.TextArea;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.component.upload.Upload;
@@ -26,20 +33,28 @@ import com.vaadin.flow.data.validator.StringLengthValidator;
 
 public class SubmissionLayout extends VerticalLayout{
 	
-	NewSubmissionController controller;
+	private HashMap<String,User> userData;
+	private HashMap<Integer,Paper> paperData;
+	private HashMap<Pair<Integer,String>,Submission> submissionData;
+	private HashMap<String,Journal> journalData;
+	private HashMap<String,EditorJournal> journalEditorData;
+	private HashMap<Pair<Integer,String>,NominatedReviewer> nominatedReviewerData;
 	
+	private NewSubmissionController subController;
+	private ReviewerListController revController;
+	
+	private FormLayout submissionForm = new FormLayout();
 	private TextField titleField = new TextField();
 	private TextField versionField = new TextField();
 	private Select<Journal> journalSelect = new Select<>();
 	private Select<User> editorEmailSelect = new Select<>();
 	private TextArea messageField = new TextArea("Message to Editor");
-	private EmailField reviewerEmailsField = new EmailField("Reviewer Email Nominations");
 	private Grid<User> reviewerEmailGrid = new Grid<>();
-	private ComboBox<User> reviewerEmailCombo = new ComboBox<>();
-	private Button addReviewerButton = new Button("Add Reviewer");
-	private FormItem reviewerChoose = new FormItem();
-	private MemoryBuffer memBuffer = new MemoryBuffer();
-	private Upload upload = new Upload(memBuffer);
+	private ComboBox<User> reviewerEmailCombo = new ComboBox<>("Nominate Reviewer");
+	private Button addReviewerButton = new Button("Add");
+	private Button removeReviewerButton = new Button("Remove");
+	private HorizontalLayout reviewerListForm = new HorizontalLayout();
+	private Upload upload = new Upload(new MemoryBuffer());
 	
 	private Button submitButton = new Button("Submit");
 	private Button backButton = new Button("Back");
@@ -47,18 +62,36 @@ public class SubmissionLayout extends VerticalLayout{
 	
 	
 	public SubmissionLayout() {
-		FormLayout form = new FormLayout();
 		setMaxWidth("50em");
 		
-		Binder<NewSubmissionController> binder = new Binder(NewSubmissionController.class);
+		Binder<NewSubmissionController> subBinder = new Binder(NewSubmissionController.class);
+
+		try {
+			userData = JsonModel.getUserData();
+			paperData = JsonModel.getPaperData();
+			submissionData = JsonModel.getSubmissionData();
+			journalData = JsonModel.getJournalData();
+			journalEditorData = JsonModel.getEditorJournalData();
+			nominatedReviewerData = JsonModel.getNominatedReviewerData();
+		} catch (IOException e1) {
+			e1.printStackTrace();
+			userData = new HashMap<>();
+			paperData = new HashMap<>();
+			submissionData = new HashMap<>();
+			journalData = new HashMap<>();
+			journalEditorData = new HashMap<>();
+			nominatedReviewerData = new HashMap<>();
+		}
 		
 		// placeholder value
-		String researcherID = "yes";
-		controller = new NewSubmissionController(researcherID);
+		String researcherID = "admin";
 		
+		subController = new NewSubmissionController(userData, paperData, submissionData,
+				journalData, journalEditorData, nominatedReviewerData, researcherID);
+		revController = new ReviewerListController(userData);
 		
 		// title field
-		binder.forField(titleField)
+		subBinder.forField(titleField)
 				.asRequired("Title required.")
 				.withValidator(new StringLengthValidator("Maximum 50 character.", 0, 50))
 				.bind(NewSubmissionController::getTitle, NewSubmissionController::setTitle);
@@ -70,14 +103,14 @@ public class SubmissionLayout extends VerticalLayout{
 		
 		
 		// journal select
-		journalSelect.setItems(controller.getAllJournals());
+		journalSelect.setItems(subController.getAllJournals());
 		// let names of journals be shown in selection
 		journalSelect.setItemLabelGenerator(Journal::getJName);
 		journalSelect.addValueChangeListener(e -> {
-			editorEmailSelect.setItems(controller.getAllEditorsByJournal(e.getValue()));
+			editorEmailSelect.setItems(subController.getAllEditorsByJournal(e.getValue()));
 		});
 
-		binder.forField(journalSelect)
+		subBinder.forField(journalSelect)
 				.asRequired("Journal must be selected.")
 				.withConverter(Journal::getJName, null)
 				.bind(NewSubmissionController::getJournal, NewSubmissionController::setJournal);
@@ -89,7 +122,7 @@ public class SubmissionLayout extends VerticalLayout{
 				-> user == null ? "" : user.getEmail());
 		editorEmailSelect.setItems();
 		
-		binder.forField(editorEmailSelect)
+		subBinder.forField(editorEmailSelect)
 				.bind(NewSubmissionController::getEditor, NewSubmissionController::setEditor);
 		
 		
@@ -98,75 +131,84 @@ public class SubmissionLayout extends VerticalLayout{
 		messageField.setMaxWidth("100%");
 		messageField.setHeight("7em");
 		
-		binder.forField(messageField)
+		subBinder.forField(messageField)
 				.withValidator(new StringLengthValidator("Maximum 1000 characters.", 0, 1000))
 				.bind(NewSubmissionController::getResearcherMessage,
 						NewSubmissionController::setResearcherMessage);
 		
 		
-		// optional field for reviewer email
-		reviewerEmailsField.setClearButtonVisible(true);
-		reviewerEmailsField.setErrorMessage(
-				"Please enter a valid email addresses separated by commas");
-		reviewerEmailsField.setRequiredIndicatorVisible(false);
-		
 		
 		// reviewerEmailGrid
+		reviewerEmailGrid.setItems(revController.getReviewerList());
+		reviewerEmailGrid.addColumn(User::getEmail).setHeader("Email");
+		reviewerEmailGrid.addColumn(User::getField).setHeader("Field").setAutoWidth(true);
+		reviewerEmailGrid.setHeightByRows(true);
+		reviewerEmailGrid.setMaxWidth("20em");
+		reviewerEmailGrid.getElement().setAttribute("theme", "small");
+		
 		reviewerEmailCombo.setItems((reviewer, filter)
-				-> reviewer.getEmail().startsWith(filter), controller.getAllReviewers());
+				-> reviewer.getEmail().startsWith(filter), subController.getAllReviewers());
 		reviewerEmailCombo.setItemLabelGenerator(User::getEmail);
 		reviewerEmailCombo.setClearButtonVisible(true);
 		reviewerEmailCombo.getElement().setAttribute("theme", "small");
 		
-		/*addReviewerButton.addClickListener(e
-				-> {
-					
-				})*/
+		addReviewerButton.addClickListener(e -> {
+			revController.addReviewer(reviewerEmailCombo.getValue());
+			reviewerEmailGrid.getDataProvider().refreshAll();
+		});
 		
-		
-		
-		binder.withValidator(value -> memBuffer.getFileName() != "", "File required.");
-		
-		Button submit = new Button("Submit",
-				event -> {
-					try {
-						// attempt to fill paperSubmission with form values
-						binder.writeBean(controller);						
-						controller.setInputStream(memBuffer.getInputStream());
-						controller.setFilename(memBuffer.getFileName());
-						
-						System.out.println("Editor email: " + controller.getEditor());
-						
-					    // save to data
-						controller.newResearcherSubmission();
-					    
-						Notification.show("Submission made.");
-						
-					} catch (ValidationException ex){
-						for (ValidationResult c : ex.getValidationErrors()) {
-							Notification.show(c.getErrorMessage());
-						}
-						
-					} catch (IOException ex) {
-				    	Notification.show("bad io: " + ex.getMessage());						
-					}
-				});
-		
-		Button back = new Button("Go back",
-				e -> UI.getCurrent().navigate("dashboard"));
-		
-		
-		form.addFormItem(titleField, "Paper Title");
-		form.addFormItem(versionField, "Version");
-		form.addFormItem(journalSelect, "Journal");
-		form.addFormItem(editorEmailSelect, "Editor Email");
-		form.setColspan(messageField, 2);
-		//form.setColspan(reviewerEmailsField, 2);
+		removeReviewerButton.setMinWidth("5em");
+		removeReviewerButton.addClickListener(e -> {
+			revController.removeReviewer(reviewerEmailCombo.getValue());
+			reviewerEmailGrid.getDataProvider().refreshAll();
+		});
 
-		reviewerChoose.add(reviewerEmailCombo, addReviewerButton);
 		
-		form.add(messageField, reviewerEmailGrid, reviewerChoose);
-		add(form, upload, submit, back);
+		subBinder.withValidator(value -> ((MemoryBuffer) upload.getReceiver()).getFileName() != "", "File required.");
+		
+		submitButton.addClickListener(event -> {
+			try {
+				// attempt to fill paperSubmission with form values
+				subBinder.writeBean(subController);						
+				subController.setInputStream(((MemoryBuffer) upload.getReceiver()).getInputStream());
+				subController.setFilename(((MemoryBuffer) upload.getReceiver()).getFileName());
+				
+			    // save to data
+				subController.newResearcherSubmission(revController);
+			    
+				Notification.show("Submission made.");
+				
+				upload.setReceiver(new MemoryBuffer());
+				
+				UI.getCurrent().navigate("researcher");
+				
+			} catch (ValidationException ex){
+				for (ValidationResult c : ex.getValidationErrors()) {
+					Notification.show(c.getErrorMessage());
+				}
+				
+			} catch (IOException ex) {
+		    	Notification.show("bad io: " + ex.getMessage());						
+			}
+		});
+		
+		backButton.addClickListener(
+				e -> UI.getCurrent().navigate("researcher"));
+		
+		
+		submissionForm.addFormItem(titleField, "Paper Title");
+		submissionForm.addFormItem(versionField, "Version");
+		submissionForm.addFormItem(journalSelect, "Journal");
+		submissionForm.addFormItem(editorEmailSelect, "Editor Email");
+		reviewerListForm.add(reviewerEmailGrid, reviewerEmailCombo, addReviewerButton, removeReviewerButton);
+		submissionForm.add(messageField);
+		submissionForm.add(reviewerListForm);
+		submissionForm.add(upload);
+		
+		submissionForm.setColspan(messageField, 2);
+		submissionForm.setColspan(reviewerListForm, 2);
+		
+		add(submissionForm, submitButton, backButton);
 		
 	}
 }

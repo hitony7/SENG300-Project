@@ -17,10 +17,15 @@ import com.vaadin.flow.router.RouterLink;
 @CssImport("./styles/shared-styles.css")
 //Which has the path localhost:8080/dashboard
 public class MainLayout extends AppLayout {
+	
+	
+	
     //Constructor of Two components
     public MainLayout() {
         createHeader();
         createDrawer();
+        
+        
     }
 
     //Top Bar the header
@@ -35,32 +40,32 @@ public class MainLayout extends AppLayout {
 
         Button jButton = new Button("Journals",
                 e -> UI.getCurrent().navigate("submit"));
-        jButton.setWidth("250px");
+        jButton.setWidth("300px");
         Button resButton = new Button("Researchers",
-                e -> UI.getCurrent().navigate("submit"));
-        resButton.setWidth("250px");
+                e -> UI.getCurrent().navigate("researcher"));
+        resButton.setWidth("300px");
         Button revButton = new Button("Reviewers",
                 e -> UI.getCurrent().navigate("submit"));
-        revButton.setWidth("250px");
+        revButton.setWidth("300px");
         Button eButton = new Button("Editors",
-                e -> UI.getCurrent().navigate("submit"));
-        eButton.setWidth("250px");
+                e -> UI.getCurrent().navigate("editor"));
+        eButton.setWidth("300px");
         
         //Button to go to the submit page
         Button submitPage = new Button("Create Submission",
         		e -> UI.getCurrent().navigate("submit"));
-        submitPage.setWidth("250px");
+        submitPage.setWidth("500px");
         
         //Button to go to the resubmit page
         Button resubmitPage = new Button("Resubmit a Journal",
         		e -> UI.getCurrent().navigate("resubmit"));
-        resubmitPage.setWidth("280px");
+        resubmitPage.setWidth("500px");
         
         
         //Button needs to be repositioned
         Button logoutB = new Button("Logout",
                 e -> UI.getCurrent().navigate(""));
-        logoutB.setWidth("120px");
+        logoutB.setWidth("220px");
 
         addToNavbar(header);
         addToNavbar(submitPage);
@@ -74,6 +79,7 @@ public class MainLayout extends AppLayout {
         //Vertical style List
         addToDrawer(new VerticalLayout(
                 new RouterLink("Dashboard", DashboardView.class)
+
         ));
     }
 

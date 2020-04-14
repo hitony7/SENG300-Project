@@ -1,20 +1,16 @@
 package com.packagename.myapp;
 
-import java.io.FileNotFoundException;
-import java.io.FileWriter;
 import java.io.IOException;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Set;
 
 import com.packagename.myapp.control.ManageUserController;
-import com.packagename.myapp.model.JsonModel;
-import com.packagename.myapp.model.User;
-import com.vaadin.flow.component.ClickEvent;
-import com.vaadin.flow.component.Text;
+import com.packagename.myapp.model.base.JsonModel;
+import com.packagename.myapp.model.base.User;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
-import com.vaadin.flow.component.charts.model.Dial;
 import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.formlayout.FormLayout.ResponsiveStep;
@@ -22,33 +18,14 @@ import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.grid.Grid.SelectionMode;
 import com.vaadin.flow.component.html.H5;
 import com.vaadin.flow.component.html.Label;
-import com.vaadin.flow.component.html.NativeButton;
-import com.vaadin.flow.component.listbox.ListBox;
 import com.vaadin.flow.component.orderedlayout.FlexComponent;
-import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.select.Select;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.binder.Binder;
-import com.vaadin.flow.component.orderedlayout.FlexComponent.Alignment;
+import com.vaadin.flow.data.binder.ValidationException;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
-
-
-import java.io.FileReader;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
-
-import elemental.json.Json;
-import org.apache.commons.lang3.ObjectUtils;
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
-
-import javax.print.attribute.standard.MediaPrintableArea;
-import javax.swing.*;
 
 
 @PageTitle("ManageUser | Vaadin CRM")
@@ -59,7 +36,7 @@ public class ManageUser extends VerticalLayout {
 
 	public ManageUser() {
 
-		Binder<ManageUserController> binder = new Binder(ManageUserController.class);
+		Binder<User> binder = new Binder(ManageUserController.class);
 
 		//Make a form layout for the adding user
 		FormLayout form = new FormLayout();
@@ -80,7 +57,7 @@ public class ManageUser extends VerticalLayout {
 		//creates the binder to get data easier from the user.json file
 		binder.forField(userName)
 				.asRequired()
-				.bind(ManageUserController::getUserName, ManageUserController::setUserName);
+				.bind(User::getName, User::setName);
 
 
 		
@@ -89,7 +66,7 @@ public class ManageUser extends VerticalLayout {
 
 		binder.forField(password)
 				.asRequired()
-				.bind(ManageUserController::getPassword, ManageUserController::setPassword);
+				.bind(User::getPassword, User::setPassword);
 		
 		
 		
@@ -100,28 +77,28 @@ public class ManageUser extends VerticalLayout {
 
 		binder.forField(userType)
 				.asRequired()
-				.bind(ManageUserController::getUserType, ManageUserController::setUserType);
+				.bind(User::getUserType, User::setUserType);
 
 		TextField email = new TextField();
 		email.setLabel("Email");
 
 		binder.forField(email)
 				.asRequired()
-				.bind(ManageUserController::getEmail, ManageUserController::setEmail);
+				.bind(User::getEmail, User::setEmail);
 
 		TextField UserId = new TextField();
 		UserId.setLabel("UserId");
 
 		binder.forField(UserId)
 				.asRequired()
-				.bind(ManageUserController::getUserId, ManageUserController::setUserId);
+				.bind(User::getUserID, User::setUserID);
 
 		TextField field = new TextField();
 		field.setLabel("field");
 
 		binder.forField(field)
 				.asRequired()
-				.bind(ManageUserController::getField, ManageUserController::setField);
+				.bind(User::getField, User::setField);
 		
 		form.add(UserId,userName,password,userType, field,email);
 		
@@ -162,6 +139,14 @@ public class ManageUser extends VerticalLayout {
 		//Allow admin to select multiple objects from the grid
 		userGrid.setSelectionMode(SelectionMode.SINGLE);
 
+		userGrid.addSelectionListener(e ->{
+			User select = e.getFirstSelectedItem().orElse(null);
+			if(select == null){
+				select = new User(null, null, null, null, null, null);
+			}else{
+				binder.readBean(select);
+			}
+		});
 
 
 		//Label for adding new users.
@@ -178,7 +163,7 @@ public class ManageUser extends VerticalLayout {
 				Dialog invalid = new Dialog();
 				invalid.add(new Label("Please fill out all of the fields"));
 				invalid.open();
-				UI.getCurrent().getPage().reload();
+				userGrid.getDataProvider().refreshAll();
 			}
 			else{
 				HashMap<String, User> addNewUser = new HashMap<String, User>();
@@ -200,10 +185,56 @@ public class ManageUser extends VerticalLayout {
 			}
 		});
 
-		Button edit =  new Button("Edit User");
+		//Edit the user data
+		ArrayList<User> finalUserList = userList;
+		Button edit =  new Button("Edit User", e ->{
+			Set<User> select = userGrid.getSelectedItems();
+			User[] selectedInfo = new User [1];
+			select.toArray(selectedInfo);
+
+			try {
+				binder.writeBean(selectedInfo[0]);
+				HashMap <String, User> selected = new HashMap<String, User>();
+				for(User temp: finalUserList){
+					selected.put(temp.getUserID(), temp);
+				}
+				try {
+					JsonModel.setUserData(selected);
+				}catch(IOException e5){
+					e5.printStackTrace();
+				}
+			}catch(ValidationException e4){
+				e4.printStackTrace();
+			}
+			edited.open();
+			userGrid.getDataProvider().refreshAll();
+		});
 
 		//Button to remove a user.
-		Button remove = new Button("Remove Selected User(s)");
+		Button remove = new Button("Remove Selected User(s)", e ->{
+			//Grabs all of the user data in the user.json file and put it in a Hashmap
+			HashMap <String, User> allUser;
+			try{
+				allUser = JsonModel.getUserData();
+			}catch(IOException error){
+				error.printStackTrace();
+				allUser = new HashMap<>();
+			}
+
+			Set<User> select = userGrid.getSelectedItems();
+			User[] selectedInfo = new User [1];
+			select.toArray(selectedInfo);
+
+			allUser.remove(selectedInfo[0].getUserID());
+
+			try {
+				JsonModel.setUserData(allUser);
+			} catch(IOException e3){
+				e3.printStackTrace();
+			}
+			removed.open();
+			UI.getCurrent().getPage().reload();
+		});
 
 
 		//Set the buttons to the left side of the page.

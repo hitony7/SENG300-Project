@@ -1,19 +1,19 @@
-package com.packagename.myapp.model;
+package com.packagename.myapp.model.base;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.commons.lang3.tuple.ImmutablePair;
+import org.apache.commons.lang3.tuple.ImmutableTriple;
 import org.apache.commons.lang3.tuple.Pair;
+import org.apache.commons.lang3.tuple.Triple;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
-
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
-
-import java.io.FileNotFoundException;
-import java.io.FileReader;
 
 
 public class JsonModel {
@@ -235,7 +235,7 @@ public class JsonModel {
     		String version = splitKey[1];
     		JSONObject jsonSubmission = entry.getValue();
     		
-    		submissionData.put(new ImmutablePair<Integer, String>(paperID, version),
+    		submissionData.put(ImmutablePair.of(paperID, version),
     				new Submission(jsonSubmission));
     	}
     	
@@ -257,19 +257,19 @@ public class JsonModel {
     	writeData("data\\submission.json", jsonData);
     }
     
-    public static HashMap<Pair<Integer,Integer>,NominatedReviewer> getNominatedReviewerData()
+    public static HashMap<Pair<Integer,String>,NominatedReviewer> getNominatedReviewerData()
     		throws IOException {
     	HashMap<String,JSONObject> jsonData = readData("data\\nominated_reviewer.json");
-    	HashMap<Pair<Integer,Integer>,NominatedReviewer> nominatedReviewerData
+    	HashMap<Pair<Integer,String>,NominatedReviewer> nominatedReviewerData
     		= new HashMap<>();
     	
     	for (Map.Entry<String, JSONObject> entry : jsonData.entrySet()) {
     		String[] splitKey = entry.getKey().split("_");
     		Integer paperID = new Integer(splitKey[0]);
-    		Integer reviewerID = new Integer(splitKey[1]);
+    		String reviewerID = splitKey[1];
     		JSONObject jsonNominatedReviewer = entry.getValue();
     		
-    		nominatedReviewerData.put(new ImmutablePair<Integer, Integer>(paperID, reviewerID),
+    		nominatedReviewerData.put(ImmutablePair.of(paperID, reviewerID),
     				new NominatedReviewer(jsonNominatedReviewer));
     	}
     	
@@ -277,13 +277,13 @@ public class JsonModel {
     }
     
     public static void setNominatedReviewerData(
-    		HashMap<Pair<Integer,Integer>,NominatedReviewer> nominatedReviewerData)
+    		HashMap<Pair<Integer,String>,NominatedReviewer> nominatedReviewerData)
     				throws IOException {
     	JSONObject jsonData = new JSONObject();
     	
-    	for (Map.Entry<Pair<Integer,Integer>,NominatedReviewer> entry 
+    	for (Map.Entry<Pair<Integer,String>,NominatedReviewer> entry 
     			: nominatedReviewerData.entrySet()) {
-    		Pair<Integer,Integer> pair = entry.getKey();
+    		Pair<Integer,String> pair = entry.getKey();
     		String primaryKey = pair.getLeft() + "_" + pair.getRight();
     		NominatedReviewer nominatedReviewer = entry.getValue();
     		
@@ -291,5 +291,42 @@ public class JsonModel {
     	}
     	
     	writeData("data\\nominated_reviewer.json", jsonData);
+    }
+    
+    public static HashMap<Triple<Integer,String,String>,Review> getReviewData()
+    		throws IOException {
+    	HashMap<String,JSONObject> jsonData = readData("data\\review.json");
+    	HashMap<Triple<Integer,String,String>,Review> reviewData = new HashMap<>();
+    	
+    	for (Map.Entry<String, JSONObject> entry : jsonData.entrySet()) {
+    		String[] splitKey = entry.getKey().split("_");
+    		Integer paperID = new Integer(splitKey[0]);
+    		String version = splitKey[1];
+    		String reviewerID = splitKey[2];
+    		JSONObject jsonReview = entry.getValue();
+    		
+    		reviewData.put(ImmutableTriple.of(paperID, version, reviewerID),
+    				new Review(jsonReview));
+    	}
+    	
+    	return reviewData;
+    }
+    
+    public static void setReviewData(
+    		HashMap<Triple<Integer,String,String>,Review> reviewData)
+    				throws IOException {
+    	JSONObject jsonData = new JSONObject();
+    	
+    	for (Map.Entry<Triple<Integer,String,String>,Review> entry 
+    			: reviewData.entrySet()) {
+    		Triple<Integer,String,String> triple = entry.getKey();
+    		String primaryKey = triple.getLeft() + "_"+ triple.getMiddle() + "_" 
+    				+ triple.getRight();
+    		Review review = entry.getValue();
+    		
+    		jsonData.put(primaryKey, review.jsonObject());
+    	}
+    	
+    	writeData("data\\review.json", jsonData);
     }
 }

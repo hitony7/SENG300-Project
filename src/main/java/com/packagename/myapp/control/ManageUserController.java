@@ -1,21 +1,12 @@
 
 package com.packagename.myapp.control;
 
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Date;
 import java.util.HashMap;
 
-import org.apache.commons.io.FileUtils;
-import org.apache.commons.lang3.tuple.Pair;
-
-import com.packagename.myapp.model.JsonModel;
-import com.packagename.myapp.model.Paper;
-import com.packagename.myapp.model.Submission;
-import com.packagename.myapp.model.Submission.SubStatus;
-import com.packagename.myapp.model.User;
-import com.vaadin.flow.component.notification.Notification;
+import com.packagename.myapp.model.base.JsonModel;
+import com.packagename.myapp.model.base.User;
 
 /**
  * 'Controller object' for new paper submission page.
@@ -27,6 +18,7 @@ import com.vaadin.flow.component.notification.Notification;
  *
  */
 public class ManageUserController {
+    private HashMap <String, User> userData;
 
     private User user;
     private InputStream inputStream;
@@ -35,7 +27,12 @@ public class ManageUserController {
 
 
     public ManageUserController() {
-
+        try{
+            userData = JsonModel.getUserData();
+        } catch (IOException e){
+            e.printStackTrace();
+            userData = new HashMap<>();
+        }
     }
 
 
@@ -49,8 +46,7 @@ public class ManageUserController {
         }
         return null;
     }
-    
-    
+
 
 
     public void setUserName(String username){

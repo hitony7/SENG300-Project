@@ -3,17 +3,21 @@ package com.packagename.myapp;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import com.packagename.myapp.model.EditorJournal;
-import com.packagename.myapp.model.Journal;
-import com.packagename.myapp.model.JsonModel;
-import com.packagename.myapp.model.Paper;
-import com.packagename.myapp.model.Submission;
-import com.packagename.myapp.model.User;
+import com.packagename.myapp.model.base.EditorJournal;
+import com.packagename.myapp.model.base.Journal;
+import com.packagename.myapp.model.base.JsonModel;
+import com.packagename.myapp.model.base.Paper;
+import com.packagename.myapp.model.base.Submission;
+import com.packagename.myapp.model.base.User;
+import com.packagename.myapp.model.composite.ActivePaper;
+import com.packagename.myapp.model.composite.JournalHistory;
+import com.packagename.myapp.model.composite.SubmissionHistory;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.html.Label;
+import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
@@ -26,12 +30,28 @@ public class EditorPage extends VerticalLayout{
 
 	public EditorPage() {
 		
+		HorizontalLayout topButtons = new HorizontalLayout();
+		Button status = new Button("Status",
+				e -> UI.getCurrent().navigate("set-status"));
+		Button request = new Button("Request Reviews",
+				e -> UI.getCurrent().navigate("request-review"));
+		Button choosePaper = new Button("Choose Paper",
+				e -> UI.getCurrent().navigate("choose-paper"));
+		
+		status.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
+		request.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
+		choosePaper.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
+		
+		topButtons.add(status,request,choosePaper);
+		
+		
+		
 		//Below are arraylists of the different objects we use to grab data with the try and catch blocks.
 		ArrayList<Paper> papers;
 		ArrayList<Submission> submissions;
 		ArrayList<User> users;
 		ArrayList<Journal> journals;
-		ArrayList<EditorJournal> editorJournals; 
+		ArrayList<EditorJournal> editorJournals;
 		
 		//The ArrayList that sorts the papers by editor ID.
 		ArrayList<Paper> paperByEditorID = new ArrayList<>();
@@ -189,10 +209,12 @@ public class EditorPage extends VerticalLayout{
 		
 		back.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
 		
-		add(first,activePapers,second,journalHistory,third,submissionHistory,back);
+		add(topButtons,first,activePapers,second,journalHistory,third,submissionHistory,back);
 		
 		
 		
 	}
 	
 }
+
+
