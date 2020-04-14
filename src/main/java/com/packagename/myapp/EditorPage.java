@@ -17,6 +17,7 @@ import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.html.Label;
+import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
@@ -28,6 +29,22 @@ import com.vaadin.flow.router.Route;
 public class EditorPage extends VerticalLayout{
 
 	public EditorPage() {
+		
+		HorizontalLayout topButtons = new HorizontalLayout();
+		Button status = new Button("Status",
+				e -> UI.getCurrent().navigate("set-status"));
+		Button request = new Button("Request Reviews",
+				e -> UI.getCurrent().navigate("request-review"));
+		Button choosePaper = new Button("Choose Paper",
+				e -> UI.getCurrent().navigate("choose-paper"));
+		
+		status.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
+		request.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
+		choosePaper.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
+		
+		topButtons.add(status,request,choosePaper);
+		
+		
 		
 		//Below are arraylists of the different objects we use to grab data with the try and catch blocks.
 		ArrayList<Paper> papers;
@@ -192,11 +209,12 @@ public class EditorPage extends VerticalLayout{
 		
 		back.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
 		
-		add(first,activePapers,second,journalHistory,third,submissionHistory,back);
+		add(topButtons,first,activePapers,second,journalHistory,third,submissionHistory,back);
 		
 		
 		
 	}
 	
 }
+
 
