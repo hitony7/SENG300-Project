@@ -109,6 +109,11 @@ public class ReviewerPage extends VerticalLayout{
         submissionHistory.addColumn(SubmissionHistory::getStatus)
                 .setHeader("Status");
 
+        submissionHistory.addSelectionListener(e -> {
+            SubmissionHistory select = e.getFirstSelectedItem().orElse(null);
+            SubmitReview.pName = select.getTitle();
+            });
+
         journalHistory.addSelectionListener(e -> {
             PersonalJournalHistory journal = e.getFirstSelectedItem().orElse(null);
             if (journal == null){
