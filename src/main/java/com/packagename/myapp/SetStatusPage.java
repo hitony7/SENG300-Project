@@ -1,6 +1,7 @@
 package com.packagename.myapp;
 
 import com.packagename.myapp.control.ResearcherPageController;
+import com.packagename.myapp.control.ResubmissionController;
 import com.packagename.myapp.model.base.*;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
@@ -12,6 +13,7 @@ import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.select.Select;
 import com.vaadin.flow.component.textfield.TextArea;
 import com.vaadin.flow.component.textfield.TextField;
+import com.vaadin.flow.data.binder.Binder;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import org.apache.commons.lang3.tuple.Pair;
@@ -33,26 +35,28 @@ public class SetStatusPage extends VerticalLayout {
 		//header
 		H1 header = new H1("Set Status");
 
-		//hashmap variables
-		HashMap<Pair<Integer, String>, Submission> submissionData = JsonModel.getSubmissionData();
+
+		Binder<ResubmissionController> subBinder = new Binder(ResubmissionController.class);
+
+
 		HashMap<String, User> userData;
 		HashMap<Integer, Paper> paperData;
-		HashMap<String, Journal> journalData;
+		HashMap<Pair<Integer, String>, Submission> submissionData;
 		try {
 			userData = JsonModel.getUserData();
 			paperData = JsonModel.getPaperData();
-			submissionData = JsonModel.getSubmissionData(); //
-			journalData = JsonModel.getJournalData();
+			submissionData = JsonModel.getSubmissionData();
 		} catch (IOException e1) {
 			e1.printStackTrace();
 			userData = new HashMap<>();
 			paperData = new HashMap<>();
 			submissionData = new HashMap<>();
-			journalData = new HashMap<>();
 		}
 
 
+
 		//textfield for paper
+
 		Label paperSelect = new Label("Selected Paper");
 		TextField text = new TextField();
 		text.setReadOnly(true);
