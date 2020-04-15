@@ -9,7 +9,8 @@ import org.json.simple.JSONObject;
  *
  */
 public class Paper {
-	
+
+	//create variable for paperID, title, researcherID, journal
 	private int paperID;
 	private String title;
 	private String researcherID;
@@ -62,6 +63,7 @@ public class Paper {
 						: ((Long) obj.get("CollectionHalfYear")).intValue());
 	}
 
+	//getter and setter for Paper ID
 	public int getPaperID() {
 		return paperID;
 	}
@@ -70,6 +72,7 @@ public class Paper {
 		this.paperID = paperID;
 	}
 
+	//getter and setter for title
 	public String getTitle() {
 		return title == null ? null : new String(title);
 	}
@@ -78,6 +81,7 @@ public class Paper {
 		this.title = title == null ? null : new String(title);
 	}
 
+	//getter and setter for researcher ID
 	public String getResearcherID() {
 		return researcherID == null ? null : new String(researcherID);
 	}
@@ -86,6 +90,7 @@ public class Paper {
 		this.researcherID = researcherID == null ? null : new String(researcherID);
 	}
 
+	// getter and setter for journal
 	public String getJournal() {
 		return journal == null ? null : new String(journal);
 	}
@@ -94,6 +99,7 @@ public class Paper {
 		this.journal = journal == null ? null : new String(journal);
 	}
 
+	//getter and setter editor id
 	public String getEditorID() {
 		return editorID == null ? null : new String(editorID);
 	}
@@ -102,6 +108,7 @@ public class Paper {
 		this.editorID = editorID == null ? null : new String(editorID);
 	}
 
+	//getter and setter for collection year
 	public Integer getCollectionYear() {
 		return collectionYear == null ? null : new Integer(collectionYear);
 	}
@@ -114,6 +121,7 @@ public class Paper {
 		this.collectionYear = new Integer(collectionYear);
 	}
 
+	//getter and setter for collection half year
 	public Integer getCollectionHalfYear() {
 		return collectionYear == null ? null : new Integer(collectionHalfYear);
 	}

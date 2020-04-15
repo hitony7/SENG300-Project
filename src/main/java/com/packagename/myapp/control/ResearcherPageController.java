@@ -14,12 +14,13 @@ import com.packagename.myapp.model.composite.PersonalJournalHistory;
 import com.packagename.myapp.model.composite.SubmissionHistory;
 
 public class ResearcherPageController {
-
+	//Hashmap variables for holding user, paper, submission, journal
 	private HashMap<String,User> userData;
 	private HashMap<Integer,Paper> paperData;
 	private HashMap<Pair<Integer,String>,Submission> submissionData;
 	private HashMap<String,Journal> journalData;
-	
+
+	//Variable for userID
 	private String userID;
 
 	public ResearcherPageController(HashMap<String,User> userData,

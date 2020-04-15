@@ -113,7 +113,7 @@ public class EditorPage extends VerticalLayout{
 			editorJournals = new ArrayList<>();
 		}
 
-
+		//getting the user, paper, submission, editor journal data
 		try {
 			userData = JsonModel.getUserData();
 			paperData = JsonModel.getPaperData();

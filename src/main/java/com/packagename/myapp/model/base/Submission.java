@@ -16,7 +16,8 @@ import org.json.simple.JSONObject;
 public class Submission {
 	
 	public static DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-	
+
+	//enums created
 	public static enum SubStatus {
 		ACC("Accepted"),
 		REJ("Rejected"),
@@ -37,7 +38,8 @@ public class Submission {
 			return fullMessage;
 		}
 	}
-	
+
+	//variables created
 	private int paperID;
 	private String version;
 	private Date submissionDate;
@@ -99,7 +101,8 @@ public class Submission {
 				(String) obj.get("EditorComment"),
 				SubStatus.valueOf((String) obj.get("Status")));
 	}
-	
+
+	//getter and setter for paper ID
 	public int getPaperID() {
 		return paperID;
 	}
@@ -107,7 +110,8 @@ public class Submission {
 	public void setPaperID(int paperID) {
 		this.paperID = paperID;
 	}
-	
+
+	//getter and setter for version
 	public String getVersion() {
 		return version == null ? null : new String(version);
 	}
@@ -115,7 +119,8 @@ public class Submission {
 	public void setVersion(String version) {
 		this.version = version == null ? null : new String(version);
 	}
-	
+
+	//getter and setter for submission date
 	public Date getSubmissionDate() {
 		return submissionDate == null ? null : (Date) submissionDate.clone();
 	}
@@ -125,6 +130,7 @@ public class Submission {
 				: (Date) submissionDate.clone();
 	}
 
+	//getter and setter for decision date
 	public Date getDecisionDate() {
 		return decisionDate == null ? null : (Date) decisionDate.clone();
 	}
@@ -132,7 +138,8 @@ public class Submission {
 	public void setDecisionDate(Date decisionDate) {
 		this.decisionDate = decisionDate == null ? null : (Date) decisionDate.clone();
 	}
-	
+
+	//getter and setter for resubmission date
 	public Date getResubmissionDeadline() {
 		return resubmissionDeadline == null ? null : (Date) resubmissionDeadline.clone();
 	}
@@ -141,7 +148,8 @@ public class Submission {
 		this.resubmissionDeadline = resubmissionDeadline == null ? null 
 				: (Date) resubmissionDeadline.clone();
 	}
-	
+
+	//getter and setter for review deadline
 	public Date getReviewDeadline() {
 		return reviewDeadline == null ? null : (Date) reviewDeadline.clone();
 	}
@@ -150,7 +158,8 @@ public class Submission {
 		this.reviewDeadline = reviewDeadline == null ? null 
 				: (Date) reviewDeadline.clone();
 	}
-	
+
+	//getter and setter for file path
 	public String getFilePath() {
 		return filePath == null ? null : new String(filePath);
 	}
@@ -158,7 +167,8 @@ public class Submission {
 	public void setFilePath(String filePath) {
 		this.filePath = filePath == null ? null : new String(filePath);
 	}
-	
+
+	//getter and setter for researcher message
 	public String getResearcherMessage() {
 		return researcherMessage == null ? null : new String(researcherMessage);
 	}
@@ -167,7 +177,8 @@ public class Submission {
 		this.researcherMessage = researcherMessage == null ? null 
 				: new String(researcherMessage);
 	}
-	
+
+	//getter and setter for editor comment
 	public String getEditorComment() {
 		return editorComment == null ? null : new String(editorComment);
 	}
@@ -175,7 +186,8 @@ public class Submission {
 	public void setEditorComment(String editorComment) {
 		this.editorComment = editorComment == null ? null : new String(editorComment);
 	}
-	
+
+	//getter an setter for status
 	public SubStatus getStatus() {
 		return status;
 	}
@@ -183,7 +195,8 @@ public class Submission {
 	public void setStatus(SubStatus status) {
 		this.status = status;
 	}
-	
+
+	//check if date format is right or null
 	public static String formatOrNull(Date date) {
 		return date == null ? null : dateFormat.format(date);
 	}

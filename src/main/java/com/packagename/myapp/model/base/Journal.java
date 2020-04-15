@@ -3,10 +3,11 @@ package com.packagename.myapp.model.base;
 import org.json.simple.JSONObject;
 
 public class Journal {
-
+	//variables created for journal name and field
 	private String jName;
 	private String field;
-	
+
+	//setting journal name and field
 	public Journal(String jName, String field) {
 		setJName(jName);
 		setField(field);
@@ -26,6 +27,7 @@ public class Journal {
 				(String) obj.get("Field"));
 	}
 
+	//getter and setter for Journal name
 	public String getJName() {
 		return jName == null ? null : new String(jName);
 	}
@@ -34,6 +36,7 @@ public class Journal {
 		this.jName = jName == null ? null : new String(jName);
 	}
 
+	//getter and setter Field
 	public String getField() {
 		return field == null ? null : new String(field);
 	}

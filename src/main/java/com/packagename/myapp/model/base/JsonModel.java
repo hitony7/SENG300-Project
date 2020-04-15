@@ -19,6 +19,7 @@ import org.json.simple.parser.ParseException;
 public class JsonModel {
     JSONArray userList = new JSONArray();
 
+    //creates new user and add it to the json data file
     public void newUser(String username, String password, String usertype) {
 
         JSONObject userDetails = new JSONObject();
@@ -35,7 +36,8 @@ public class JsonModel {
         //write to file
         write("users.json", userList);
     }
-    //Read the OLDlist
+
+    //Read the OLDlist from the json file
     public JSONArray readOLD(String filename){
         //JSON parser object to parse read file
         JSONParser jsonParser = new JSONParser();
@@ -58,6 +60,7 @@ public class JsonModel {
         return userList;
     }
 
+    //get the username from the json file for user
     public void getUsername(String filename){
         //JSON parser object to parse read file
         JSONParser jsonParser = new JSONParser();
@@ -82,6 +85,7 @@ public class JsonModel {
         }
     }
 
+    //parse through the user object and get the username method
     private static void parseUserObject(JSONObject user) {
         //Get user object within list
         JSONObject userObject = (JSONObject) user.get("user");
@@ -92,6 +96,7 @@ public class JsonModel {
         //return string
     }
 
+    //write into the json file method
     private void write(String filename, JSONArray userList){
         try (FileWriter file = new FileWriter(filename,false)) {
 
@@ -102,7 +107,8 @@ public class JsonModel {
             e.printStackTrace();
         }
     }
-    
+
+    //reads the data of the file method
     private static JSONObject readData(String filename) throws IOException {
         //JSON parser object to parse read file
         JSONParser jsonParser = new JSONParser();
@@ -116,14 +122,16 @@ public class JsonModel {
     		return null;
     	}
     }
-    
+
+    //write the data to the file method
     private static void writeData(String filename, JSONObject obj) throws IOException {
     	FileWriter writer = new FileWriter(filename, false);
 		obj.writeJSONString(writer);
 		writer.flush();
 		writer.close();
     }
-    
+
+    //get the user data and puts it into a hashmap method
     public static HashMap<String,User> getUserData() throws IOException {
     	HashMap<String,JSONObject> jsonData = readData("data\\user.json");
     	HashMap<String,User> userData = new HashMap<>();
@@ -136,7 +144,8 @@ public class JsonModel {
     	
     	return userData;
     }
-    
+
+    //set the user data into the json file method
     public static void setUserData(HashMap<String,User> userData) throws IOException {
     	JSONObject jsonData = new JSONObject();
     	
@@ -148,7 +157,8 @@ public class JsonModel {
     	
     	writeData("data\\user.json", jsonData);
     }
-    
+
+    //gets the journal data method
     public static HashMap<String,Journal> getJournalData() throws IOException {
     	HashMap<String,JSONObject> jsonData = readData("data\\journal.json");
     	HashMap<String,Journal> journalData = new HashMap<>();
@@ -161,7 +171,8 @@ public class JsonModel {
     	
     	return journalData;
     }
-    
+
+    //set journal data method
     public static void setJournalData(HashMap<String,Journal> journalData) throws IOException {
     	JSONObject jsonData = new JSONObject();
     	
@@ -174,6 +185,7 @@ public class JsonModel {
     	writeData("data\\journal.json", jsonData);
     }
 
+    // get journal data sorted by editors method
     public static HashMap<String,EditorJournal> getEditorJournalData() throws IOException {
     	HashMap<String,JSONObject> jsonData = readData("data\\editor_journal.json");
     	HashMap<String,EditorJournal> journalEditorData = new HashMap<>();
@@ -186,7 +198,8 @@ public class JsonModel {
     	
     	return journalEditorData;
     }
-    
+
+    //set editor journal data for an editor method
     public static void setEditorJournalData(HashMap<String,EditorJournal> journalData) throws IOException {
     	JSONObject jsonData = new JSONObject();
     	
@@ -198,7 +211,8 @@ public class JsonModel {
     	
     	writeData("data\\editor_journal.json", jsonData);
     }
-    
+
+    //gets paper data method
     public static HashMap<Integer,Paper> getPaperData() throws IOException {
     	HashMap<String,JSONObject> jsonData = readData("data\\paper.json");
     	HashMap<Integer,Paper> paperData = new HashMap<>();
@@ -211,7 +225,8 @@ public class JsonModel {
     	
     	return paperData;
     }
-    
+
+    //method to set paper data to file
     public static void setPaperData(HashMap<Integer,Paper> paperData) throws IOException {
     	JSONObject jsonData = new JSONObject();
     	
@@ -223,7 +238,8 @@ public class JsonModel {
     	
     	writeData("data\\paper.json", jsonData);
     }
-    
+
+    //method to get submission data from file
     public static HashMap<Pair<Integer,String>,Submission> getSubmissionData()
     		throws IOException {
     	HashMap<String,JSONObject> jsonData = readData("data\\submission.json");
@@ -241,7 +257,8 @@ public class JsonModel {
     	
     	return submissionData;
     }
-    
+
+    //method to set a submission data to a file
     public static void setSubmissionData(
     		HashMap<Pair<Integer,String>,Submission> submissionData) throws IOException {
     	JSONObject jsonData = new JSONObject();
@@ -256,7 +273,8 @@ public class JsonModel {
     	
     	writeData("data\\submission.json", jsonData);
     }
-    
+
+    //method to nominate reviewer data
     public static HashMap<Pair<Integer,String>,NominatedReviewer> getNominatedReviewerData()
     		throws IOException {
     	HashMap<String,JSONObject> jsonData = readData("data\\nominated_reviewer.json");
@@ -275,7 +293,8 @@ public class JsonModel {
     	
     	return nominatedReviewerData;
     }
-    
+
+    //method to set nominate reviewer data
     public static void setNominatedReviewerData(
     		HashMap<Pair<Integer,String>,NominatedReviewer> nominatedReviewerData)
     				throws IOException {
@@ -292,7 +311,8 @@ public class JsonModel {
     	
     	writeData("data\\nominated_reviewer.json", jsonData);
     }
-    
+
+    //method to get review data
     public static HashMap<Triple<Integer,String,String>,Review> getReviewData()
     		throws IOException {
     	HashMap<String,JSONObject> jsonData = readData("data\\review.json");
@@ -311,7 +331,8 @@ public class JsonModel {
     	
     	return reviewData;
     }
-    
+
+    //method to set review data
     public static void setReviewData(
     		HashMap<Triple<Integer,String,String>,Review> reviewData)
     				throws IOException {
@@ -320,7 +341,7 @@ public class JsonModel {
     	for (Map.Entry<Triple<Integer,String,String>,Review> entry 
     			: reviewData.entrySet()) {
     		Triple<Integer,String,String> triple = entry.getKey();
-    		String primaryKey = triple.getLeft() + "_"+ triple.getMiddle() + "_" 
+    		String primaryKey = triple.getLeft() + "_"+ triple.getMiddle() + "_"
     				+ triple.getRight();
     		Review review = entry.getValue();
     		

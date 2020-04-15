@@ -31,6 +31,7 @@ public class LoginView extends VerticalLayout  {
     private HashMap<String, User> userList;
 
     public LoginView() {
+        // create heading for the paper
         H1 title = new H1("Welcome to the University of Winnipeg");
         H2 project= new H2("Journal Login System.");
         Binder<ManageUserController> binder = new Binder(ManageUserController.class);

@@ -16,6 +16,7 @@ public class SessionUser {
             email = user.getEmail();
     }
 
+    //getter for name, password, usertype and email
     public static String getName() {
         return name;
     }

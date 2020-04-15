@@ -29,6 +29,7 @@ import com.vaadin.flow.router.Route;
 @Route(value = "researcher", layout = MainLayout.class)
 public class ResearcherPage extends VerticalLayout{
 
+	//creates hashmap variables for user, paper, submission and journal data
 	private HashMap<String,User> userData;
 	private HashMap<Integer,Paper> paperData;
 	private HashMap<Pair<Integer,String>,Submission> submissionData;
@@ -38,7 +39,7 @@ public class ResearcherPage extends VerticalLayout{
 	
 	public ResearcherPage() {
 
-
+		//trys to get the data and fill them in with the variabels
 		try {
 			userData = JsonModel.getUserData();
 			paperData = JsonModel.getPaperData();

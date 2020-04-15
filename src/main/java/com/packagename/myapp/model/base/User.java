@@ -4,6 +4,7 @@ import org.json.simple.JSONObject;
 
 public class User {
 
+	//variables created for user id, password, name, email, field, user type
 	private String userID;
 	private String password;
 	private String name;
@@ -40,6 +41,7 @@ public class User {
 				(String) obj.get("UserType"));
 	}
 
+	//getter and setter for user id
 	public String getUserID() {
 		return userID == null ? null : new String(userID);
 	}
@@ -48,6 +50,7 @@ public class User {
 		this.userID = userID == null ? null : new String(userID);
 	}
 
+	//getter and setter for password
 	public String getPassword() {
 		return password == null ? null : new String(password);
 	}
@@ -56,6 +59,7 @@ public class User {
 		this.password = password == null ? null : new String(password);
 	}
 
+	//getter and setter for name
 	public String getName() {
 		return name == null ? null : new String(name);
 	}
@@ -64,6 +68,7 @@ public class User {
 		this.name = name == null ? null : new String(name);
 	}
 
+	//getter and setter for email
 	public String getEmail() {
 		return email == null ? null : new String(email);
 	}
@@ -72,6 +77,7 @@ public class User {
 		this.email = email == null ? null : new String(email);
 	}
 
+	//getter and setter for field
 	public String getField() {
 		return field == null ? null : new String(field);
 	}
@@ -80,6 +86,7 @@ public class User {
 		this.field = field == null ? null : new String(field);
 	}
 
+	//getter and setter for user type
 	public String getUserType() {
 		return userType == null ? null : new String(userType);
 	}
@@ -106,6 +113,7 @@ public class User {
 		return o;
 	}
 
+	//method to check user password
 	public boolean checkUserPass(String username, String password) {
 		if (username.equals(getUserID()) && (password.equals(getPassword()))){
 			return true;

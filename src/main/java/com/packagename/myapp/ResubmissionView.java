@@ -29,7 +29,8 @@ import com.vaadin.flow.router.Route;
 
 @Route(value = "resubmit")
 public class ResubmissionView extends VerticalLayout{
-	
+
+	//creates hashmap variable for user, paper, submission
 	private HashMap<String,User> userData;
 	private HashMap<Integer,Paper> paperData;
 	private HashMap<Pair<Integer,String>,Submission> submissionData;

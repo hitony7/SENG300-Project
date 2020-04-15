@@ -15,13 +15,16 @@ import com.packagename.myapp.model.composite.SubmissionHistory;
 
 public class EditorPageController {
 
+	//Made HashMaps to store data that
 	private HashMap<String,User> userData;
 	private HashMap<Integer,Paper> paperData;
 	private HashMap<Pair<Integer,String>,Submission> submissionData;
 	private HashMap<String,EditorJournal> editorJournalData;
-	
+
+	//Made a string variable to store userID
 	private String userID;
 
+	//Controller for the editor page to get the data from the user, paper, submission and journals
 	public EditorPageController(HashMap<String,User> userData,
 			HashMap<Integer,Paper> paperData,
 			HashMap<Pair<Integer,String>,Submission> submissionData,
@@ -47,7 +50,9 @@ public class EditorPageController {
 					return new PaperEntry(paper, lastSub, researcher);
 				}).collect(Collectors.toSet());
 	}
-	
+
+	//Filter and gets the necessary paper data with the respective journal
+	//return the journal history
 	public Collection<PaperEntry> getJournalHistory() {
 		return paperData.values().stream()
 				.filter(paper -> paper.getJournal()
@@ -60,14 +65,18 @@ public class EditorPageController {
 					return new PaperEntry(paper, lastSub, researcher);
 				}).collect(Collectors.toSet());
 	}
-	
+
+	//Gets and filter through the submission data and see if the paperid match with submitted paper
+	//return the value of the lsat submission
 	public Submission getLastSubmission(Paper paper) {
 		return submissionData.values().stream()
 				.filter(sub -> sub.getPaperID() == paper.getPaperID())
 				.max((a,b) -> a.getSubmissionDate().compareTo(b.getSubmissionDate()))
 				.get();
 	}
-	
+
+	//Gte all of the paper submission entry and match it with the paperid
+	//Return all of the submission history
 	public Collection<SubmissionHistory> getSubmissionHistory(PaperEntry paperEntry) {
 		return submissionData.values().stream()
 				.filter(sub -> sub.getPaperID() == paperEntry.getPaper().getPaperID())

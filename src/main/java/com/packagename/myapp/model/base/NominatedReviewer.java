@@ -3,7 +3,7 @@ package com.packagename.myapp.model.base;
 import org.json.simple.JSONObject;
 
 public class NominatedReviewer {
-	
+	//variable to hold paper id and reviewer id
 	private int paperID;
 	private String reviewerID;
 	
@@ -26,6 +26,7 @@ public class NominatedReviewer {
 				(String) obj.get("ReviewerID"));
 	}
 
+	//getter and setter for paper id
 	public int getPaperID() {
 		return paperID;
 	}
@@ -34,6 +35,7 @@ public class NominatedReviewer {
 		this.paperID = paperID;
 	}
 
+	//getter and setter reviewer id
 	public String getReviewerID() {
 		return reviewerID == null ? null : new String(reviewerID);
 	}

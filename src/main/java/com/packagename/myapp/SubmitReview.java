@@ -26,7 +26,8 @@ public class SubmitReview extends VerticalLayout {
 	public static String jName ="none";
 	public static String pName = "none";
 	public SubmitReview() {
-		
+
+		//header
 		H1 header = new H1("Submit Review");
 		H4 subheader = new H4("You have selected " + jName + "(journal)");
 		Label selectPaper = new Label("Select Paper");
@@ -36,6 +37,7 @@ public class SubmitReview extends VerticalLayout {
 		text.setReadOnly(true);
 		text.setValue(pName);
 
+		//text area for comment
 		TextArea comment = new TextArea("Comment");
 		comment.setPlaceholder("Comments");
 		comment.getStyle().set("minHeight","150px");
