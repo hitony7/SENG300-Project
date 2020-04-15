@@ -14,7 +14,7 @@ public class Users {
 		this.email = email;
 	}
 	
-	
+	//getter and setter for name, password, usertype, email
 	public String getName() {
 		return name;
 	}

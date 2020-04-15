@@ -61,7 +61,7 @@ public class ManageUser extends VerticalLayout {
 				.bind(User::getName, User::setName);
 
 
-		
+		//textfield for password
 		TextField password = new TextField();
 		password.setLabel("Password");
 
@@ -70,7 +70,7 @@ public class ManageUser extends VerticalLayout {
 				.bind(User::getPassword, User::setPassword);
 		
 		
-		
+		//select drop down for the different types
 		Select <String> userType = new Select();
 		userType.setLabel("User Type");
 		userType.setValue("Editor");
@@ -80,6 +80,7 @@ public class ManageUser extends VerticalLayout {
 				.asRequired()
 				.bind(User::getUserType, User::setUserType);
 
+		//text field for the email input
 		TextField email = new TextField();
 		email.setLabel("Email");
 
@@ -87,6 +88,7 @@ public class ManageUser extends VerticalLayout {
 				.asRequired()
 				.bind(User::getEmail, User::setEmail);
 
+		//text field for the user id input
 		TextField UserId = new TextField();
 		UserId.setLabel("UserId");
 
@@ -94,6 +96,7 @@ public class ManageUser extends VerticalLayout {
 				.asRequired()
 				.bind(User::getUserID, User::setUserID);
 
+		//textfield for the field of the user works in
 		TextField field = new TextField();
 		field.setLabel("field");
 
@@ -245,6 +248,7 @@ public class ManageUser extends VerticalLayout {
 
 		back.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
 
+		//add the grid, remove button, add button, edit button, and back button
 		add(userGrid,remove,form,add, edit, back);
 	}
 

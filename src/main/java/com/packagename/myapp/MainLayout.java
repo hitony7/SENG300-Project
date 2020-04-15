@@ -25,6 +25,7 @@ public class MainLayout extends AppLayout {
 
     //Top Bar the header
     private void createHeader() {
+        //header for the page
         H1 logo = new H1("Welcome, " + SessionUser.getName());  // h1 HEADER LIKE html
         logo.addClassName("logo");
 

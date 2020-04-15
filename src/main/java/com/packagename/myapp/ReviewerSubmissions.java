@@ -18,7 +18,7 @@ public class ReviewerSubmissions {
 		this.reviewDeadline = reviewDeadline;
 		this.editor = editor;
 	}
-	
+	// getter and setter for journal, paper, version, researcher, review deadline, editor
 	public String getJournal() {
 		return journal;
 	}

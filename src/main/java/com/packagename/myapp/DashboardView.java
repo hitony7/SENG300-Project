@@ -27,7 +27,7 @@ public class DashboardView extends VerticalLayout {
         gap.setHeight("You can use Labels");
         add(gap);
 
-
+        //create header
         H1 logo = new H1("Welcome to the MainPage");
         
         //Button to go to the reviewer page
@@ -44,7 +44,7 @@ public class DashboardView extends VerticalLayout {
         reviewer.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
         editor.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
         
-        
+        //adds the logo and buttons
         add(logo,researcher,reviewer,editor);
         
         

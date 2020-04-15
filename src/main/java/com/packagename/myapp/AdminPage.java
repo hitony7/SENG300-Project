@@ -31,7 +31,7 @@ public class AdminPage extends VerticalLayout {
 		manageUser.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
 		back.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
 		
-	
+		//add the text and back button for the admin page
 		add(welcomeText,manageUser,back);
 		
 		

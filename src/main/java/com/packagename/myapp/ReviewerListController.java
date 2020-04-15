@@ -9,7 +9,7 @@ import java.util.stream.Collectors;
 import com.packagename.myapp.model.base.User;
 
 public class ReviewerListController {
-	
+
 	private HashMap<String, User> userData;
 	
 	private Set<User> reviewerList = new HashSet<>();
@@ -21,13 +21,15 @@ public class ReviewerListController {
 	public Set<User> getReviewerList() {
 		return reviewerList;
 	}
-	
+
+	//method to add reviewer
 	public void addReviewer(User reviewer) {
 		if (reviewer != null) {
 			reviewerList.add(reviewer);
 		}
 	}
-	
+
+	//method to remove reviewer
 	public void removeReviewer(User reviewer) {
 		if (reviewer != null) {
 			reviewerList.remove(reviewer);

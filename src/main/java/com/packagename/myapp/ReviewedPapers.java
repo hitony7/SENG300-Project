@@ -1,7 +1,7 @@
 package com.packagename.myapp;
 
 public class ReviewedPapers {
-
+	//create variable for paper, journal, review deadline, version, researcher, and editor
 	String paper;
 	String journal;
 	String reviewDeadline;
@@ -18,7 +18,8 @@ public class ReviewedPapers {
 		this.researcher = researcher;
 		this.editor = editor;
 	}
-	
+
+	//getter and setter for paper data
 	public String getPaper() {
 		return paper;
 	}
@@ -27,6 +28,7 @@ public class ReviewedPapers {
 		this.paper = paper;
 	}
 
+	//getter and setter journal data
 	public String getJournal() {
 		return journal;
 	}
@@ -35,6 +37,7 @@ public class ReviewedPapers {
 		this.journal = journal;
 	}
 
+	//getter and setter for review deadline
 	public String getReviewDeadline() {
 		return reviewDeadline;
 	}
@@ -43,6 +46,7 @@ public class ReviewedPapers {
 		this.reviewDeadline = reviewDeadline;
 	}
 
+	//getter and setter for version deadline
 	public String getVersion() {
 		return version;
 	}
@@ -51,6 +55,7 @@ public class ReviewedPapers {
 		this.version = version;
 	}
 
+	//getter and setter for researcher data
 	public String getResearcher() {
 		return researcher;
 	}
@@ -59,6 +64,7 @@ public class ReviewedPapers {
 		this.researcher = researcher;
 	}
 
+	//getter and setter for editor data
 	public String getEditor() {
 		return editor;
 	}

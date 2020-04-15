@@ -28,7 +28,8 @@ public class RequestReview extends VerticalLayout {
 	public static String pName= "None";
 
 	public RequestReview() {
-		
+
+		//header for the page
 		H1 header = new H1("Request Review");
 
 		ArrayList<User> userList;
@@ -64,6 +65,7 @@ public class RequestReview extends VerticalLayout {
 //		}
 		
 		Label label = new Label("Select Reviewers");
+		//create grid to display reviewer
 		Grid<User> selectReviewers = new Grid<>();
 		selectReviewers.setSelectionMode(SelectionMode.MULTI);
 		selectReviewers.setItems(reviewers);
@@ -71,21 +73,23 @@ public class RequestReview extends VerticalLayout {
 		selectReviewers.addColumn(User::getName).setHeader("Name");
 		selectReviewers.addColumn(User::getEmail).setHeader("Email");
 
-		
+		//create deadline textfield
 		TextField setDeadline = new TextField("Set Review Deadline");
 		
 		Dialog request = new Dialog();
 		request.add(new Label("Request Sent"));
-		
+
+		//create request button
 		Button send = new Button("Send",
 				e -> request.open());
-		
+
+		//create back button
 		Button back = new Button("Back",
 				e -> UI.getCurrent().navigate("editor"));
 		
 		send.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
 		back.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
-		
+
 		add(header,selectPaper,label,selectReviewers,setDeadline,send,back);
 		
 	}

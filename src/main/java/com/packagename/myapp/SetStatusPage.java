@@ -30,9 +30,10 @@ public class SetStatusPage extends VerticalLayout {
 	public static String vName ="none";
 
 	public SetStatusPage() throws IOException {
-		
+		//header
 		H1 header = new H1("Set Status");
 
+		//hashmap variables
 		HashMap<Pair<Integer, String>, Submission> submissionData = JsonModel.getSubmissionData();
 		HashMap<String, User> userData;
 		HashMap<Integer, Paper> paperData;
@@ -51,30 +52,36 @@ public class SetStatusPage extends VerticalLayout {
 		}
 
 
-
+		//textfield for paper
 		Label paperSelect = new Label("Selected Paper");
 		TextField text = new TextField();
 		text.setReadOnly(true);
 		text.setValue(pName);
 		//Select<Paper> selectPaper = new Select();
-		
+
+		//dropdown menu for status
 		Label status = new Label("Set Status");
 		Select setStatus = new Select();
 		setStatus.setItems("Major revison","Minor revision", "Rejected", "Accepted");
-		
+
+		//comment textfield
 		TextArea comment = new TextArea("Comment");
 		comment.setPlaceholder("Message to the researcher...");
 		comment.getStyle().set("minHeight","150px");
 		comment.getStyle().set("minWidth", "50%");
-		
+
+		//deadline textfield
 		TextField setResub = new TextField("Set Resubmission Deadline");
-		
+
+		//dialog pop up after status is set
 		Dialog popup = new Dialog();
 		popup.add(new Label("Status Set"));
-		
+
+		//button to set status
 		Button set = new Button("Set",
 				e -> popup.open());
-		
+
+		//back button
 		Button back = new Button("back",
 				e -> UI.getCurrent().navigate("editor"));
 		
