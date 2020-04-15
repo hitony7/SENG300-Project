@@ -41,7 +41,7 @@ public class ChoosePaperPage extends VerticalLayout {
 		Button set = new Button("Set", 
 				e -> popup.open());
 
-		Anchor download = new Anchor(new StreamResource("filename.ext", () -> {
+		Anchor download = new Anchor(new StreamResource(pName+ ".PDF" , () -> {
 			try {
 				return createResource();
 			} catch (FileNotFoundException e) {
@@ -58,7 +58,7 @@ public class ChoosePaperPage extends VerticalLayout {
 		set.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
 		back.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
 		
-		add(header,download,label,text,set,back);
+		add(header,label,text,download,set,back);
 	}
 
 	private InputStream createResource() throws FileNotFoundException {
