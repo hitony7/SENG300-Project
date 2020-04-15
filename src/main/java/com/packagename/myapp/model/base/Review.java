@@ -8,9 +8,10 @@ import java.util.Date;
 import org.json.simple.JSONObject;
 
 public class Review {
-	
+	//date format
 	public static DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-	
+
+	//variables created to be used in this class
 	private int paperID;
 	private String version;
 	private String reviewerID;
@@ -47,6 +48,7 @@ public class Review {
 				(String) obj.get("FilePath"), (String) obj.get("Comment"));
 	}
 
+	//getter and setter for paper id
 	public int getPaperID() {
 		return paperID;
 	}
@@ -55,6 +57,7 @@ public class Review {
 		this.paperID = paperID;
 	}
 
+	//getter and setter for verison
 	public String getVersion() {
 		return version == null ? null : new String(version);
 	}
@@ -63,6 +66,7 @@ public class Review {
 		this.version = version == null ? null : new String(version);
 	}
 
+	//getter and setter for reviewer ID
 	public String getReviewerID() {
 		return version == null ? null : new String(version);
 	}
@@ -71,6 +75,7 @@ public class Review {
 		this.reviewerID = version == null ? null : new String(version);
 	}
 
+	//getter and setter for reviewer date
 	public Date getReviewDate() {
 		return reviewDate == null ? null : (Date) reviewDate.clone();
 	}
@@ -79,6 +84,7 @@ public class Review {
 		this.reviewDate = reviewDate == null ? null : (Date) reviewDate.clone();
 	}
 
+	//getter and setter for file path
 	public String getFilePath() {
 		return filePath == null ? null : new String(filePath);
 	}
@@ -87,6 +93,7 @@ public class Review {
 		this.filePath = filePath == null ? null : new String(filePath);
 	}
 
+	//getter and setter for comment
 	public String getComment() {
 		return comment == null ? null : new String(comment);
 	}
@@ -94,7 +101,8 @@ public class Review {
 	public void setComment(String comment) {
 		this.comment = comment == null ? null : new String(comment);
 	}
-	
+
+	//method to check if date is formated or is null
 	public static String formatOrNull(Date date) {
 		return date == null ? null : dateFormat.format(date);
 	}

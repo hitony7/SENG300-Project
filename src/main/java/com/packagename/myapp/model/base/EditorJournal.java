@@ -26,6 +26,7 @@ public class EditorJournal {
 				(String) obj.get("JName"));
 	}
 
+	//getter and setter for editorID
 	public String getEditorID() {
 		return editorID == null ? null : new String(editorID);
 	}
@@ -34,6 +35,7 @@ public class EditorJournal {
 		this.editorID = editorID == null ? null : new String(editorID);
 	}
 
+	//getter and setter for Journal Name
 	public String getJName() {
 		return jName == null ? null : new String(jName);
 	}

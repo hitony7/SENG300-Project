@@ -18,6 +18,7 @@ import com.packagename.myapp.model.base.User;
  *
  */
 public class ManageUserController {
+    //Set up variables to hold values
     private HashMap <String, User> userData;
 
     private User user;
@@ -25,7 +26,7 @@ public class ManageUserController {
     private String filename;
 
 
-
+    //gets the user info and puts into a hashmap
     public ManageUserController() {
         try{
             userData = JsonModel.getUserData();
@@ -36,6 +37,7 @@ public class ManageUserController {
     }
 
 
+    //checks if login is right
     public static User validateLogin(HashMap<String, User> userList, String username, String password) {
         for (User i : userList.values()) {
             System.out.println(i.getUserID()+i.getPassword());
@@ -48,7 +50,7 @@ public class ManageUserController {
     }
 
 
-
+    //getter and setter for username
     public void setUserName(String username){
         user.setUserID(username);
     }
@@ -56,6 +58,7 @@ public class ManageUserController {
         return user.getUserID();
     }
 
+    //getter and setter for the password
     public String getPassword() {
         return user.getPassword();
     }
@@ -64,6 +67,7 @@ public class ManageUserController {
         user.setPassword(password);
     }
 
+    //getter and setter for the user type
     public String getUserType(){
         return user.getUserType();
     }
@@ -72,6 +76,7 @@ public class ManageUserController {
         user.setUserType(userType);
     }
 
+    //getter and setter for email
     public String getEmail(){
         return user.getEmail();
     }
@@ -80,6 +85,7 @@ public class ManageUserController {
         user.setEmail(email);
     }
 
+    //getter and setter for userID
     public String getUserId(){
         return user.getUserID();
     }
@@ -88,6 +94,7 @@ public class ManageUserController {
         user.setUserID(userId);
     }
 
+    //getter and setter for field the user works in
     public String getField(){
         return user.getField();
     }

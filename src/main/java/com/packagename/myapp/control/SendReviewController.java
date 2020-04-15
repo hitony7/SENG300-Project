@@ -18,13 +18,13 @@ import com.packagename.myapp.model.base.Submission.SubStatus;
 import com.vaadin.flow.component.notification.Notification;
 
 public class SendReviewController {
-
+    //variables to hold review, comment and paperId
     private Review review;
 
     private String comment;
     private int paperId;
 
-
+    //getter and setter for comment
     public String getComment(){
            return review.getComment();
     }
@@ -33,6 +33,7 @@ public class SendReviewController {
         review.setComment(comment);
     }
 
+    //getter and setter for paper data
     public int getPaper(){
         return review.getPaperID();
     }

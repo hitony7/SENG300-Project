@@ -73,8 +73,7 @@ public class SetStatusPage extends VerticalLayout {
 		popup.add(new Label("Status Set"));
 		
 		Button set = new Button("Set",
-				e -> popup.open()
-						);
+				e -> popup.open());
 		
 		Button back = new Button("back",
 				e -> UI.getCurrent().navigate("editor"));

@@ -33,21 +33,23 @@ import com.vaadin.flow.component.notification.Notification;
  *
  */
 public class NewSubmissionController {
-	
+
+	//Hashmap variables for holding user, paper, submission, journal, editor journal, and reviewer data
 	private HashMap<String,User> userData;
 	private HashMap<Integer,Paper> paperData;
 	private HashMap<Pair<Integer,String>,Submission> submissionData;
 	private HashMap<String,Journal> journalData;
 	private HashMap<String,EditorJournal> journalEditorData;
 	private HashMap<Pair<Integer,String>,NominatedReviewer> nominatedReviewerData;
-	
+
+	//Variable created to hold values
 	private Paper paper;
 	private Submission submission;
 	private InputStream inputStream;
 	private String filename;
 	//private User researcher;
 	private User editor;
-	
+
 	public NewSubmissionController(HashMap<String, User> userData,
 			HashMap<Integer, Paper> paperData,
 			HashMap<Pair<Integer, String>, Submission> submissionData,
@@ -70,14 +72,17 @@ public class NewSubmissionController {
 		// researcher = new User(researcherID)
 	}
 
+	//setter for the input stream
 	public void setInputStream(InputStream inputStream) {
 		this.inputStream = inputStream;
 	}
 
+	//setter for the file name
 	public void setFilename(String filename) {
 		this.filename = filename;
 	}
-	
+
+	//getter and setter for editor
 	public User getEditor() {
 		return editor;
 	}
@@ -89,6 +94,7 @@ public class NewSubmissionController {
 		}
 	}
 
+	//getter and setter for researcher ID
 	public String getResearcherID() {
 		return paper.getResearcherID();
 	}
@@ -96,7 +102,8 @@ public class NewSubmissionController {
 	public void setResearcherID(String researcherID) {
 		this.paper.setResearcherID(researcherID);
 	}
-	
+
+	//getter and setter for title
 	public String getTitle() {
 		return paper.getTitle();
 	}
@@ -104,7 +111,8 @@ public class NewSubmissionController {
 	public void setTitle(String title) {
 		paper.setTitle(title);
 	}
-	
+
+	//getter and setter for journal
 	public String getJournal() {
 		return paper.getJournal();
 	}
@@ -112,7 +120,8 @@ public class NewSubmissionController {
 	public void setJournal(String journal) {
 		paper.setJournal(journal);;
 	}
-	
+
+	//getter and setter for Researcher message
 	public String getResearcherMessage() {
 		return submission.getResearcherMessage();
 	}
@@ -120,20 +129,24 @@ public class NewSubmissionController {
 	public void setResearcherMessage(String message) {
 		submission.setResearcherMessage(message);;
 	}
-	
+
+	// setter for status
 	public void setStatus(SubStatus status) {
 		submission.setStatus(status);
 	}
 	
 	// Query Methods
+	//getter for number of papers
 	public int getNumberOfPapers() {
 		return paperData.size();
 	}
-	
+
+	//getter for all journals
 	public Collection<Journal> getAllJournals() {
 		return journalData.values();
 	}
-	
+
+	//getter for editor by journal assigned
 	public Collection<User> getAllEditorsByJournal(Journal journal) {
 		Collection<String> editorIDsByJournal = journalEditorData.values().stream()
 				.filter(journalEditor
@@ -147,7 +160,8 @@ public class NewSubmissionController {
 						-> editorIDsByJournal.contains(editor.getUserID()))
 				.collect(Collectors.toSet());
 	}
-	
+
+	//getter for all of reviewer user
 	public Collection<User> getAllReviewers() {
 		return userData.values().stream()
 				.filter(user
@@ -155,6 +169,7 @@ public class NewSubmissionController {
 				.collect(Collectors.toSet());
 	}
 
+	//Method for creating a new submission
 	public void newResearcherSubmission(ReviewerListController revController) throws IOException {
 	
 	    // create journal directory if it does not exist
