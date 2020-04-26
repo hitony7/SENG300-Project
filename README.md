@@ -101,7 +101,7 @@ Adapted for JSON
   - Developer
  - **Sohaib Bajwa** | Email: sohaib.bajwa1@ucalgary.ca
     - Product Owner 
-    - Our Professer 
+    - Our Professor
 
 #### We did we learn? 
 
