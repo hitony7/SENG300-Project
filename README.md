@@ -3,8 +3,8 @@
 **Version 1.0v** \
 Web based University Journal logging system<br/>
 <br/>
-This a system that allows user of many types user to interact with journals logging system. / 
-This was for our software engineering course which focus on agile development, which we used SCRUM. 
+This a system that allows user of many types user to interact with journals logging system. 
+This was for our software engineering course which focus on how to devolop software with proper practices  agile development, which we used SCRUM. 
 
 #### Users 
 - Admins: Able to manage users add/remove/edit users.
@@ -61,7 +61,22 @@ We will be doing most of our work in the src file in this project.<br/>
 Html Styling in Frontend folder.
 
 ## Our Design
-We used these Diagrams below: 
+We used these Diagrams below:
+#### UI Design
+![UI](/screenshots/UI%20Idea.png)
+
+#### RM 
+Adapted for JSON
+![RM](/screenshots/SENG%20300%20RM.png)
+[Click here to see how we readed JSON using Binder in vaadin](/screenshots/Binder.png) 
+
+#### User Case 
+![Usercase](/screenshots/Use%20Case%20Diagram.png)
+
+#### Class Diagram 
+###### Outdated 
+
+![Class](/screenshots/Class%20Diagram.png)
 
 
 ## Contributors
