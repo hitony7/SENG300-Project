@@ -23,9 +23,7 @@ This was for our software engineering course which focus on how to devolop softw
 - [Stack](#stack)
 - [Prerequisites](#prerequisites) 
 - [Development set up / How to Run](#development-set-up--how-to-run)  
-- [Our Design](#our-design)
-   - [ER Diagram](#er-diagram)
-   - [RM Diagram](#rm-diagram)
+- [Our Design Diagrams](#our-design)
 - [Contributors](#contributors)
 - [We did we learn?](#we-did-we-learn)
 ---
