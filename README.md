@@ -4,13 +4,19 @@
 Web based University Journal logging system<br/>
 <br/>
 This a system that allows user of many types user to interact with journals logging system. 
-This was for our software engineering course which focus on how to devolop software with proper practices  agile development, which we used SCRUM. 
+This was for our software engineering course which focus on how to devolop software with proper methodology/practices and agile development, which we used SCRUM. 
 
-#### Users 
+#### Users
+
 - Admins: Able to manage users add/remove/edit users.
 - Researcher: Able sumbits papers into a specfic jouranls, assign to a reviewer and editor,see comments/status of papers. 
 - Editors: Able to download papers and update status of journals.
-- Reviewrs: Able to comment on the paper.
+- Reviewers: Able to comment on the paper. 
+##### See [user case details](#user-case) for more details
+
+#### Sample Login Demo
+![Demo](/screenshots/demo.gif)
+
 ---
 ### Table of Contents
 
