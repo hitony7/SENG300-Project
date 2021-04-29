@@ -1,0 +1,36 @@
+version: 2
+updates:
+- package-ecosystem: maven
+  directory: "/"
+  schedule:
+    interval: daily
+    time: "12:00"
+  open-pull-requests-limit: 10
+  ignore:
+  - dependency-name: com.vaadin:vaadin-maven-plugin
+    versions:
+    - 18.0.5
+    - 18.0.6
+    - 19.0.0
+    - 19.0.1
+    - 19.0.2
+    - 19.0.3
+    - 19.0.4
+    - 19.0.5
+  - dependency-name: com.vaadin:vaadin-bom
+    versions:
+    - 18.0.5
+    - 18.0.6
+    - 19.0.0
+    - 19.0.1
+    - 19.0.2
+    - 19.0.3
+    - 19.0.4
+    - 19.0.5
+  - dependency-name: org.eclipse.jetty:jetty-maven-plugin
+    versions:
+    - 11.0.0
+    - 11.0.1
+  - dependency-name: org.apache.commons:commons-lang3
+    versions:
+    - "3.11"
